@@ -1,4 +1,5 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -43,7 +44,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -88,23 +97,138 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Contents\CSS\collection_style.css" />
     <Content Include="Contents\CSS\Style_Layout.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\0545951168fa4ff79b779abbc65e74-jpeg-1722654059820.jpg" />
+    <Content Include="Images\075264983fc24d8a83908f79bda4a8-jpeg-1722654096584.jpg" />
+    <Content Include="Images\0cca8e59-9a9c-4ab2-84ac-d6eb6e70e9a9-0b68cd02-0a34-4152-9b30-271bc2383a04.jpg" />
+    <Content Include="Images\0f4259b7-0ca8-4281-9dde-4fc2d0d9021a-df3108d7-dac6-44ad-a854-34b0815bd0be.jpg" />
+    <Content Include="Images\1100-1722653577560.jpg" />
+    <Content Include="Images\17e29066-6ba1-46c8-aa2f-7d8902971f88-cb06fb46-a261-46c7-b5e5-fba5f3f90535.jpg" />
+    <Content Include="Images\1800-1722653849972.jpg" />
+    <Content Include="Images\1800-2-1722653563019.jpg" />
+    <Content Include="Images\1800-5-1722653851361.jpg" />
+    <Content Include="Images\182c9b79-e156-4073-bea2-8d7e33be6e0b.jpg" />
+    <Content Include="Images\18daf2561f4e4786a69b02ea7acf90-1722654032459.jpg" />
+    <Content Include="Images\1b8594947c8b4fec91d72681aa350a-jpeg-1722654110593.jpg" />
+    <Content Include="Images\2000-4-1722653843954.jpg" />
+    <Content Include="Images\2d18e2cd34754ef9a0c4ac9a85b02e-1722653677419.jpg" />
+    <Content Include="Images\2e19fd6b-d03c-4f86-b590-e50cd6999bce-75c718d3-cd05-476b-a135-ca73ac3c8167.jpg" />
+    <Content Include="Images\318c355a-9602-499d-8a1d-df5ca6b419e2-6c459fe6-7e15-45ad-ba7b-feaa00621f1f.jpg" />
+    <Content Include="Images\344e46dadb8545d5963bf538886c36-1722653684094.jpg" />
+    <Content Include="Images\41de3033-7340-4b5d-9bc7-347f9534fabb-e5821c08-239e-4277-ba39-1761943d284f.jpg" />
+    <Content Include="Images\41fb9b0c-94c4-448b-9934-0550c78e818a-c0598f5b-22f8-4316-8da5-9243db90f0ea.jpg" />
+    <Content Include="Images\433091b3480b44fe9a14366dd4c80f-1722653618377.jpg" />
+    <Content Include="Images\43c6ef7068f2467e9cc74c2dcb2eb8-1722653683116.jpg" />
+    <Content Include="Images\4ddb74ef20284b879bf639141e7bfe-1722653682470.jpg" />
+    <Content Include="Images\4fbabb86-9ff3-4abf-9671-3a9c449928dc-994fab37-c370-4307-bc0c-7d8deb42ca37.jpg" />
+    <Content Include="Images\506fec83-7c0c-4c95-934c-380b7c3fe0ff-25ffd02a-9702-46a4-9df9-8539b0fb8268.jpg" />
+    <Content Include="Images\5844d8a8-b333-4d61-a857-4d57b922292b-614db907-6248-40c8-89d4-d63d64d35dfe.jpg" />
+    <Content Include="Images\5f956891d7cc47ad8b55520889bf75-1722653587944.jpg" />
+    <Content Include="Images\60051864-4b91-41b3-a4f5-bfcc4336e869-172a385b-3c75-40cf-82cf-ae00160bb6c8.jpg" />
+    <Content Include="Images\65f6c2a120134df2ace75655b6a4b7-1722653591040.jpg" />
+    <Content Include="Images\66268d10bd3748599235ea425d9059-1722653592009.jpg" />
+    <Content Include="Images\74286e4d90904bac802010454bc6aa-1722654044948.jpg" />
+    <Content Include="Images\74ecbbb888e0459e8e2551098b6ffb-1722654027924.jpg" />
+    <Content Include="Images\74f67376-3ef8-4846-8b7d-6645cede93cc-bce2fad8-7ad4-4d5e-b3a5-77b5e409b459.jpg" />
+    <Content Include="Images\7d977015-f660-468e-aa92-6d1e55b2b6f6-8b98c7f4-cb5d-41a7-a080-a33a20c779d2.jpg" />
+    <Content Include="Images\7fd0929e-bf94-41a9-bb82-650c9b33ba9f-acb9e454-4c9d-4829-a72d-0a9dbf6cd728.jpg" />
+    <Content Include="Images\85b4538030374625842be6d944fb91-jpeg-1722654065530.jpg" />
+    <Content Include="Images\906f51f663204f91b3e9eb49162489-1722653593495.jpg" />
+    <Content Include="Images\910bfaa5-64d4-4545-b039-dcafda3a3bde.jpg" />
+    <Content Include="Images\930b0ba7ba0e4314bad0ad58c624c0-1722654030131.jpg" />
+    <Content Include="Images\93b2da08-4c24-4af1-80b2-1469b8fbebad-2988918b-9fb3-4d7e-82e4-1ac979d8db6c.jpg" />
+    <Content Include="Images\9eeedfe0-f320-4ade-b798-d6f8a6420cf3-87094deb-18d5-4900-a1b2-4c3a1cdfc4b5.jpg" />
+    <Content Include="Images\9f919d1b-c620-44eb-8a81-9ede8e0ece25-d158250d-fb63-4621-9dfa-3f935779ad36.jpg" />
+    <Content Include="Images\a14f549b-3383-4cf2-b11d-9494f8a78588-e2279fa4-2996-4b49-a40d-9b81a5bfe86e.jpg" />
+    <Content Include="Images\a51d8e91-e013-4774-b9f4-660b4f098e78-30dae6c3-08ea-4df3-a893-76140e0bafde.jpg" />
+    <Content Include="Images\a8eeb848-6697-4162-a6e8-d3d8e3222338-d93f4830-a55b-4878-ba5b-8ee192a138ef.jpg" />
+    <Content Include="Images\b6d8c5f2-6953-461c-9586-e4620db6920a-357cc108-cd54-4cdb-93e3-4fa5f9e9ded2.jpg" />
+    <Content Include="Images\baa89f99-77ee-4e14-93f3-b44c8ce4e239.jpg" />
+    <Content Include="Images\bbd87433-2175-413f-bc06-9f9f0d69a1f4-0769bbe2-5681-4978-af04-54803a4cb567.jpg" />
+    <Content Include="Images\d08a4678-d17f-4282-b3ec-d49a89df7a6b-815ce74d-dafe-47f3-acdf-bcc347d4a3b8.jpg" />
+    <Content Include="Images\d81ff475-f43e-4410-8d94-67dfa42eed26.jpg" />
+    <Content Include="Images\db26e8f53bfa400eb65f55de9e5095-1722654026836.jpg" />
+    <Content Include="Images\dsc05510-1747888898698.jpg" />
+    <Content Include="Images\dsc05924-1747883847164.jpg" />
+    <Content Include="Images\dsc05950-1747886536759.jpg" />
+    <Content Include="Images\dsc05989-1747886576924.jpg" />
+    <Content Include="Images\dsc06003-1747886582937.jpg" />
+    <Content Include="Images\dsc06013-1747886590835.jpg" />
+    <Content Include="Images\dsc06024-1747888666528.jpg" />
+    <Content Include="Images\e55e643a-4900-4b4c-bbbd-f66406162f32-e2865c77-224d-42fc-a4bf-eb3795c6a163.jpg" />
+    <Content Include="Images\ea3d5ac32f1f48929e21de1702ffe5-jpeg-1722654141569.jpg" />
+    <Content Include="Images\f22755b7-3dc1-4675-8628-08e077ea524b-db327258-936b-487a-9dbe-781257cb5208.jpg" />
+    <Content Include="Images\f57d07a4-2646-414a-803d-b156974e2603-97f4024c-bd67-491f-8a1e-e6207a9e2b30.jpg" />
+    <Content Include="Images\f905f2b0-e982-4ad8-b463-392acda6ac1b-997fe73e-8e0e-4463-80ea-4c840a4c688f.jpg" />
+    <Content Include="Images\fb1-1747886608385.jpg" />
+    <Content Include="Images\ff575cda-55bd-4183-96dc-b896b7b763d8-57150620-e2b1-41ef-8e3b-535e0d85a80f.jpg" />
+    <Content Include="Images\gochoaxinh-com-064-1747906819351.jpg" />
+    <Content Include="Images\gochoaxinh-com-290-1747907186021.jpg" />
+    <Content Include="Images\gochoaxinh-com-564-1747907308008.jpg" />
+    <Content Include="Images\intagram11.jpg" />
+    <Content Include="Images\kt2a5650-1747887004846.jpg" />
+    <Content Include="Images\kt2a5725-1748932784453.jpg" />
+    <Content Include="Images\kt2a5763-1748932797773.jpg" />
+    <Content Include="Images\kt2a5767-1748932933010.jpg" />
+    <Content Include="Images\z5674686162213-eb1ab140741362a141e2c291f9c7fbe0-1722653232530-adc6ea3d-94cb-4223-b008-6f1392d5936e.jpg" />
+    <Content Include="Images\z6627827948270-77c577f191bca0887273fd45355e5fd5-1747906523997.jpg" />
+    <Content Include="Models\QL_ShopFlower.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QL_ShopFlower.edmx</DependentUpon>
+      <LastGenOutput>QL_ShopFlower.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\QL_ShopFlower.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QL_ShopFlower.edmx</DependentUpon>
+      <LastGenOutput>QL_ShopFlower.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LOAIHANG.cs">
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QL_ShopFlower.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QL_ShopFlower.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QL_ShopFlower.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QL_ShopFlower.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QL_ShopFlower.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SANPHAM.cs">
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
+    <EntityDeploy Include="Models\QL_ShopFlower.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QL_ShopFlower.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\QL_ShopFlower.edmx.diagram">
+      <DependentUpon>QL_ShopFlower.edmx</DependentUpon>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Shared\_LayoutChung.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\SanPham\tat_ca_san_pham.cshtml" />
+    <Content Include="Views\Home\Trang_chu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -114,8 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -147,7 +272,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

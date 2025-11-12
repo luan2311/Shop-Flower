@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="~/Contents/CSS/Style_Layout.css">
-    @*<link rel="stylesheet" href="~/Contents/CSS/responsive_Layout.css">*@
+    <link href="~/Contents/CSS/collection_style.css" rel="stylesheet" />
     <title>Shop Hoa tươi Góc Hoa Xinh - Những Bó Hoa Tươi xinh xắn</title>
 </head>
 <body>
@@ -150,11 +150,11 @@
                     </div>
                     <div class="col-menu">
                         <ul id="nav" class="nav">
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a class="nav-link" href="/" title="Trang chủ">Trang chủ</a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="/collections/all" title="Tất cả sản phẩm">Tất cả sản phẩm</a>
+                                <a class="nav-link" href="~/SanPham/tat_ca_san_pham" title="Tất cả sản phẩm">Tất cả sản phẩm</a>
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link" href="/bo-hoa-tuoi" title="Bó Hoa Tươi">Bó Hoa Tươi</a>
@@ -211,10 +211,9 @@
         <div class="mobile-nav-overflow"></div>
     </header>
     <!-- Body -->
-    <h1 style="height: 500px;">
-        Hello
+    <div class="bodywrap">
         @RenderBody()
-    </h1>
+    </div>
     <!-- Footer -->
     <footer class="footer">
         <div class="mid-footer">
@@ -224,6 +223,7 @@
                         <div class="logo-footer">
                             <a href="/" title="Góc Hoa Xinh">
                                 <img width="249" height="26" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/logo_footer.png?1757405855081" data-src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/logo_footer.png?1757405855081" alt="Góc Hoa Xinh" class="lazyload loaded" data-was-processed="true">
+                            </a>
                         </div>
 
                         <div class="des_foo">
