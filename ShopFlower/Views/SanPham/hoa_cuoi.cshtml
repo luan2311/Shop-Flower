@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Tất cả sản phẩm";
+    ViewBag.Title = "Hoa Cưới";
     Layout = "~/Views/Shared/_LayoutChung.cshtml";
 }
 
@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-title">
-                <h1>Tất cả sản phảm</h1>
+                <h1>Hoa Cưới</h1>
             </div>
             <div class="col-12 col-list-cate">
                 <div class="menu-list">
@@ -29,19 +29,19 @@
                                 </h3>
                                 <ul>
                                     <li class="btn-quick-sort default @(ViewBag.CurrentSort == "" || ViewBag.CurrentSort == "default" ? "active" : "")">
-                                        @Html.ActionLink("Mặc định", "tat_ca_san_pham", new { sortOrder = "default" }, new { title = "Mặc định" })
+                                        @Html.ActionLink("Mặc định", "hoa_cuoi", new { sortOrder = "default" }, new { title = "Mặc định" })
                                     </li>
                                     <li class="btn-quick-sort alpha-asc @(ViewBag.CurrentSort == "alpha-asc" ? "active" : "")">
-                                        @Html.ActionLink("Tên A-Z", "tat_ca_san_pham", new { sortOrder = "alpha-asc" }, new { title = "Tên A-Z" })
+                                        @Html.ActionLink("Tên A-Z", "hoa_cuoi", new { sortOrder = "alpha-asc" }, new { title = "Tên A-Z" })
                                     </li>
                                     <li class="btn-quick-sort alpha-desc @(ViewBag.CurrentSort == "alpha-desc" ? "active" : "")">
-                                        @Html.ActionLink("Tên Z-A", "tat_ca_san_pham", new { sortOrder = "alpha-desc" }, new { title = "Tên Z-A" })
+                                        @Html.ActionLink("Tên Z-A", "hoa_cuoi", new { sortOrder = "alpha-desc" }, new { title = "Tên Z-A" })
                                     </li>
                                     <li class="btn-quick-sort price-asc @(ViewBag.CurrentSort == "price-asc" ? "active" : "")">
-                                        @Html.ActionLink("Giá thấp đến cao", "tat_ca_san_pham", new { sortOrder = "price-asc" }, new { title = "Giá thấp đến cao" })
+                                        @Html.ActionLink("Giá thấp đến cao", "hoa_cuoi", new { sortOrder = "price-asc" }, new { title = "Giá thấp đến cao" })
                                     </li>
                                     <li class="btn-quick-sort price-desc @(ViewBag.CurrentSort == "price-desc" ? "active" : "")">
-                                        @Html.ActionLink("Giá cao xuống thấp", "tat_ca_san_pham", new { sortOrder = "price-desc" }, new { title = "Giá cao xuống thấp" })
+                                        @Html.ActionLink("Giá cao xuống thấp", "hoa_cuoi", new { sortOrder = "price-desc" }, new { title = "Giá cao xuống thấp" })
                                     </li>
                                 </ul>
                             </div>
@@ -96,57 +96,62 @@
                                     </div>
                                 </div>
                             }
-                        <div class="pagenav">
-                            <nav class="collection-paginate clearfix relative nav_pagi w_100">
-                                <ul class="pagination clearfix">
-                                    @if (ViewBag.CurrentPage > 1)
-                                    {
-                                        <li class="page-item">
-                                            <a class="page-link" href="@Url.Action("tat_ca_san_pham", new { page = ViewBag.CurrentPage - 1, sortOrder = ViewBag.CurrentSort })">«</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#">«</a>
-                                        </li>
-                                    }
-
-                                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                                    {
-                                        if (i == ViewBag.CurrentPage)
+                            <div class="pagenav">
+                                <nav class="collection-paginate clearfix relative nav_pagi w_100">
+                                    <ul class="pagination clearfix">
+                                        @if (ViewBag.CurrentPage > 1)
                                         {
-                                            <li class="page-item active">
-                                                <a class="page-link" href="javascript:;" style="pointer-events:none">@i</a>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("hoa_cuoi", new { page = ViewBag.CurrentPage - 1, sortOrder = ViewBag.CurrentSort })">«</a>
                                             </li>
                                         }
                                         else
                                         {
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Url.Action("tat_ca_san_pham", new { page = i, sortOrder = ViewBag.CurrentSort })">@i</a>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">«</a>
                                             </li>
                                         }
-                                    }
 
-                                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                                    {
-                                        <li class="page-item">
-                                            <a class="page-link" href="@Url.Action("tat_ca_san_pham", new { page = ViewBag.CurrentPage + 1, sortOrder = ViewBag.CurrentSort })">»</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#">»</a>
-                                        </li>
-                                    }
-                                </ul>
-                            </nav>
+                                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                        {
+                                            if (i == ViewBag.CurrentPage)
+                                            {
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="javascript:;" style="pointer-events:none">@i</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Url.Action("hoa_cuoi", new { page = i, sortOrder = ViewBag.CurrentSort })">@i</a>
+                                                </li>
+                                            }
+                                        }
+
+                                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("hoa_cuoi", new { page = ViewBag.CurrentPage + 1, sortOrder = ViewBag.CurrentSort })">»</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">»</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+

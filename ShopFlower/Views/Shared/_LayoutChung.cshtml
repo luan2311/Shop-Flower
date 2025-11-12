@@ -15,7 +15,17 @@
     <!-- CSS -->
     <link rel="stylesheet" href="~/Contents/CSS/Style_Layout.css">
     <link href="~/Contents/CSS/collection_style.css" rel="stylesheet" />
-    <title>Shop Hoa tươi Góc Hoa Xinh - Những Bó Hoa Tươi xinh xắn</title>
+    <link href="~/Contents/CSS/breadcrumb_style.css" rel="stylesheet" />
+    <title>
+        @if (!string.IsNullOrEmpty(ViewBag.Title))
+        {
+            @ViewBag.Title
+        }
+        else
+        {
+            @:Shop Hoa tươi Góc Hoa Xinh - Những Bó Hoa Tươi xinh xắn
+        }
+    </title>
 </head>
 <body>
     <!-- Header -->
@@ -157,10 +167,10 @@
                                 <a class="nav-link" href="~/SanPham/tat_ca_san_pham" title="Tất cả sản phẩm">Tất cả sản phẩm</a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="/bo-hoa-tuoi" title="Bó Hoa Tươi">Bó Hoa Tươi</a>
+                                <a class="nav-link" href="~/SanPham/bo_hoa_tuoi" title="Bó Hoa Tươi">Bó Hoa Tươi</a>
                             </li>
                             <li class="nav-item has-childs  ">
-                                <a href="/ke-hoa-chuc-mung-khai-truong" class="nav-link" title="Kệ Hoa chúc mừng">
+                                <a href="~/SanPham/ke_hoa_chuc_mung" class="nav-link" title="Kệ Hoa chúc mừng">
                                     Kệ Hoa
                                     chúc mừng
                                     <svg width="8" height="17" viewBox="0 0 8 17" fill="none"
@@ -173,13 +183,13 @@
 
                                 <ul class="dropdown-menu">
                                     <li class="nav-item-lv2">
-                                        <a class="nav-link" href="/ke-hoa-chuc-mung-khai-truong" title="Kệ chúc mừng">
+                                        <a class="nav-link" href="~/SanPham/ke_hoa_chuc_mung" title="Kệ chúc mừng">
                                             Kệ
                                             chúc mừng
                                         </a>
                                     </li>
                                     <li class="nav-item-lv2">
-                                        <a class="nav-link" href="/hoa-chuc-mung" title="Giỏ hoa chúc mừng">
+                                        <a class="nav-link" href="~/SanPham/gio_hoa_chuc_mung" title="Giỏ hoa chúc mừng">
                                             Giỏ hoa chúc
                                             mừng
                                         </a>
@@ -188,11 +198,11 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link" href="/hoa-cuoi" title="Hoa Cưới">Hoa Cưới</a>
+                                <a class="nav-link" href="~/SanPham/hoa_cuoi" title="Hoa Cưới">Hoa Cưới</a>
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link" href="/hoa-sap" title="Hoa Sáp">Hoa Sáp</a>
+                                <a class="nav-link" href="~/SanPham/hoa_sap" title="Hoa Sáp">Hoa Sáp</a>
                             </li>
 
                             <li class="nav-item ">
@@ -270,23 +280,23 @@
                             </li>
 
                             <li class="li_menu">
-                                <a href="/collections/all" title="Tất cả sản phẩm">Tất cả sản phẩm</a>
+                                <a href="~/SanPham/tat_ca_sanPham" title="Tất cả sản phẩm">Tất cả sản phẩm</a>
                             </li>
 
                             <li class="li_menu">
-                                <a href="/bo-hoa-tuoi" title="Bó Hoa Tươi">Bó Hoa Tươi</a>
+                                <a href="~/SanPham/bo_hoa_tuoi" title="Bó Hoa Tươi">Bó Hoa Tươi</a>
                             </li>
 
                             <li class="li_menu">
-                                <a href="/ke-hoa-chuc-mung-khai-truong" title="Kệ Hoa chúc mừng">Kệ Hoa chúc mừng</a>
+                                <a href="~/SanPham/ke_hoa_chuc_mung" title="Kệ Hoa chúc mừng">Kệ Hoa chúc mừng</a>
                             </li>
 
                             <li class="li_menu">
-                                <a href="/hoa-cuoi" title="Hoa Cưới">Hoa Cưới</a>
+                                <a href="~/SanPham/hoa_cuoi" title="Hoa Cưới">Hoa Cưới</a>
                             </li>
 
                             <li class="li_menu">
-                                <a href="/hoa-sap" title="Hoa Sáp">Hoa Sáp</a>
+                                <a href="~/SanPham/hoa_sap" title="Hoa Sáp">Hoa Sáp</a>
                             </li>
 
                             <li class="li_menu">

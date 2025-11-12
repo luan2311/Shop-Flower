@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\collection_style.css" />
     <Content Include="Contents\CSS\Style_Layout.css" />
     <Content Include="Global.asax" />
@@ -229,6 +230,11 @@
     <Content Include="Views\Shared\_LayoutChung.cshtml" />
     <Content Include="Views\SanPham\tat_ca_san_pham.cshtml" />
     <Content Include="Views\Home\Trang_chu.cshtml" />
+    <Content Include="Views\SanPham\bo_hoa_tuoi.cshtml" />
+    <Content Include="Views\SanPham\ke_hoa_chuc_mung.cshtml" />
+    <Content Include="Views\SanPham\gio_hoa_chuc_mung.cshtml" />
+    <Content Include="Views\SanPham\hoa_cuoi.cshtml" />
+    <Content Include="Views\SanPham\hoa_sap.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

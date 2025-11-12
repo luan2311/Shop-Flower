@@ -1,7 +1,8 @@
 ﻿using ShopFlower.Models;
-using System.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,16 +14,12 @@ namespace ShopFlower.Controllers
         // GET: SanPham
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
 
-        public ActionResult tat_ca_san_pham(string sortOrder)
+        public ActionResult tat_ca_san_pham(int page = 1, string sortOrder = "")
         {
-            var listBoHoaTuoi = db.SANPHAMs.ToList();
-            if (string.IsNullOrEmpty(sortOrder))
-            {
-                sortOrder = "default";
-            }
-
-            ViewBag.CurrentSort = sortOrder;
+            int pageSize = 12; // Số sản phẩm trên mỗi trang
             var products = db.SANPHAMs.AsQueryable();
+
+            // Sắp xếp sản phẩm theo yêu cầu
             switch (sortOrder)
             {
                 case "alpha-asc":
@@ -41,8 +38,204 @@ namespace ShopFlower.Controllers
                     products = products.OrderBy(p => p.MaSP);
                     break;
             }
-            return View(listBoHoaTuoi);
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.CurrentSort = sortOrder;
+
+            return View(paginatedProducts);
         }
+
+        public ActionResult bo_hoa_tuoi(int page = 1, string sortOrder = "")
+        {
+            int pageSize = 8; // Số sản phẩm trên mỗi trang
+            var products = db.SANPHAMs.Where(x=>x.MaLoai == "LH001").AsQueryable();
+
+            // Sắp xếp sản phẩm theo yêu cầu
+            switch (sortOrder)
+            {
+                case "alpha-asc":
+                    products = products.OrderBy(p => p.TenSP);
+                    break;
+                case "alpha-desc":
+                    products = products.OrderByDescending(p => p.TenSP);
+                    break;
+                case "price-asc":
+                    products = products.OrderBy(p => p.GiaBan);
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.GiaBan);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.MaSP);
+                    break;
+            }
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.CurrentSort = sortOrder;
+
+            return View(paginatedProducts);
+        }
+
+        public ActionResult ke_hoa_chuc_mung(int page = 1, string sortOrder = "")
+        {
+            int pageSize = 8; // Số sản phẩm trên mỗi trang
+            var products = db.SANPHAMs.Where(x => x.MaLoai == "LH002").AsQueryable();
+
+            // Sắp xếp sản phẩm theo yêu cầu
+            switch (sortOrder)
+            {
+                case "alpha-asc":
+                    products = products.OrderBy(p => p.TenSP);
+                    break;
+                case "alpha-desc":
+                    products = products.OrderByDescending(p => p.TenSP);
+                    break;
+                case "price-asc":
+                    products = products.OrderBy(p => p.GiaBan);
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.GiaBan);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.MaSP);
+                    break;
+            }
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.CurrentSort = sortOrder;
+
+            return View(paginatedProducts);
+        }
+
+        public ActionResult gio_hoa_chuc_mung(int page = 1, string sortOrder = "")
+        {
+            int pageSize = 8; // Số sản phẩm trên mỗi trang
+            var products = db.SANPHAMs.Where(x => x.MaLoai == "LH003").AsQueryable();
+
+            // Sắp xếp sản phẩm theo yêu cầu
+            switch (sortOrder)
+            {
+                case "alpha-asc":
+                    products = products.OrderBy(p => p.TenSP);
+                    break;
+                case "alpha-desc":
+                    products = products.OrderByDescending(p => p.TenSP);
+                    break;
+                case "price-asc":
+                    products = products.OrderBy(p => p.GiaBan);
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.GiaBan);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.MaSP);
+                    break;
+            }
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.CurrentSort = sortOrder;
+
+            return View(paginatedProducts);
+        }
+
+        public ActionResult hoa_cuoi(int page = 1, string sortOrder = "")
+        {
+            int pageSize = 8; // Số sản phẩm trên mỗi trang
+            var products = db.SANPHAMs.Where(x => x.MaLoai == "LH004").AsQueryable();
+
+            // Sắp xếp sản phẩm theo yêu cầu
+            switch (sortOrder)
+            {
+                case "alpha-asc":
+                    products = products.OrderBy(p => p.TenSP);
+                    break;
+                case "alpha-desc":
+                    products = products.OrderByDescending(p => p.TenSP);
+                    break;
+                case "price-asc":
+                    products = products.OrderBy(p => p.GiaBan);
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.GiaBan);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.MaSP);
+                    break;
+            }
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.CurrentSort = sortOrder;
+
+            return View(paginatedProducts);
+        }
+
+        public ActionResult hoa_sap(int page = 1, string sortOrder = "")
+        {
+            int pageSize = 8; // Số sản phẩm trên mỗi trang
+            var products = db.SANPHAMs.Where(x => x.MaLoai == "LH005").AsQueryable();
+
+            // Sắp xếp sản phẩm theo yêu cầu
+            switch (sortOrder)
+            {
+                case "alpha-asc":
+                    products = products.OrderBy(p => p.TenSP);
+                    break;
+                case "alpha-desc":
+                    products = products.OrderByDescending(p => p.TenSP);
+                    break;
+                case "price-asc":
+                    products = products.OrderBy(p => p.GiaBan);
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.GiaBan);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.MaSP);
+                    break;
+            }
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.CurrentSort = sortOrder;
+
+            return View(paginatedProducts);
+        }
+
         public ActionResult DetailsDept(string id)
         {
             var d = db.SANPHAMs.FirstOrDefault(x => x.MaSP == id);
