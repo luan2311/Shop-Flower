@@ -100,6 +100,7 @@
     <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\collection_style.css" />
     <Content Include="Contents\CSS\Style_Layout.css" />
+    <Content Include="Contents\CSS\trangchu_style.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\0545951168fa4ff79b779abbc65e74-jpeg-1722654059820.jpg" />
     <Content Include="Images\075264983fc24d8a83908f79bda4a8-jpeg-1722654096584.jpg" />
@@ -136,6 +137,7 @@
     <Content Include="Images\7d977015-f660-468e-aa92-6d1e55b2b6f6-8b98c7f4-cb5d-41a7-a080-a33a20c779d2.jpg" />
     <Content Include="Images\7fd0929e-bf94-41a9-bb82-650c9b33ba9f-acb9e454-4c9d-4829-a72d-0a9dbf6cd728.jpg" />
     <Content Include="Images\85b4538030374625842be6d944fb91-jpeg-1722654065530.jpg" />
+    <Content Include="Images\89k.png" />
     <Content Include="Images\906f51f663204f91b3e9eb49162489-1722653593495.jpg" />
     <Content Include="Images\910bfaa5-64d4-4545-b039-dcafda3a3bde.jpg" />
     <Content Include="Images\930b0ba7ba0e4314bad0ad58c624c0-1722654030131.jpg" />
@@ -148,6 +150,12 @@
     <Content Include="Images\b6d8c5f2-6953-461c-9586-e4620db6920a-357cc108-cd54-4cdb-93e3-4fa5f9e9ded2.jpg" />
     <Content Include="Images\baa89f99-77ee-4e14-93f3-b44c8ce4e239.jpg" />
     <Content Include="Images\bbd87433-2175-413f-bc06-9f9f0d69a1f4-0769bbe2-5681-4978-af04-54803a4cb567.jpg" />
+    <Content Include="Images\cate_1.png" />
+    <Content Include="Images\cate_2.png" />
+    <Content Include="Images\cate_3.png" />
+    <Content Include="Images\cate_4.png" />
+    <Content Include="Images\cate_5.png" />
+    <Content Include="Images\cate_6.png" />
     <Content Include="Images\d08a4678-d17f-4282-b3ec-d49a89df7a6b-815ce74d-dafe-47f3-acdf-bcc347d4a3b8.jpg" />
     <Content Include="Images\d81ff475-f43e-4410-8d94-67dfa42eed26.jpg" />
     <Content Include="Images\db26e8f53bfa400eb65f55de9e5095-1722654026836.jpg" />
@@ -160,6 +168,7 @@
     <Content Include="Images\dsc06024-1747888666528.jpg" />
     <Content Include="Images\e55e643a-4900-4b4c-bbbd-f66406162f32-e2865c77-224d-42fc-a4bf-eb3795c6a163.jpg" />
     <Content Include="Images\ea3d5ac32f1f48929e21de1702ffe5-jpeg-1722654141569.jpg" />
+    <Content Include="Images\eye.svg" />
     <Content Include="Images\f22755b7-3dc1-4675-8628-08e077ea524b-db327258-936b-487a-9dbe-781257cb5208.jpg" />
     <Content Include="Images\f57d07a4-2646-414a-803d-b156974e2603-97f4024c-bd67-491f-8a1e-e6207a9e2b30.jpg" />
     <Content Include="Images\f905f2b0-e982-4ad8-b463-392acda6ac1b-997fe73e-8e0e-4463-80ea-4c840a4c688f.jpg" />
@@ -168,11 +177,19 @@
     <Content Include="Images\gochoaxinh-com-064-1747906819351.jpg" />
     <Content Include="Images\gochoaxinh-com-290-1747907186021.jpg" />
     <Content Include="Images\gochoaxinh-com-564-1747907308008.jpg" />
+    <Content Include="Images\heart.png" />
     <Content Include="Images\intagram11.jpg" />
     <Content Include="Images\kt2a5650-1747887004846.jpg" />
     <Content Include="Images\kt2a5725-1748932784453.jpg" />
     <Content Include="Images\kt2a5763-1748932797773.jpg" />
     <Content Include="Images\kt2a5767-1748932933010.jpg" />
+    <Content Include="Images\ser_1.svg" />
+    <Content Include="Images\ser_2.svg" />
+    <Content Include="Images\ser_3.svg" />
+    <Content Include="Images\ser_4.svg" />
+    <Content Include="Images\shop-hoa-tuoi-goc-hoa-xinh-ba8c9601-b5c9-49d4-803d-35a049880323.jpg" />
+    <Content Include="Images\shop-hoa-tuoi-quan-7-57fc4e53-3f86-47cb-bb5c-ecfb9d8c80d6.jpg" />
+    <Content Include="Images\shop-hoa-tuoi-quan-7-hcm.jpg" />
     <Content Include="Images\z5674686162213-eb1ab140741362a141e2c291f9c7fbe0-1722653232530-adc6ea3d-94cb-4223-b008-6f1392d5936e.jpg" />
     <Content Include="Images\z6627827948270-77c577f191bca0887273fd45355e5fd5-1747906523997.jpg" />
     <Content Include="Models\QL_ShopFlower.Context.tt">
@@ -229,12 +246,12 @@
     <None Include="packages.config" />
     <Content Include="Views\Shared\_LayoutChung.cshtml" />
     <Content Include="Views\SanPham\tat_ca_san_pham.cshtml" />
-    <Content Include="Views\Home\Trang_chu.cshtml" />
     <Content Include="Views\SanPham\bo_hoa_tuoi.cshtml" />
     <Content Include="Views\SanPham\ke_hoa_chuc_mung.cshtml" />
     <Content Include="Views\SanPham\gio_hoa_chuc_mung.cshtml" />
     <Content Include="Views\SanPham\hoa_cuoi.cshtml" />
     <Content Include="Views\SanPham\hoa_sap.cshtml" />
+    <Content Include="Views\Home\Trang_chu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

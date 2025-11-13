@@ -236,10 +236,14 @@ namespace ShopFlower.Controllers
             return View(paginatedProducts);
         }
 
-        public ActionResult DetailsDept(string id)
+       public ActionResult chi_tiet_san_pham(string id)
         {
-            var d = db.SANPHAMs.FirstOrDefault(x => x.MaSP == id);
-            return View(d);
+            var product = db.SANPHAMs.FirstOrDefault(x => x.MaSP == id);
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+            return View(product);
         }
     }
 }
