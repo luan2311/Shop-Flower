@@ -1,0 +1,296 @@
+﻿@model ShopFlower.Models.SANPHAM
+@{
+    ViewBag.Title = "chi_tiet_san_pham";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<section class="product layout-product" itemscope="" itemtype="https://schema.org/Product" >
+    <div class="container" bis_skin_checked="1">
+        <div class="details-product" bis_skin_checked="1">
+            <div class="row margin-bottom-30" bis_skin_checked="1">
+                <div class="col-lg-4 col-md-6 col-12 product-detail-left product-images" bis_skin_checked="1">
+                    <div class="product-image-block relative" bis_skin_checked="1">
+
+                        <div class="swiper-container gallery-top swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" bis_skin_checked="1">
+                            <div class="swiper-wrapper" id="lightgallery" bis_skin_checked="1">
+
+                                <a class="swiper-slide swiper-slide-active" data-hash="0" href="~/Images/@Model.AnhSP" title="Click để xem" style="width: 372px;">
+                                    <img height="370" width="480" src="~/Images/@Model.AnhSP" alt="@Model.TenSP" data-image="~/Images/@Model.AnhSP" class="img-responsive mx-auto d-block swiper-lazy swiper-lazy-loaded">
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <div class="swiper-container gallery-thumbs d-none swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events swiper-container-free-mode swiper-container-thumbs" bis_skin_checked="1">
+                            <div class="swiper-wrapper" bis_skin_checked="1" style="transition-duration: 0ms;">
+
+                                <div class="swiper-slide" data-hash="0" bis_skin_checked="1">
+                                    <div class="p-100" bis_skin_checked="1">
+                                        <img height="80" width="80" src="~/Images/@Model.AnhSP" alt="@Model.TenSP" data-image="~/Images/@Model.AnhSP" class="swiper-lazy">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="swiper-button-next" bis_skin_checked="1">
+                            </div>
+                            <div class="swiper-button-prev" bis_skin_checked="1">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-12 details-pro" bis_skin_checked="1">
+                    <h1 class="title-product">@Model.TenSP</h1>
+                    <div class="product-top clearfix" bis_skin_checked="1">
+
+                        <div class="sku-product clearfix" bis_skin_checked="1">
+                            <span class="d-none" itemprop="brand" itemtype="http://schema.org/Brand" itemscope=""><meta itemprop="name" content="Góc Hoa Xinh">Thương hiệu: <strong>Góc Hoa Xinh</strong></span>
+                            <span class="variant-sku" itemprop="sku" content="PVN296">Mã: <span class="a-sku">@Model.MaSP</span></span>
+                            <br>
+                            <span class="d-none" itemprop="type" itemtype="http://schema.org/Type" itemscope=""><meta itemprop="name" content="Đang cập nhật">Chất liệu: <strong>Đang cập nhật</strong></span>
+                        </div>
+
+                    </div>
+                    <div class="inventory_quantity" bis_skin_checked="1">
+                        <span class="mb-break">
+                            <span class="stock-brand-title">Thương hiệu:</span>
+                            <span class="a-vendor">
+
+                                @Model.ThuongHieu
+
+                            </span>
+                        </span>
+                        <span class="line">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <span class="mb-break">
+                            <span class="stock-brand-title">Tình trạng:</span>
+
+
+                            <span class="a-stock">
+                                @Model.TinhTrang
+                            </span>
+
+
+                        </span>
+                    </div>
+                    <!-- Thêm card, đổi link-->
+                    <form enctype="multipart/form-data" data-cart-form="" id="add-to-cart-form" action="/cart/add" method="post" class="form-inline">
+                        <div class="price-box clearfix" bis_skin_checked="1">
+
+                            <div class="special-price" bis_skin_checked="1">
+                                <span class="price product-price">@String.Format("{0:N0} đ", @Model.GiaBan)</span>
+                                <meta itemprop="price" content="@String.Format("{0:N0} đ", @Model.GiaBan)">
+                                <meta itemprop="priceCurrency" content="VND">
+                            </div> <!-- Giá -->
+
+                        </div>
+
+                        <div class="form-product" bis_skin_checked="1">
+
+                            <div class="box-variant clearfix " bis_skin_checked="1">
+
+                                <input type="hidden" id="one_variant" name="variantId" value="171650208">
+
+                            </div>
+
+                            <div class="boz-form " bis_skin_checked="1">
+                                <div class="flex-quantity" bis_skin_checked="1">
+                                    <div class="custom custom-btn-number show" bis_skin_checked="1">
+                                        <span>Số lượng: </span>
+                                        <div class="input_number_product" bis_skin_checked="1">
+                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro &gt; 1 ) result.value--;return false;" type="button" fdprocessedid="2ilisv">-</button>
+                                            <input type="text" id="qtym" name="quantity" value="1" maxlength="3" class="form-control prd_quantity" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;" fdprocessedid="evp16j">
+                                            <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button" fdprocessedid="low33n"><span>+</span></button>
+                                        </div>
+                                    </div>
+                                    <div class="btn-mua button_actions clearfix" bis_skin_checked="1">
+
+                                        <button class="btn-buyNow btn" fdprocessedid="e9lwes">
+                                            <span class="txt-main">Mua ngay</span>
+                                            <span>Giao tận nơi hoặc nhận tại cửa hàng</span>
+                                        </button>
+                                        <button type="submit" class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart" fdprocessedid="mwx9l">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16"> <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"></path> <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path></svg>
+                                            <span class="txt-main">Thêm vào giỏ</span>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix" bis_skin_checked="1"></div>
+                </div>
+                <div class="col-lg-3 col-md-12 col-12 product-col-right" bis_skin_checked="1">
+                    <div class="block-policy" bis_skin_checked="1">
+                        <div class="heading-policy" bis_skin_checked="1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                            </svg>
+                            Chính sách hỗ trợ
+                        </div>
+                        <div class="policy-content row" bis_skin_checked="1">
+
+                            <div class="col-lg-12 col-md-6 col-sm-6 col-12" bis_skin_checked="1">
+                                <div class="policy-item duration-300" bis_skin_checked="1">
+                                    <div class="icon aspect-1" bis_skin_checked="1">
+                                        <img width="50" height="50" class="lazyload loaded" data-src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_1.svg?1757405855081" alt="Góc Hoa Xinh" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_1.svg?1757405855081" data-was-processed="true">
+                                    </div>
+                                    <div class="info" bis_skin_checked="1">
+                                        <h3>
+                                            Duyệt ảnh sản phẩm
+                                        </h3>
+                                        <span>
+                                            Gửi hình ảnh sản phẩm ưng ý mới giao hàng
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-6 col-sm-6 col-12" bis_skin_checked="1">
+                                <div class="policy-item duration-300" bis_skin_checked="1">
+                                    <div class="icon aspect-1" bis_skin_checked="1">
+                                        <img width="50" height="50" class="lazyload loaded" data-src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_2.svg?1757405855081" alt="Góc Hoa Xinh" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_2.svg?1757405855081" data-was-processed="true">
+                                    </div>
+                                    <div class="info" bis_skin_checked="1">
+                                        <h3>
+                                            Thẻ chúc mừng miễn phí
+                                        </h3>
+                                        <span>
+                                            Miễn phí thiệp và nội dụng theo yêu cầu
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-6 col-sm-6 col-12" bis_skin_checked="1">
+                                <div class="policy-item duration-300" bis_skin_checked="1">
+                                    <div class="icon aspect-1" bis_skin_checked="1">
+                                        <img width="50" height="50" class="lazyload loaded" data-src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_3.svg?1757405855081" alt="Góc Hoa Xinh" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_3.svg?1757405855081" data-was-processed="true">
+                                    </div>
+                                    <div class="info" bis_skin_checked="1">
+                                        <h3>
+                                            Banner sản phẩm
+                                        </h3>
+                                        <span>
+                                            Miễn phí banner sản phẩm
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-6 col-sm-6 col-12" bis_skin_checked="1">
+                                <div class="policy-item duration-300" bis_skin_checked="1">
+                                    <div class="icon aspect-1" bis_skin_checked="1">
+                                        <img width="50" height="50" class="lazyload loaded" data-src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_4.svg?1757405855081" alt="Góc Hoa Xinh" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/product_policy_4.svg?1757405855081" data-was-processed="true">
+                                    </div>
+                                    <div class="info" bis_skin_checked="1">
+                                        <h3>
+                                            Giao hàng trong 2H
+                                        </h3>
+                                        <span>
+                                            Giao nhanh nếu sản phẩm cần gấp
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Thêm yêu thích-->
+                    <div class="gr-wish-compare" bis_skin_checked="1">
+                        <div class="product-wish" bis_skin_checked="1">
+                            <a href="javascript:void(0)" class="setWishlist btn-views" data-wish="bo-hoa-hong-do-sang-trong-nong-nan" tabindex="0" title="Thêm vào yêu thích">
+                                <img width="25" height="25" src="~/Images/heart.png" alt="Thêm vào yêu thích">
+                                Thêm vào yêu thích
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" bis_skin_checked="1">
+                <div class="col-lg-8 col-12 product-review-details" bis_skin_checked="1">
+                    <div class="product-content block-content" bis_skin_checked="1">
+                        <div class="title" bis_skin_checked="1">Thông tin sản phẩm</div>
+                        <div class="product-review-content" bis_skin_checked="1">
+
+                            @Html.Raw(Model.MoTaSP)
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 col-12" bis_skin_checked="1">
+
+
+                </div>
+
+                <div class="col-12 product-related product-swipers" bis_skin_checked="1">
+                    <h2>
+                        <a>
+                            Sản phẩm liên quan
+                        </a>
+                    </h2>
+                    <div class="row">
+                        @if (ViewBag.SanPhamLienQuan != null)
+                        {
+                            foreach (var item in ViewBag.SanPhamLienQuan)
+                            {
+                                <div class="col-6 col-md-3">
+                                    <div class="item_product_main">
+
+                                        <form action="/cart/add" method="post" class="variants product-action item-product-main duration-300" data-cart-form="" data-id="product-actions-57772035" enctype="multipart/form-data">
+
+                                            <div class="product-thumbnail">
+                                                <a class="image_thumb scale_hover" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">
+                                                    <img class="lazyload duration-300 loaded" src="~/Images/@item.AnhSP" alt="@item.TenSP" data-was-processed="true">
+                                                </a>
+                                                <div class="action-button">
+                                                    @*<a title="Xem nhanh" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" class="xem_nhanh btn-circle btn-views btn_view btn right-to quick-view">
+                                        <img class="view_img" width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/eye.svg?1757405855081" alt="Xem nhanh">
+                                    </a>*@
+
+                                                    <a href="javascript:void(0)" class="setWishlist btn-views btn-circle" tabindex="0" title="Thêm vào yêu thích">
+                                                        <img width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/heart.png?1757405855081" alt="Thêm vào yêu thích">
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <div class="product-info">
+                                                <h3 class="product-name line-clamp line-clamp-2">
+                                                    <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">@item.TenSP</a>
+                                                </h3>
+                                                <div class="product-price-cart">
+                                                    <div class="price-box">
+                                                        <span class="price">@String.Format("{0:N0} đ", @item.GiaBan)</span>
+                                                    </div>
+                                                    <div class="product-button">
+                                                        <input type="hidden" name="variantId" value="171650104">
+                                                        <button class="btn-cart btn-views add_to_cart " title="Thêm vào giỏ hàng">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                                                                <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"></path>
+                                                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                                    
+                                
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

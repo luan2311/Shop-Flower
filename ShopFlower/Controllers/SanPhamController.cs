@@ -237,13 +237,22 @@ namespace ShopFlower.Controllers
         }
 
        public ActionResult chi_tiet_san_pham(string id)
-        {
+       {
+            if (id == null)
+                return RedirectToAction("page_not_found", "Home");
+
+            // Lấy sản phẩm theo id
             var product = db.SANPHAMs.FirstOrDefault(x => x.MaSP == id);
+
             if (product == null)
-            {
-                return HttpNotFound();
-            }
+                return RedirectToAction("page_not_found", "Home");
+
+            // Lấy sản phẩm liên quan (ví dụ: cùng loại, trừ sản phẩm hiện tại)
+            var sanPhamLienQuan = db.SANPHAMs.Where(sp => sp.MaLoai == product.MaLoai && sp.MaSP != product.MaSP).Take(4).ToList();
+            
+            ViewBag.SanPhamLienQuan = sanPhamLienQuan;
+
             return View(product);
-        }
+       }
     }
 }

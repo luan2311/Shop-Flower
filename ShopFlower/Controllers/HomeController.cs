@@ -33,6 +33,14 @@ namespace ShopFlower.Controllers
             return View();
         }
 
-        
+        public ActionResult page_not_found()
+        {
+            return View();
+        }
+
+        public ActionResult Lien_he()
+        {
+            return View();
+        }
     }
 }

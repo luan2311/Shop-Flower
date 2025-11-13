@@ -97,8 +97,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Contents\CSS\404page.css" />
     <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\collection_style.css" />
+    <Content Include="Contents\CSS\contact_style.css" />
+    <Content Include="Contents\CSS\product_style.css" />
     <Content Include="Contents\CSS\Style_Layout.css" />
     <Content Include="Contents\CSS\trangchu_style.css" />
     <Content Include="Global.asax" />
@@ -150,6 +153,7 @@
     <Content Include="Images\b6d8c5f2-6953-461c-9586-e4620db6920a-357cc108-cd54-4cdb-93e3-4fa5f9e9ded2.jpg" />
     <Content Include="Images\baa89f99-77ee-4e14-93f3-b44c8ce4e239.jpg" />
     <Content Include="Images\bbd87433-2175-413f-bc06-9f9f0d69a1f4-0769bbe2-5681-4978-af04-54803a4cb567.jpg" />
+    <Content Include="Images\bn_404.jpg" />
     <Content Include="Images\cate_1.png" />
     <Content Include="Images\cate_2.png" />
     <Content Include="Images\cate_3.png" />
@@ -252,6 +256,8 @@
     <Content Include="Views\SanPham\hoa_cuoi.cshtml" />
     <Content Include="Views\SanPham\hoa_sap.cshtml" />
     <Content Include="Views\Home\Trang_chu.cshtml" />
+    <Content Include="Views\Home\page_not_found.cshtml" />
+    <Content Include="Views\SanPham\chi_tiet_san_pham.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

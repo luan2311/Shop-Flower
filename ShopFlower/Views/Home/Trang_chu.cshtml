@@ -219,7 +219,7 @@
 
                                         <div class="product-thumbnail">
                                             <a class="image_thumb scale_hover"
-                                               href="~/SanPham/Details?MaSP = @bohoatuoi.MaSP"
+                                               href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = bohoatuoi.MaSP.Trim() })"
                                                title="@bohoatuoi.TenSP">
                                                 <img class="lazyload duration-300 loaded"
                                                      src="~/Images/@bohoatuoi.AnhSP"
@@ -367,7 +367,7 @@
 
                                         <div class="product-thumbnail">
                                             <a class="image_thumb scale_hover"
-                                               href="~/SanPham/Details?MaSP = @ke_hoa.MaSP"
+                                               href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = ke_hoa.MaSP.Trim() }) "
                                                title="@ke_hoa.TenSP">
                                                 <img class="lazyload duration-300 loaded"
                                                      src="~/Images/@ke_hoa.AnhSP"
@@ -448,7 +448,7 @@
 
                                         <div class="product-thumbnail">
                                             <a class="image_thumb scale_hover"
-                                               href="~/SanPham/Details?MaSP = @gio_hoa.MaSP"
+                                               href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = gio_hoa.MaSP.Trim() })"
                                                title="@gio_hoa.TenSP">
                                                 <img class="lazyload duration-300 loaded"
                                                      src="~/Images/@gio_hoa.AnhSP"
@@ -559,7 +559,7 @@
 
                                         <div class="product-thumbnail">
                                             <a class="image_thumb scale_hover"
-                                               href="~/SanPham/Details?MaSP = @hoasap.MaSP"
+                                               href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = hoasap.MaSP.Trim() })"
                                                title="@hoasap.TenSP">
                                                 <img class="lazyload duration-300 loaded"
                                                      src="~/Images/@hoasap.AnhSP"
@@ -691,7 +691,7 @@
 
                                         <div class="product-thumbnail">
                                             <a class="image_thumb scale_hover"
-                                               href="~/SanPham/Details?MaSP = @hoacuoi.MaSP"
+                                               href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = hoacuoi.MaSP.Trim() })"
                                                title="@hoacuoi.TenSP">
                                                 <img class="lazyload duration-300 loaded"
                                                      src="~/Images/@hoacuoi.AnhSP"

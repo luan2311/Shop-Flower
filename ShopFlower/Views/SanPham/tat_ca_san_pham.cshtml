@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-title">
-                <h1>Tất cả sản phảm</h1>
+                <h1>Tất cả sản phẩm</h1>
             </div>
             <div class="col-12 col-list-cate">
                 <div class="menu-list">
@@ -59,13 +59,13 @@
                                         <form action="/cart/add" method="post" class="variants product-action item-product-main duration-300" data-cart-form="" data-id="product-actions-57772035" enctype="multipart/form-data">
 
                                             <div class="product-thumbnail">
-                                                <a class="image_thumb scale_hover" href="~/Views/SanPham/Details?MaSP=@item.MaSP" title="@item.TenSP">
+                                                <a class="image_thumb scale_hover" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">
                                                     <img class="lazyload duration-300 loaded" src="~/Images/@item.AnhSP" alt="@item.TenSP" data-was-processed="true">
                                                 </a>
                                                 <div class="action-button">
-                                                    <a title="Xem nhanh" href="~/Views/SanPham/Details?MaSP=@item.MaSP" class="xem_nhanh btn-circle btn-views btn_view btn right-to quick-view">
+                                                    @*<a title="Xem nhanh" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" class="xem_nhanh btn-circle btn-views btn_view btn right-to quick-view">
                                                         <img class="view_img" width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/eye.svg?1757405855081" alt="Xem nhanh">
-                                                    </a>
+                                                    </a>*@
 
                                                     <a href="javascript:void(0)" class="setWishlist btn-views btn-circle" tabindex="0" title="Thêm vào yêu thích">
                                                         <img width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/heart.png?1757405855081" alt="Thêm vào yêu thích">
@@ -75,7 +75,7 @@
                                             </div>
                                             <div class="product-info">
                                                 <h3 class="product-name line-clamp line-clamp-2">
-                                                    <a href="~/Views/SanPham/Details?MaSP=@item.MaSP" title="@item.TenSP">@item.TenSP</a>
+                                                    <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">@item.TenSP</a>
                                                 </h3>
                                                 <div class="product-price-cart">
                                                     <div class="price-box">
