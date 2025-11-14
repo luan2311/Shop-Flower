@@ -259,6 +259,7 @@
     <Content Include="Views\Home\Trang_chu.cshtml" />
     <Content Include="Views\Home\page_not_found.cshtml" />
     <Content Include="Views\SanPham\chi_tiet_san_pham.cshtml" />
+    <Content Include="Views\SanPham\Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

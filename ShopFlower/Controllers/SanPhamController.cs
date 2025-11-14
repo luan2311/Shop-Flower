@@ -254,5 +254,33 @@ namespace ShopFlower.Controllers
 
             return View(product);
        }
+
+        public ActionResult Search(string query, int page = 1)
+        {
+            int pageSize = 8;
+
+            // Kiểm tra từ khóa tìm kiếm
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return RedirectToAction("tat_ca_san_pham");
+            }
+
+            // Gọi Stored Procedure
+            var products = db.Database.SqlQuery<SANPHAM>(
+                "EXEC SearchProducts @Keyword",
+                new SqlParameter("@Keyword", query)
+            ).ToList();
+
+            // Phân trang
+            int totalProducts = products.Count();
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Truyền dữ liệu sang View
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            ViewBag.Keyword = query;
+
+            return View(paginatedProducts);
+        }
     }
 }
