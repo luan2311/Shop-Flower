@@ -4071,7 +4071,9 @@ header.header .header-menu .col-menu #nav {
                             opacity: 1;
                             visibility: visible;
                             transition: none;
-                            padding-left: 10px
+                            padding-left: 10px;
+                            font-size: 1.4rem;
+                            border: none;
                         }
 
                             header.header .header-menu .container .col-menu #nav .nav-item.has-childs > ul.dropdown-menu > li {

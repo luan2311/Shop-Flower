@@ -20,6 +20,8 @@
     <link href="~/Contents/CSS/contact_style.css" rel="stylesheet" />
     <link href="~/Contents/CSS/404page.css" rel="stylesheet" />
     <link href="~/Contents/CSS/product_style.css" rel="stylesheet" />
+    <!-- JS -->
+    <script src="~/Contents/JS/main.js"></script>
     <title>
         @if (!string.IsNullOrEmpty(ViewBag.Title))
         {
@@ -30,23 +32,6 @@
             @:Shop Hoa tươi Góc Hoa Xinh - Những Bó Hoa Tươi xinh xắn
         }
     </title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const navLinks = document.querySelectorAll('.nav-item');
-
-            // 2. Lặp qua từng thẻ và gán sự kiện click
-            navLinks.forEach((nav) => {
-                nav.addEventListener('click', function () {
-                    // 3. Loại bỏ class 'active' khỏi TẤT CẢ các nav
-                    navLinks.forEach((t) => {
-                        t.classList.remove('active');
-                    });
-                    // 4. Thêm class 'active' vào thẻ vừa được click
-                    this.classList.add('active');
-                });
-            });
-        });
-    </script>
 </head>
 <body>
     <!-- Header -->
