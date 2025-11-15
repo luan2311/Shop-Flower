@@ -1,0 +1,90 @@
+﻿@model ShopFlower.Models.LIENHE
+@{
+    ViewBag.Title = "Liên Hệ";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="layout-contact" style="margin-top:30px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-12">
+                <div class="contact">
+                    <h4>
+                        Blossom Corner - Góc Hoa Xinh
+                    </h4>
+
+                    <div class="des_foo">
+
+                    </div>
+
+                    <div class="time_work">
+                        <div class="item">
+                            <b>Địa chỉ:</b>
+
+                            114 Dương Quang Đông, Phường 5, Quận 8 (Online)
+
+                        </div>
+                        <div class="item">
+                            <b>Hotline:</b> <a class="fone" href="tel:0859336677" title="0859336677">0859336677</a>
+                        </div>
+                        <div class="item">
+                            <b>Email:</b> <a href="mailto:gochoaxinh@gmail.com" title="gochoaxinh@gmail.com">gochoaxinh@gmail.com</a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-contact">
+                    <h4>
+                        Liên hệ với chúng tôi
+                    </h4>
+                    <div id="pagelogin">
+                        <form method="post" action="Lien_he" id="contact" accept-charset="UTF-8">
+                                @Html.AntiForgeryToken()
+
+                            <div class="group_contact">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        @Html.TextBoxFor(m => m.HOTEN, new { @class = "form-control form-control-lg", placeholder = "Họ và tên"})
+                                        @Html.ValidationMessageFor(m => m.HOTEN, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        @Html.TextBoxFor(m => m.EMAIL, new { @class = "form-control form-control-lg", placeholder = "Email", type = "email" })
+                                        @Html.ValidationMessageFor(m => m.EMAIL, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextBoxFor(m => m.DIENTHOAI, new { @class = "form-control form-control-lg", placeholder = "Điện thoại", type = "number" })
+                                        @Html.ValidationMessageFor(m => m.DIENTHOAI, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextAreaFor(m => m.NOIDUNG, new { @class = "form-control content-area form-control-lg", placeholder = "Nội dung", rows = 5 })
+                                        @Html.ValidationMessageFor(m => m.NOIDUNG, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <button type="submit" class="btn-lienhe">
+                                            Gửi tin nhắn
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    @if (ViewBag.SuccessMessage != null)
+                                    {
+                                        <div id="form-success-message" class="mt-4 p-4 alert alert-success rounded">
+                                            @ViewBag.SuccessMessage
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-12">
+                <div id="contact_map" class="map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5543.635098131084!2d106.7143785845808!3d10.738955970307627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f6d7f0d47d3%3A0x36aaaecfaf4d9051!2sShop%20Hoa%20T%C6%B0%C6%A1i%20Blossom%20Corner!5e0!3m2!1svi!2s!4v1721637678998!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -4,7 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QL_SHOPFLOWERModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QL_SHOPFLOWERModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LIENHE">
+          <Key>
+            <PropertyRef Name="MALH" />
+          </Key>
+          <Property Name="MALH" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="HOTEN" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="100" />
+          <Property Name="DIENTHOAI" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOIDUNG" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="LOAIHANG">
           <Key>
             <PropertyRef Name="MaLoai" />
@@ -38,7 +48,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SearchProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="QL_SHOPFLOWERModelStoreContainer">
+          <EntitySet Name="LIENHE" EntityType="Self.LIENHE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAIHANG" EntityType="Self.LOAIHANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SANPHAM" EntityType="Self.SANPHAM" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_SANPHAM" Association="Self.FK_SANPHAM">
@@ -46,8 +60,7 @@
             <End Role="SANPHAM" EntitySet="SANPHAM" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QL_SHOPFLOWERModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -93,7 +106,32 @@
             <End Role="LOAIHANG" EntitySet="LOAIHANGs" />
             <End Role="SANPHAM" EntitySet="SANPHAMs" />
           </AssociationSet>
+          <EntitySet Name="LIENHEs" EntityType="QL_SHOPFLOWERModel.LIENHE" />
+          <FunctionImport Name="SearchProducts" ReturnType="Collection(QL_SHOPFLOWERModel.SearchProducts_Result)">
+          <Parameter Name="Keyword" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <EntityType Name="LIENHE">
+          <Key>
+            <PropertyRef Name="MALH" />
+          </Key>
+          <Property Name="MALH" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="HOTEN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DIENTHOAI" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="SearchProducts_Result">
+          <Property Type="String" Name="MaSP" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="TenSP" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="GiaBan" Nullable="true" />
+          <Property Type="String" Name="AnhSP" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MoTaSP" Nullable="true" />
+          <Property Type="String" Name="TinhTrang" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ThuongHieu" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="SoLuongTon" Nullable="true" />
+          <Property Type="String" Name="MaLoai" Nullable="true" MaxLength="10" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -123,6 +161,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LIENHEs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.LIENHE">
+              <MappingFragment StoreEntitySet="LIENHE">
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+                <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+                <ScalarProperty Name="MALH" ColumnName="MALH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SearchProducts" FunctionName="QL_SHOPFLOWERModel.Store.SearchProducts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.SearchProducts_Result">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="AnhSP" ColumnName="AnhSP" />
+                <ScalarProperty Name="MoTaSP" ColumnName="MoTaSP" />
+                <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+                <ScalarProperty Name="ThuongHieu" ColumnName="ThuongHieu" />
+                <ScalarProperty Name="SoLuongTon" ColumnName="SoLuongTon" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

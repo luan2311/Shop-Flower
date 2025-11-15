@@ -12,6 +12,8 @@ namespace ShopFlower.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class QL_SHOPFLOWEREntities : DbContext
     {
@@ -27,5 +29,15 @@ namespace ShopFlower.Models
     
         public virtual DbSet<LOAIHANG> LOAIHANGs { get; set; }
         public virtual DbSet<SANPHAM> SANPHAMs { get; set; }
+        public virtual DbSet<LIENHE> LIENHEs { get; set; }
+    
+        public virtual ObjectResult<SearchProducts_Result> SearchProducts(string keyword)
+        {
+            var keywordParameter = keyword != null ?
+                new ObjectParameter("Keyword", keyword) :
+                new ObjectParameter("Keyword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SearchProducts_Result>("SearchProducts", keywordParameter);
+        }
     }
 }

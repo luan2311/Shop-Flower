@@ -211,10 +211,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Chinh_Sach_Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LIENHE.cs">
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LOAIHANG.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
@@ -235,6 +239,9 @@
       <DependentUpon>QL_ShopFlower.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\SANPHAM.cs">
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SearchProducts_Result.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -260,6 +267,12 @@
     <Content Include="Views\Home\page_not_found.cshtml" />
     <Content Include="Views\SanPham\chi_tiet_san_pham.cshtml" />
     <Content Include="Views\SanPham\Search.cshtml" />
+    <Content Include="Views\Chinh_Sach_\Hinh_thuc_thanh_toan.cshtml" />
+    <Content Include="Views\Chinh_Sach_\Giao_hang.cshtml" />
+    <Content Include="Views\Chinh_Sach_\Bao_mat.cshtml" />
+    <Content Include="Views\Chinh_Sach_\Bao_hanh.cshtml" />
+    <Content Include="Views\Chinh_Sach_\Dieu_khoan_su_dung.cshtml" />
+    <Content Include="Views\Home\Lien_he.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

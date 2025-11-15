@@ -42,5 +42,23 @@ namespace ShopFlower.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Lien_he(LIENHE model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewBag.SuccessMessage = "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.";
+                return View();
+             }
+
+             return View(model);
+           }
+
+        public ActionResult Tin_tuc()
+        {
+            return View();
+        }
     }
 }
