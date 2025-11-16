@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="bg-gray">
+    <section class="section">
+        <div class="container ">
+            <div class="wrap_background_aside  page_login">
+                <div class="wrap_background_aside">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 col-xl-4 offset-xl-4 offset-lg-4 offset-md-3 offset-xl-3 account-animate">
+                            <div class="row">
+                                <div class="page-login pagecustome clearfix">
+                                    <div class="wpx">
+                                        <h1 class="title_heads a-center"><span>Đăng ký</span></h1>
+                                        <span class="block a-center dkm margin-top-10">Đã có tài khoản, đăng nhập <a href="~/Account/Dang_nhap" class="btn-link-style btn-register">tại đây</a></span>
+                                        <div id="login" class="section">
+                                            <form method="post" action="/account/register" id="customer_register" accept-charset="UTF-8" data-gtm-form-interact-id="0">
+                                                <input name="FormType" type="hidden" value="customer_register"><input name="utf8" type="hidden" value="true"><input type="hidden" id="Token-24e077a71e0f44f7846690f835bb46ca" name="Token" value="0cAFcWeA5fxqUvqjsNljSFMP3EnIzp5W3qFKAnnpA2n7J66ftC6vaTttSy5eECKrL_OoOPk7B9MuQ08LjPygl6IKGL9eGJwddE_-DFYK8CEL6h7I0hBoeta1lBus5Rzd7XZgXVXSARcwbNJkKWjWFgp5odKiy0Us4RAMyMYQCoQbS3_SeA8-EK6c0XMEKU3QyOkxagophYAjxsi_HXwcOXMzCAD_9ZsFr26AdMri7QfUfd4WP_MIdhbDTesxMAZ0jc27Ne71JOE6Xf4VtHoiAb5wDf3azOdGECkD3bicjH5EcpZ_D8qmB9w3l9Kw-jo3efBwoTndRlj7KZAyG7-zT41xYG83A_nYEA7AjH1a37nNOFGTzgMK7CyZMoV14YihRHL7y_rG3a8N0C7UfyQjl7ouaCJT3mJotENZEfRJdUWIJv6uDX4Yes_ddprW2jJU2-1xAdDvGIpEDmObponQJVQwjf5ka5Wl70ZpS_yeCni9kAcvHUd13Sy7NaWr9f9RhHNCyTjCklG4Iqw73SNajvqCN_DeOOv4VCSAl1yBDyP2entCmes1XBq7bponWBJ756eEkyJ6UrlMcEtCMh5XHUOb2nN3tEIgj1gVrVcrhI5u6m8iWY-6HUIYbzqZbh3ljda0835o3xLCe1YRh9fXAzDipZstsN3GRz5GHc4X5OL1MLtXP8xMBR0oDZc4LmUKjb-1NSi365S2eYzbdVMYDO37ib7OkyaoGTycEkJgUxcTmnauZzJOJf0wi3PyamYNXZD3w60FThYdZCMl-cKYpEvfxUXgBEgYOLow">
+                                                @*<script src="https://www.google.com/recaptcha/api.js?render=6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK"></script>
+                                                <script>grecaptcha.ready(function() {grecaptcha.execute("6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK", {action: "customer_register"}).then(function(token) {document.getElementById("Token-24e077a71e0f44f7846690f835bb46ca").value = token});});</script>*@
+                                                <div class="form-signup " style="color:red;">
+
+                                                </div>
+                                                <div class="form-signup clearfix">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <fieldset class="form-group">
+                                                                <input type="text" class="form-control form-control-lg" value="" name="lastName" id="lastName" placeholder="Họ" required="" fdprocessedid="qz4kca">
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <fieldset class="form-group">
+                                                                <input type="text" class="form-control form-control-lg" value="" name="firstName" id="firstName" placeholder="Tên" required="" fdprocessedid="8rjxkg">
+                                                            </fieldset>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <fieldset class="form-group">
+                                                                <input type="email"  class="form-control form-control-lg" value="" name="email" id="email" placeholder="Email" required="" fdprocessedid="rntxvl" data-gtm-form-interact-field-id="0">
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <fieldset class="form-group">
+                                                                <input placeholder="Số điện thoại" type="text" pattern="\d+" class="form-control form-control-comment form-control-lg" name="PhoneNumber" required="" fdprocessedid="m76ags">
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <fieldset class="form-group">
+                                                                <input type="password" class="form-control form-control-lg" value="" name="password" id="password" placeholder="Mật khẩu" required="" fdprocessedid="al5moa" data-gtm-form-interact-field-id="1">
+                                                            </fieldset>
+                                                        </div>
+                                                    </div>
+                                                    <div class="section">
+                                                        <button type="submit" value="Đăng ký" class="btn btn-primary" fdprocessedid="qilpdb">Đăng ký</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

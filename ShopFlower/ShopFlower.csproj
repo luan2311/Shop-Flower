@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contents\CSS\404page.css" />
+    <Content Include="Contents\CSS\account_style.css" />
     <Content Include="Contents\CSS\blog_style.css" />
     <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\collection_style.css" />
@@ -217,6 +218,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Chinh_Sach_Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -285,6 +287,8 @@
     <Content Include="Views\Home\Lien_he.cshtml" />
     <Content Include="Views\Home\Tin_tuc.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Account\Dang_nhap.cshtml" />
+    <Content Include="Views\Account\Dang_ky.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

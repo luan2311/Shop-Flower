@@ -92,4 +92,41 @@
             }
         });
     });
+
+    // Handle password recovery toggle
+    const quenmkButtons = document.querySelectorAll('.quenmk');
+    quenmkButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const loginElement = document.getElementById('login');
+            const recoverElement = document.querySelector('.h_recover');
+
+            // Toggle class 'hidden' cho #login
+            if (loginElement) {
+                loginElement.classList.toggle('hidden');
+            }
+
+            // Slide toggle cho .h_recover
+            if (recoverElement) {
+                if (recoverElement.style.display === 'none' || recoverElement.style.display === '') {
+                    // Hiện phần tử với animation
+                    recoverElement.style.display = 'block';
+                    recoverElement.style.maxHeight = '0';
+                    recoverElement.style.overflow = 'hidden';
+                    recoverElement.style.transition = 'max-height 0.3s ease-in-out';
+
+                    // Trigger reflow
+                    recoverElement.offsetHeight;
+
+                    recoverElement.style.maxHeight = recoverElement.scrollHeight + 'px';
+                } else {
+                    // Ẩn phần tử với animation
+                    recoverElement.style.maxHeight = '0';
+
+                    setTimeout(function () {
+                        recoverElement.style.display = 'none';
+                    }, 300);
+                }
+            }
+        });
+    });
 });
