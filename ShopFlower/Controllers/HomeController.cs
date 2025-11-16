@@ -94,7 +94,28 @@ namespace ShopFlower.Controllers
 
         public ActionResult Tin_tuc()
         {
-            return View();
+            var danhSachTinTuc = db.TINTUCs.ToList();
+            return View(danhSachTinTuc);
+        }
+
+        public ActionResult Details(string id)
+        {
+            if (id == null)
+                return RedirectToAction("page_not_found", "Home");
+
+            // Lấy tin tức theo id
+            var tinTuc = db.TINTUCs.FirstOrDefault(t => t.MATT == id);
+
+
+            if (tinTuc == null)
+                return RedirectToAction("page_not_found", "Home");
+
+            // Lấy sản phẩm liên quan (ví dụ: cùng loại, trừ sản phẩm hiện tại)
+            var tintucLienQuan = db.TINTUCs.Where(sp =>sp.MATT != tinTuc.MATT).Take(3).ToList();
+
+            ViewBag.tinTucLienQuan = tintucLienQuan;
+            ViewBag.tinTucNoiBat = db.TINTUCs.OrderByDescending(t => t.NGAYTHEM).Take(5).ToList();
+            return View(tinTuc);
         }
     }
 }

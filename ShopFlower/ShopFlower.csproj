@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contents\CSS\404page.css" />
+    <Content Include="Contents\CSS\blog_style.css" />
     <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\collection_style.css" />
     <Content Include="Contents\CSS\contact_style.css" />
@@ -155,6 +156,7 @@
     <Content Include="Images\baa89f99-77ee-4e14-93f3-b44c8ce4e239.jpg" />
     <Content Include="Images\bbd87433-2175-413f-bc06-9f9f0d69a1f4-0769bbe2-5681-4978-af04-54803a4cb567.jpg" />
     <Content Include="Images\bn_404.jpg" />
+    <Content Include="Images\cach-bao-quan-hoa-goc-hoa-xinh.jpg" />
     <Content Include="Images\cate_1.png" />
     <Content Include="Images\cate_2.png" />
     <Content Include="Images\cate_3.png" />
@@ -196,6 +198,8 @@
     <Content Include="Images\shop-hoa-tuoi-quan-7-57fc4e53-3f86-47cb-bb5c-ecfb9d8c80d6.jpg" />
     <Content Include="Images\shop-hoa-tuoi-quan-7-hcm.jpg" />
     <Content Include="Images\z5674686162213-eb1ab140741362a141e2c291f9c7fbe0-1722653232530-adc6ea3d-94cb-4223-b008-6f1392d5936e.jpg" />
+    <Content Include="Images\z5968847074391-636bbcd57cd0cb2bdd1b62cb7039fec1.jpg" />
+    <Content Include="Images\z5969155691986-ffc7f601f2164a817f993e795c4d78b3.jpg" />
     <Content Include="Images\z6627827948270-77c577f191bca0887273fd45355e5fd5-1747906523997.jpg" />
     <Content Include="Models\QL_ShopFlower.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -247,6 +251,9 @@
     <Compile Include="Models\sp_LayDanhSachLienHe_Result.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TINTUC.cs">
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +283,8 @@
     <Content Include="Views\Chinh_Sach_\Bao_hanh.cshtml" />
     <Content Include="Views\Chinh_Sach_\Dieu_khoan_su_dung.cshtml" />
     <Content Include="Views\Home\Lien_he.cshtml" />
+    <Content Include="Views\Home\Tin_tuc.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

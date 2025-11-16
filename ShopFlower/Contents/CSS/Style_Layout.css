@@ -873,7 +873,7 @@ em {
 img.lazyload:not(.loaded) {
     width: 100% !important;
     height: 100% !important;
-    opacity: 0.2
+    /*opacity: 0.2*/
 }
 
 .page-title .title-head {
