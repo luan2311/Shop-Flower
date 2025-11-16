@@ -70,4 +70,26 @@
             }
         });
     });
+
+    // Handle active state for navigation items
+    const navLinks = document.querySelectorAll('.header-menu .nav-link');
+
+    navLinks.forEach(function (navLink) {
+        navLink.addEventListener('click', function () {
+            // Tìm phần tử nav-item cha của nav-link được click
+            const parentNavItem = this.closest('.nav-item');
+
+            // Xóa class 'active' khỏi tất cả các nav-item
+            document.querySelectorAll('.header-menu .nav-item').forEach(function (item) {
+                item.classList.remove('active');
+                console.log("Hello")
+            });
+
+            // Thêm class 'active' vào nav-item cha của nav-link được click
+            if (parentNavItem) {
+                parentNavItem.classList.add('active');
+                console.log('Active nav-item:', parentNavItem);
+            }
+        });
+    });
 });

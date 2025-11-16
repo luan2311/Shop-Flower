@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity.Core.Objects;
 
 namespace ShopFlower.Controllers
 {
@@ -13,6 +14,7 @@ namespace ShopFlower.Controllers
     {
         // GET: Home
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
+        
         public ActionResult Trang_chu()
         {
             var lstAllSP = db.SANPHAMs.ToList();
@@ -49,12 +51,46 @@ namespace ShopFlower.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewBag.SuccessMessage = "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.";
-                return View();
-             }
+                try
+                {
+                    // Tạo ObjectParameter cho output parameter
+                    var maLHParam = new ObjectParameter("MaLH", typeof(string));
+                    
+                    // Gọi Stored Procedure
+                    int result = db.sp_ThemLienHe(
+                        model.HOTEN,
+                        model.EMAIL,
+                        model.DIENTHOAI,
+                        model.NOIDUNG,
+                        maLHParam
+                    );
 
-             return View(model);
-           }
+                    // Lấy giá trị MaLH được tạo
+                    string maLH = maLHParam.Value?.ToString();
+
+                    if (result >= 0 || !string.IsNullOrEmpty(maLH))
+                    {
+                        ViewBag.SuccessMessage = "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.";
+                        
+                        // Clear form sau khi gửi thành công
+                        ModelState.Clear();
+                        return View(new LIENHE());
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Đã xảy ra lỗi khi gửi thông tin. Vui lòng thử lại!";
+                        return View(model);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = "Đã xảy ra lỗi: " + ex.Message;
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
 
         public ActionResult Tin_tuc()
         {

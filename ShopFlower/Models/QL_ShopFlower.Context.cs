@@ -39,5 +39,39 @@ namespace ShopFlower.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SearchProducts_Result>("SearchProducts", keywordParameter);
         }
+    
+        public virtual ObjectResult<sp_LayDanhSachLienHe_Result> sp_LayDanhSachLienHe(Nullable<int> pageNumber, Nullable<int> pageSize)
+        {
+            var pageNumberParameter = pageNumber.HasValue ?
+                new ObjectParameter("PageNumber", pageNumber) :
+                new ObjectParameter("PageNumber", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_LayDanhSachLienHe_Result>("sp_LayDanhSachLienHe", pageNumberParameter, pageSizeParameter);
+        }
+    
+        public virtual int sp_ThemLienHe(string hoTen, string email, string dienThoai, string noiDung, ObjectParameter maLH)
+        {
+            var hoTenParameter = hoTen != null ?
+                new ObjectParameter("HoTen", hoTen) :
+                new ObjectParameter("HoTen", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var dienThoaiParameter = dienThoai != null ?
+                new ObjectParameter("DienThoai", dienThoai) :
+                new ObjectParameter("DienThoai", typeof(string));
+    
+            var noiDungParameter = noiDung != null ?
+                new ObjectParameter("NoiDung", noiDung) :
+                new ObjectParameter("NoiDung", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ThemLienHe", hoTenParameter, emailParameter, dienThoaiParameter, noiDungParameter, maLH);
+        }
     }
 }

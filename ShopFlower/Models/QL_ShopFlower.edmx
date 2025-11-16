@@ -51,6 +51,17 @@
         <Function Name="SearchProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_LayDanhSachLienHe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageNumber" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemLienHe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="HoTen" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="DienThoai" Type="nvarchar" Mode="In" />
+          <Parameter Name="NoiDung" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="MaLH" Type="nvarchar" Mode="InOut" />
+        </Function>
         <EntityContainer Name="QL_SHOPFLOWERModelStoreContainer">
           <EntitySet Name="LIENHE" EntityType="Self.LIENHE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAIHANG" EntityType="Self.LOAIHANG" Schema="dbo" store:Type="Tables" />
@@ -110,6 +121,17 @@
           <FunctionImport Name="SearchProducts" ReturnType="Collection(QL_SHOPFLOWERModel.SearchProducts_Result)">
           <Parameter Name="Keyword" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_LayDanhSachLienHe" ReturnType="Collection(QL_SHOPFLOWERModel.sp_LayDanhSachLienHe_Result)">
+            <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemLienHe">
+            <Parameter Name="HoTen" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="DienThoai" Mode="In" Type="String" />
+            <Parameter Name="NoiDung" Mode="In" Type="String" />
+            <Parameter Name="MaLH" Mode="InOut" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="LIENHE">
           <Key>
@@ -131,6 +153,13 @@
           <Property Type="String" Name="ThuongHieu" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="SoLuongTon" Nullable="true" />
           <Property Type="String" Name="MaLoai" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="sp_LayDanhSachLienHe_Result">
+          <Property Type="String" Name="MALH" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="HOTEN" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMAIL" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DIENTHOAI" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="NOIDUNG" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -187,6 +216,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_LayDanhSachLienHe" FunctionName="QL_SHOPFLOWERModel.Store.sp_LayDanhSachLienHe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_LayDanhSachLienHe_Result">
+                <ScalarProperty Name="MALH" ColumnName="MALH" />
+                <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ThemLienHe" FunctionName="QL_SHOPFLOWERModel.Store.sp_ThemLienHe" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

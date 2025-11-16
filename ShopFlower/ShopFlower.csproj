@@ -244,6 +244,9 @@
     <Compile Include="Models\SearchProducts_Result.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_LayDanhSachLienHe_Result.cs">
+      <DependentUpon>QL_ShopFlower.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

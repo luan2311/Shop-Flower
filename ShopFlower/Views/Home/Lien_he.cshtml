@@ -44,7 +44,7 @@
                             <div class="group_contact">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                        @Html.TextBoxFor(m => m.HOTEN, new { @class = "form-control form-control-lg", placeholder = "Họ và tên"})
+                                        @Html.TextBoxFor(m => m.HOTEN, new { @class = "form-control form-control-lg", placeholder = "Họ và tên" })
                                         @Html.ValidationMessageFor(m => m.HOTEN, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -71,6 +71,12 @@
                                     {
                                         <div id="form-success-message" class="mt-4 p-4 alert alert-success rounded">
                                             @ViewBag.SuccessMessage
+                                        </div>
+                                    }
+                                    @if (ViewBag.ErrorMessage != null)
+                                    {
+                                        <div id="form-error-message" class="mt-4 p-4 alert alert-danger rounded">
+                                            @ViewBag.ErrorMessage
                                         </div>
                                     }
                                 </div>
