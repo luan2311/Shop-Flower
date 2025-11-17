@@ -204,7 +204,7 @@
                     <!--Thêm yêu thích-->
                     <div class="gr-wish-compare" bis_skin_checked="1">
                         <div class="product-wish" bis_skin_checked="1">
-                            <a href="javascript:void(0)" class="setWishlist btn-views" data-wish="bo-hoa-hong-do-sang-trong-nong-nan" tabindex="0" title="Thêm vào yêu thích">
+                            <a href="@Url.Action("ThemVaoYeuThich", "WishList", new { @ms = Model.MaSP, @strURL = Request.Url.ToString()})" class="setWishlist btn-views" data-wish="bo-hoa-hong-do-sang-trong-nong-nan" tabindex="0" title="Thêm vào yêu thích">
                                 <img width="25" height="25" src="~/Images/heart.png" alt="Thêm vào yêu thích">
                                 Thêm vào yêu thích
                             </a>

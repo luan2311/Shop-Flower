@@ -69,7 +69,7 @@
                                                         <img class="view_img" width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/eye.svg?1757405855081" alt="Xem nhanh">
                                                     </a>*@
 
-                                                    <a href="javascript:void(0)" class="setWishlist btn-views btn-circle" tabindex="0" title="Thêm vào yêu thích">
+                                                    <a href="@Url.Action("ThemVaoYeuThich", "WishList", new { @ms = item.MaSP, @strURL = Request.Url.ToString()})" class="setWishlist btn-views btn-circle" tabindex="0" title="Thêm vào yêu thích">
                                                         <img width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/heart.png?1757405855081" alt="Thêm vào yêu thích">
                                                     </a>
 

@@ -108,6 +108,7 @@
     <Content Include="Contents\CSS\product_style.css" />
     <Content Include="Contents\CSS\Style_Layout.css" />
     <Content Include="Contents\CSS\trangchu_style.css" />
+    <Content Include="Contents\CSS\wishlist_style.css" />
     <Content Include="Contents\JS\main.js" />
     <Content Include="Global.asax" />
     <Content Include="Images\0545951168fa4ff79b779abbc65e74-jpeg-1722654059820.jpg" />
@@ -223,6 +224,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
+    <Compile Include="Controllers\WishlistController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -260,6 +262,7 @@
     <Compile Include="Models\TINTUC.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Wishlist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +302,9 @@
     <Content Include="Views\Cart\empty_cart.cshtml" />
     <Content Include="Views\Cart\CartPartial.cshtml" />
     <Content Include="Views\Account\Doi_mat_khau.cshtml" />
+    <Content Include="Views\Wishlist\empty_wishlist.cshtml" />
+    <Content Include="Views\Wishlist\Wishlist.cshtml" />
+    <Content Include="Views\Wishlist\WishlistPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
