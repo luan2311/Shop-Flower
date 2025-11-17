@@ -1,4 +1,19 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
+﻿// Loading functionality
+window.addEventListener('load', function () {
+    // Ẩn loading sau khi trang load xong
+    setTimeout(function () {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('hidden');
+            // Xóa element sau khi animation kết thúc
+            setTimeout(function () {
+                loadingOverlay.style.display = 'none';
+            }, 300);
+        }
+    }, 0); // Thời gian hiển thị tối thiểu (500ms)
+});
+
+document.addEventListener('DOMContentLoaded', function () {
     // Handle click on the mobile menu button
     const btnMenuMobile = document.getElementById('btn-menu-mobile');
     if (btnMenuMobile) {
@@ -126,6 +141,42 @@
                         recoverElement.style.display = 'none';
                     }, 300);
                 }
+            }
+        });
+    });
+
+    //Handle loading overlay on internal link clicks
+    const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="~/"]');
+
+    internalLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            // Không hiển thị loading cho link có target="_blank" hoặc download
+            if (this.target === '_blank' || this.hasAttribute('download')) {
+                return;
+            }
+
+            // Không hiển thị loading cho link javascript
+            if (this.getAttribute('href').startsWith('javascript:')) {
+                return;
+            }
+
+            // Hiển thị loading
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'flex';
+                loadingOverlay.classList.remove('hidden');
+            }
+        });
+    });
+
+    // Hiển thị loading khi submit form
+    const forms = document.querySelectorAll('form');
+    forms.forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'flex';
+                loadingOverlay.classList.remove('hidden');
             }
         });
     });

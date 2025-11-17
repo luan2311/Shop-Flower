@@ -103,6 +103,7 @@
     <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\collection_style.css" />
     <Content Include="Contents\CSS\contact_style.css" />
+    <Content Include="Contents\CSS\loading_style.css" />
     <Content Include="Contents\CSS\product_style.css" />
     <Content Include="Contents\CSS\Style_Layout.css" />
     <Content Include="Contents\CSS\trangchu_style.css" />
@@ -289,6 +290,8 @@
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Account\Dang_nhap.cshtml" />
     <Content Include="Views\Account\Dang_ky.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -16,7 +16,7 @@
                                     <form method="post" action="/account/login" id="customer_login" accept-charset="UTF-8">
                                         <input name="FormType" type="hidden" value="customer_login">
                                         <input name="utf8" type="hidden" value="true">
-                                        <span class="form-signup" style="color:red;"></span>
+                                        <span class="form-signup" style="color:red;">@*@Html.ValidationMessageFor()*@</span>
                                         <div class="form-signup clearfix">
                                             <fieldset class="form-group">
                                                 <input type="email" class="form-control form-control-lg" value="" name="email" id="customer_email" placeholder="Email" required="">
@@ -36,7 +36,7 @@
                                         </div>
                                     </form>
                                 </div>
-
+                                
                                 <div class="h_recover" style="display:none;">
                                     <div id="recover-password" class="form-signup page-login">
                                         <form method="post" action="/account/recover" id="recover_customer_password" accept-charset="UTF-8">
