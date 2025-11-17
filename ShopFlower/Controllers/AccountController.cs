@@ -18,5 +18,10 @@ namespace ShopFlower.Controllers
         {
             return View();
         }
+
+        public ActionResult Doi_mat_khau() 
+        { 
+            return View();
+        }
     }
 }

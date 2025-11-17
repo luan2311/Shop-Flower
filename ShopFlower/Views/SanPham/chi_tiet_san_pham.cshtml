@@ -75,7 +75,7 @@
                         </span>
                     </div>
                     <!-- Thêm card, đổi link-->
-                    <form enctype="multipart/form-data" data-cart-form="" id="add-to-cart-form" action="/cart/add" method="post" class="form-inline">
+                    <form enctype="multipart/form-data" data-cart-form="" id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Cart", new { @ms = Model.MaSP, @strURL = Request.Url.ToString()})" method="post" class="form-inline">
                         <div class="price-box clearfix" bis_skin_checked="1">
 
                             <div class="special-price" bis_skin_checked="1">

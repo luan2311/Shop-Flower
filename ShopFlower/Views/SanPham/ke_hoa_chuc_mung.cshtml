@@ -56,7 +56,7 @@
                                 <div class="col-6 col-md-3">
                                     <div class="item_product_main">
 
-                                        <form action="/cart/add" method="post" class="variants product-action item-product-main duration-300" data-cart-form="" data-id="product-actions-57772035" enctype="multipart/form-data">
+                                        <form action="@Url.Action("ThemGioHang", "Cart", new { @ms = item.MaSP, @strURL = Request.Url.ToString()})" method="post" class="variants product-action item-product-main duration-300" data-cart-form="" data-id="product-actions-57772035" enctype="multipart/form-data">
 
                                             <div class="product-thumbnail">
                                                 <a class="image_thumb scale_hover" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">
