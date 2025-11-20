@@ -1,0 +1,103 @@
+﻿@model List<ShopFlower.Models.Cart>
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<section class="main-cart-page main-container col1-layout">
+    <div class="main container cartpcstyle">
+        <div class="wrap_background_aside margin-bottom-40">
+            <div class="header-cart">
+                <div class="title-block-page">
+                    <h1 class="title_cart">
+                        <span>Giỏ hàng của bạn</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <div class="clearfix"></div>
+                    <div class="cart-page d-xl-block d-none">
+                        <div class="drawer__inner">
+                            <div class="CartPageContainer">
+
+                                <form action="~/Cart/Cart" method="post" novalidate="" class="cart ajaxcart cartpage">
+                                    <div class="cart-header-info">
+                                        <div>Thông tin sản phẩm</div><div>Đơn giá</div><div>Số lượng</div><div>Thành tiền</div>
+                                    </div>
+                                    <div class="ajaxcart__inner ajaxcart__inner--has-fixed-footer cart_body items">
+                                        @foreach (var item in Model)
+                                        {
+                                            
+                                            <div class="ajaxcart__row">
+                                                <div class="ajaxcart__product cart_product">
+                                                    <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.ProductId.Trim() })" class="ajaxcart__product-image cart_image" title="@item.ProductName"><img src="~/Images/@item.ProductImage" alt="@item.ProductName"></a>
+                                                    <div class="grid__item cart_info">
+                                                        <div class="ajaxcart__product-name-wrapper cart_name">
+                                                            <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.ProductId.Trim() })" class="ajaxcart__product-name h4" title="@item.ProductName">@item.ProductName</a>
+                                                            <a title="Xóa" class="cart__btn-remove remove-item-cart ajaxifyCart--remove" href="@Url.Action("XoaGioHang", "Cart", new { MaSP = item.ProductId })"><i class="fa-solid fa-trash" aria-label="Remove Item"></i></a>
+                                                            <a title="Cập nhật" class="cart__btn-remove remove-item-cart icon-update ajaxifyCart--remove" href="@Url.Action("CapNhatGioHang", "Cart", new { MaSP = item.ProductId })"><i class="fa-solid fa-arrow-rotate-right"></i></a>
+
+                                                        </div>
+                                                        <div class="grid">
+                                                            <div class="grid__item one-half text-right cart_prices">
+                                                                <span class="cart-price">@string.Format("{0:N0}", item.Price)₫</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid">
+                                                            <div class="grid__item one-half cart_select">
+                                                                <div class="ajaxcart__qty input-group-btn">
+                                                                    @using (Html.BeginForm("CapNhatGioHang", "Cart", new { MaSP = item.ProductId }))
+                                                                    {
+                                                                        <input type="number" name="txtSoLuong" value="@item.Quantity" min="1" required pattern="\d*" onchange="this.form.submit()">
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid justify-right">
+                                                            <div class="grid__item one-half text-right cart_prices">
+                                                                <span class="cart-price">@string.Format("{0:N0}", item.TotalPrice)₫</span>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                    </div>
+                                    <div class="ajaxcart__footer ajaxcart__footer--fixed cart-footer">
+                                        <div class="row">
+                                            <div class="col-lg-8 col-12">
+                                                <a class="btn-proceed-checkout btn-checkouts" title="Tiếp tục mua hàng" href="~/SanPham/tat_ca_san_pham">Tiếp tục mua hàng</a>
+                                            </div>
+                                            <div class="col-lg-4 col-12">
+                                                <div class="ajaxcart__subtotal">
+                                                    <div class="cart__subtotal">
+                                                        <div class="cart__col-6">Tổng tiền:</div>
+                                                        <div class="text-right cart__totle"><span class="total-price">@string.Format("{0:N0}", (object)ViewBag.TongThanhTien)₫</span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="cart__btn-proceed-checkout-dt" style=" font-size: 1.4rem;">
+                                                    <button onclick="location.href='/checkout'" type="button" class="button btn btn-default cart__btn-proceed-checkout" id="btn-proceed-checkout" title="Thanh toán" fdprocessedid="rve3f">Thanh toán</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="cart-mobile-page d-block d-xl-none">
+                        <div class="CartMobileContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

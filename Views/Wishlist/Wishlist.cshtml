@@ -1,0 +1,63 @@
+﻿@model List<ShopFlower.Models.Wishlist>
+
+@{
+    ViewBag.Title = "Yêu thích";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="container py-5">
+    <h3 class="text-center mb-4">
+        <i class="fas fa-heart text-danger"></i> Sản phẩm yêu thích
+    </h3>
+
+    
+        <div class="text-center mb-3">
+            <p class="text-muted">Bạn có <strong>@ViewBag.TongSoSanPham</strong> sản phẩm yêu thích</p>
+            <a href="@Url.Action("XoaDanhSachYeuThich_All", "Wishlist")"
+               class="btn btn-outline-danger btn-sm" style=" font-size: 1.4rem;"
+               onclick="return confirm('Bạn có chắc muốn xóa tất cả sản phẩm yêu thích?');">
+                <i class="fas fa-trash"></i> Xóa tất cả
+            </a>
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-4 col-6">
+                    <div class="card favorite-card" style="border: none; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s ease-in-out;">
+                        <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.ProductId })">
+                            <img src="~/Images/@item.ProductImage" alt="@item.ProductName"
+                                 style="border-top-left-radius: 15px; border-top-right-radius: 15px; height: 250px; object-fit: cover; width: 100%;">
+                        </a>
+                        <div class="favorite-info" style="padding: 15px; text-align: center;">
+                            <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.ProductId })"
+                               style="text-decoration: none; color: #333;">
+                                <h5 style="font-size: 17px; font-weight: 500; color: #333; min-height: 50px;">
+                                    @item.ProductName
+                                </h5>
+                            </a>
+                            <div class="favorite-price" style="color: #ff7a00; font-weight: 600; font-size: 18px; margin: 10px 0;">
+                                @item.Price.ToString("N0")₫
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-2">
+                                <a href="@Url.Action("ChuyenVaoGioHang", "Wishlist", new { MaSP = item.ProductId })"
+                                   class="btn-action add-cart"
+                                   style="background: #e7f4ec; color: #1b5e20; border-radius: 8px; padding: 8px 12px; margin: 4px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">
+                                    <i class="fas fa-shopping-cart" style="margin-right: 6px;"></i> Thêm giỏ
+                                </a>
+                                <a href="@Url.Action("XoaSanPhamYeuThich", "Wishlist", new { MaSP = item.ProductId })"
+                                   class="btn-action remove-fav"
+                                   onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');"
+                                   style="background: #fbeaea; color: #c62828; border-radius: 8px; padding: 8px 12px; margin: 4px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 14px;">
+                                    <i class="fas fa-trash" style="margin-right: 6px;"></i> Xóa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    
+    
+</div>

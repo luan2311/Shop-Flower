@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Đăng nhập tài khoản";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+    var returnUrl = Request.QueryString["ReturnUrl"] ?? "";
+}
+
+<div class="bg-gray">
+    <section class="section">
+        <div class="container">
+            <div class="page_login">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xl-4 offset-0 offset-xl-4 offset-lg-4 offset-md-3 offset-xl-3 col-12 account-animate">
+                        <div class="page-login pagecustome clearfix">
+                            <div class="wpx">
+                                <h1 class="title_heads a-center"><span>Đăng nhập</span></h1>
+                                <div id="login" class="section">
+
+                                    @using (Html.BeginForm("Dang_nhap", "Account", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <span class="form-signup text-danger">
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        </span>
+
+                                        <div class="form-signup clearfix">
+                                            <fieldset class="form-group">
+                                                <input type="text"
+                                                       class="form-control form-control-lg"
+                                                       value=""
+                                                       name="TenDangNhap"
+                                                       placeholder="Tên đăng nhập"
+                                                       required />
+                                            </fieldset>
+
+                                            <fieldset class="form-group">
+                                                <input type="password"
+                                                       class="form-control form-control-lg"
+                                                       name="MatKhau"
+                                                       placeholder="Mật khẩu"
+                                                       required />
+                                            </fieldset>
+
+                                            <div class="pull-xs-left">
+                                                <input class="btn btn-primary btn-style" type="submit" value="ĐĂNG NHẬP" />
+                                            </div>
+
+                                            <div class="btn_boz_khac">
+                                                <div class="btn_khac">
+                                                    <span class="quenmk">Quên mật khẩu?</span>
+                                                    <a href="~/Account/Dang_ky" class="btn-link-style btn-register" title="Đăng ký tại đây">Đăng ký tại đây</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <div class="h_recover" style="display:none;">
+                                    <div id="recover-password" class="form-signup page-login">
+                                        <form method="post" action="/account/recover" id="recover_customer_password" accept-charset="UTF-8">
+                                            <input name="FormType" type="hidden" value="recover_customer_password">
+                                            <input name="utf8" type="hidden" value="true">
+                                            <div class="form-signup" style="color: red;"></div>
+                                            <div class="form-signup clearfix">
+                                                <fieldset class="form-group">
+                                                    <input type="email" class="form-control form-control-lg" value="" name="Email" id="recover-email" placeholder="Email" required="">
+                                                </fieldset>
+                                            </div>
+                                            <div class="action_bottom">
+                                                <input class="btn btn-primary" style="margin-top: 0px;" type="submit" value="Lấy lại mật khẩu">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

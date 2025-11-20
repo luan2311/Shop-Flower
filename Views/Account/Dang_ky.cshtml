@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="bg-gray">
+    <section class="section">
+        <div class="container">
+            <div class="page_register">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xl-4 offset-0 offset-xl-4 offset-lg-4 offset-md-3 col-12 account-animate">
+                        <div class="page-register pagecustome clearfix">
+                            <div class="wpx">
+                                <h1 class="title_heads a-center"><span>Đăng ký</span></h1>
+
+                                @using (Html.BeginForm("Dang_ky", "Account", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <span class="form-signup text-danger">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </span>
+
+                                    <div class="form-signup clearfix">
+                                        <fieldset class="form-group">
+                                            <input type="text" name="TenDangNhap" class="form-control form-control-lg" placeholder="Tên đăng nhập" required />
+                                        </fieldset>
+
+                                        <fieldset class="form-group">
+                                            <input type="email" name="Email" class="form-control form-control-lg" placeholder="Email" required />
+                                        </fieldset>
+
+                                        <fieldset class="form-group">
+                                            <input type="text" name="TenHienThi" class="form-control form-control-lg" placeholder="Tên hiển thị (không bắt buộc)" />
+                                        </fieldset>
+
+                                        <fieldset class="form-group">
+                                            <input type="password" name="MatKhau" class="form-control form-control-lg" placeholder="Mật khẩu" required />
+                                        </fieldset>
+
+                                        <fieldset class="form-group">
+                                            <input type="password" name="XacNhanMatKhau" class="form-control form-control-lg" placeholder="Xác nhận mật khẩu" required />
+                                        </fieldset>
+
+                                        <div class="pull-xs-left">
+                                            <input class="btn btn-primary btn-style" type="submit" value="ĐĂNG KÝ" />
+                                        </div>
+
+                                        <div class="btn_boz_khac" style="margin-top:10px;">
+                                            <div class="btn_khac">
+                                                <span>Đã có tài khoản?</span>
+                                                <a href="@Url.Action("Dang_nhap", "Account")" class="btn-link-style btn-register" title="Đăng nhập">Đăng nhập</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

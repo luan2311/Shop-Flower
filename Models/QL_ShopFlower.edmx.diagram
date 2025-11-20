@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6b816187d96e4d6898fa54adbbb54ba3" Name="Diagram1" ZoomLevel="54">
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.LOAIHANG" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.SANPHAM" Width="1.5" PointX="3.5" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK_SANPHAM" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.LIENHE" Width="1.5" PointX="5.625" PointY="2.5" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TINTUC" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TAIKHOAN" Width="1.5" PointX="8.375" PointY="1" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TAIKHOAN_VAITRO" Width="1.5" PointX="10.625" PointY="1.375" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.VAITRO" Width="1.5" PointX="8.375" PointY="5.5" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__TAIKHOAN_V__MaTK__5CD6CB2B" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__TAIKHOAN___MaVai__5DCAEF64" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
