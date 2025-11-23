@@ -30,10 +30,12 @@ namespace ShopFlower.Models
         public virtual DbSet<LOAIHANG> LOAIHANGs { get; set; }
         public virtual DbSet<SANPHAM> SANPHAMs { get; set; }
         public virtual DbSet<LIENHE> LIENHEs { get; set; }
-        public virtual DbSet<TINTUC> TINTUCs { get; set; }
         public virtual DbSet<TAIKHOAN> TAIKHOANs { get; set; }
         public virtual DbSet<TAIKHOAN_VAITRO> TAIKHOAN_VAITRO { get; set; }
         public virtual DbSet<VAITRO> VAITROes { get; set; }
+        public virtual DbSet<CTHD> CTHDs { get; set; }
+        public virtual DbSet<HOADON> HOADONs { get; set; }
+        public virtual DbSet<TINTUC> TINTUCs { get; set; }
     
         public virtual ObjectResult<SearchProducts_Result> SearchProducts(string keyword)
         {

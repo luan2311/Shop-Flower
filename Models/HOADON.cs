@@ -12,27 +12,28 @@ namespace ShopFlower.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TAIKHOAN
+    public partial class HOADON
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TAIKHOAN()
+        public HOADON()
         {
-            this.TAIKHOAN_VAITRO = new HashSet<TAIKHOAN_VAITRO>();
-            this.HOADONs = new HashSet<HOADON>();
+            this.CTHDs = new HashSet<CTHD>();
         }
     
+        public int MaHD { get; set; }
         public int MaTK { get; set; }
-        public string TenDangNhap { get; set; }
-        public byte[] MatKhauHash { get; set; }
-        public byte[] Salt { get; set; }
-        public string TenHienThi { get; set; }
+        public System.DateTime NgayDat { get; set; }
+        public decimal TongTien { get; set; }
+        public string TenNguoiNhan { get; set; }
+        public string DiaChiNhan { get; set; }
+        public string SDTNhan { get; set; }
         public string Email { get; set; }
-        public bool IsActive { get; set; }
-        public System.DateTime NgayTao { get; set; }
+        public string GhiChu { get; set; }
+        public string TrangThai { get; set; }
+        public string PhuongThucThanhToan { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TAIKHOAN_VAITRO> TAIKHOAN_VAITRO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HOADON> HOADONs { get; set; }
+        public virtual ICollection<CTHD> CTHDs { get; set; }
+        public virtual TAIKHOAN TAIKHOAN { get; set; }
     }
 }

@@ -5,6 +5,32 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="QL_SHOPFLOWERModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CTHD">
+          <Key>
+            <PropertyRef Name="MaCTHD" />
+          </Key>
+          <Property Name="MaCTHD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaHD" Type="int" Nullable="false" />
+          <Property Name="MaSP" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="SoLuong" Type="int" Nullable="false" />
+          <Property Name="DonGia" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HOADON">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTK" Type="int" Nullable="false" />
+          <Property Name="NgayDat" Type="datetime" Nullable="false" />
+          <Property Name="TongTien" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TenNguoiNhan" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DiaChiNhan" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SDTNhan" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="GhiChu" Type="nvarchar" MaxLength="500" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhuongThucThanhToan" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="LIENHE">
           <Key>
             <PropertyRef Name="MALH" />
@@ -75,6 +101,42 @@
           <Property Name="TenVaiTro" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MoTa" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <Association Name="FK__CTHD__MaHD__778AC167">
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+          <End Role="CTHD" Type="Self.CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOADON">
+              <PropertyRef Name="MaHD" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CTHD__MaSP__787EE5A0">
+          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+          <End Role="CTHD" Type="Self.CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANPHAM">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HOADON__MaTK__6FE99F9F">
+          <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="1" />
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAIKHOAN">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="HOADON">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__TAIKHOAN___MaVai__5DCAEF64">
           <End Role="VAITRO" Type="Self.VAITRO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -134,6 +196,8 @@
           <Parameter Name="MatKhau" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="QL_SHOPFLOWERModelStoreContainer">
+          <EntitySet Name="CTHD" EntityType="Self.CTHD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LIENHE" EntityType="Self.LIENHE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAIHANG" EntityType="Self.LOAIHANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SANPHAM" EntityType="Self.SANPHAM" Schema="dbo" store:Type="Tables" />
@@ -141,6 +205,18 @@
           <EntitySet Name="TAIKHOAN_VAITRO" EntityType="Self.TAIKHOAN_VAITRO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TINTUC" EntityType="Self.TINTUC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VAITRO" EntityType="Self.VAITRO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CTHD__MaHD__778AC167" Association="Self.FK__CTHD__MaHD__778AC167">
+            <End Role="HOADON" EntitySet="HOADON" />
+            <End Role="CTHD" EntitySet="CTHD" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CTHD__MaSP__787EE5A0" Association="Self.FK__CTHD__MaSP__787EE5A0">
+            <End Role="SANPHAM" EntitySet="SANPHAM" />
+            <End Role="CTHD" EntitySet="CTHD" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HOADON__MaTK__6FE99F9F" Association="Self.FK__HOADON__MaTK__6FE99F9F">
+            <End Role="TAIKHOAN" EntitySet="TAIKHOAN" />
+            <End Role="HOADON" EntitySet="HOADON" />
+          </AssociationSet>
           <AssociationSet Name="FK__TAIKHOAN___MaVai__5DCAEF64" Association="Self.FK__TAIKHOAN___MaVai__5DCAEF64">
             <End Role="VAITRO" EntitySet="VAITRO" />
             <End Role="TAIKHOAN_VAITRO" EntitySet="TAIKHOAN_VAITRO" />
@@ -180,6 +256,7 @@
           <Property Name="SoLuongTon" Type="Int32" />
           <Property Name="MaLoai" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="LOAIHANG" Relationship="Self.FK_SANPHAM" FromRole="SANPHAM" ToRole="LOAIHANG" />
+          <NavigationProperty Name="CTHDs" Relationship="QL_SHOPFLOWERModel.FK__CTHD__MaSP__787EE5A0" FromRole="SANPHAM" ToRole="CTHD" />
         </EntityType>
         <Association Name="FK_SANPHAM">
           <End Role="LOAIHANG" Type="Self.LOAIHANG" Multiplicity="0..1" />
@@ -215,7 +292,6 @@
             <Parameter Name="NoiDung" Mode="In" Type="String" />
             <Parameter Name="MaLH" Mode="InOut" Type="String" />
           </FunctionImport>
-          <EntitySet Name="TINTUCs" EntityType="QL_SHOPFLOWERModel.TINTUC" />
           <FunctionImport Name="sp_GetRolesByUser" ReturnType="Collection(String)">
           <Parameter Name="UserName" Mode="In" Type="String" />
           </FunctionImport>
@@ -235,12 +311,27 @@
             <End Role="TAIKHOAN_VAITRO" EntitySet="TAIKHOAN_VAITRO" />
           </AssociationSet>
           <FunctionImport Name="sp_LayVaiTroTheoNguoiDung" ReturnType="Collection(String)">
-            <Parameter Name="TenDangNhap" Mode="In" Type="String" />
+          <Parameter Name="TenDangNhap" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_XacThucTaiKhoan" ReturnType="Collection(Int32)">
             <Parameter Name="TenDangNhap" Mode="In" Type="String" />
             <Parameter Name="MatKhau" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="CTHDs" EntityType="QL_SHOPFLOWERModel.CTHD" />
+          <EntitySet Name="HOADONs" EntityType="QL_SHOPFLOWERModel.HOADON" />
+          <AssociationSet Name="FK__CTHD__MaHD__778AC167" Association="QL_SHOPFLOWERModel.FK__CTHD__MaHD__778AC167">
+            <End Role="HOADON" EntitySet="HOADONs" />
+            <End Role="CTHD" EntitySet="CTHDs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CTHD__MaSP__787EE5A0" Association="QL_SHOPFLOWERModel.FK__CTHD__MaSP__787EE5A0">
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+            <End Role="CTHD" EntitySet="CTHDs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HOADON__MaTK__6FE99F9F" Association="QL_SHOPFLOWERModel.FK__HOADON__MaTK__6FE99F9F">
+            <End Role="TAIKHOAN" EntitySet="TAIKHOANs" />
+            <End Role="HOADON" EntitySet="HOADONs" />
+          </AssociationSet>
+          <EntitySet Name="TINTUCs" EntityType="QL_SHOPFLOWERModel.TINTUC" />
         </EntityContainer>
         <EntityType Name="LIENHE">
           <Key>
@@ -270,16 +361,6 @@
           <Property Type="String" Name="DIENTHOAI" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="NOIDUNG" Nullable="true" />
         </ComplexType>
-        <EntityType Name="TINTUC">
-          <Key>
-            <PropertyRef Name="MATT" />
-          </Key>
-          <Property Name="MATT" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="ANHBIA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TIEUDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NGAYTHEM" Type="DateTime" Precision="0" />
-          <Property Name="MOTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="TAIKHOAN">
           <Key>
             <PropertyRef Name="MaTK" />
@@ -293,6 +374,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="NgayTao" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="TAIKHOAN_VAITRO" Relationship="QL_SHOPFLOWERModel.FK__TAIKHOAN_V__MaTK__5CD6CB2B" FromRole="TAIKHOAN" ToRole="TAIKHOAN_VAITRO" />
+          <NavigationProperty Name="HOADONs" Relationship="QL_SHOPFLOWERModel.FK__HOADON__MaTK__6FE99F9F" FromRole="TAIKHOAN" ToRole="HOADON" />
         </EntityType>
         <EntityType Name="TAIKHOAN_VAITRO">
           <Key>
@@ -341,6 +423,82 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CTHD">
+          <Key>
+            <PropertyRef Name="MaCTHD" />
+          </Key>
+          <Property Name="MaCTHD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaHD" Type="Int32" Nullable="false" />
+          <Property Name="MaSP" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+          <Property Name="DonGia" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="HOADON" Relationship="QL_SHOPFLOWERModel.FK__CTHD__MaHD__778AC167" FromRole="CTHD" ToRole="HOADON" />
+          <NavigationProperty Name="SANPHAM" Relationship="QL_SHOPFLOWERModel.FK__CTHD__MaSP__787EE5A0" FromRole="CTHD" ToRole="SANPHAM" />
+        </EntityType>
+        <EntityType Name="HOADON">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTK" Type="Int32" Nullable="false" />
+          <Property Name="NgayDat" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TongTien" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TenNguoiNhan" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChiNhan" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SDTNhan" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="GhiChu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhuongThucThanhToan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CTHDs" Relationship="QL_SHOPFLOWERModel.FK__CTHD__MaHD__778AC167" FromRole="HOADON" ToRole="CTHD" />
+          <NavigationProperty Name="TAIKHOAN" Relationship="QL_SHOPFLOWERModel.FK__HOADON__MaTK__6FE99F9F" FromRole="HOADON" ToRole="TAIKHOAN" />
+        </EntityType>
+        <Association Name="FK__CTHD__MaHD__778AC167">
+          <End Type="QL_SHOPFLOWERModel.HOADON" Role="HOADON" Multiplicity="1" />
+          <End Type="QL_SHOPFLOWERModel.CTHD" Role="CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOADON">
+              <PropertyRef Name="MaHD" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CTHD__MaSP__787EE5A0">
+          <End Type="QL_SHOPFLOWERModel.SANPHAM" Role="SANPHAM" Multiplicity="1" />
+          <End Type="QL_SHOPFLOWERModel.CTHD" Role="CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANPHAM">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HOADON__MaTK__6FE99F9F">
+          <End Type="QL_SHOPFLOWERModel.TAIKHOAN" Role="TAIKHOAN" Multiplicity="1" />
+          <End Type="QL_SHOPFLOWERModel.HOADON" Role="HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAIKHOAN">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="HOADON">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TINTUC">
+          <Key>
+            <PropertyRef Name="MATT" />
+          </Key>
+          <Property Name="MATT" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="ANHBIA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TIEUDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYTHEM" Type="DateTime" Precision="0" />
+          <Property Name="MOTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -392,17 +550,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="TINTUCs">
-            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.TINTUC">
-              <MappingFragment StoreEntitySet="TINTUC">
-                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
-                <ScalarProperty Name="NGAYTHEM" ColumnName="NGAYTHEM" />
-                <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
-                <ScalarProperty Name="ANHBIA" ColumnName="ANHBIA" />
-                <ScalarProperty Name="MATT" ColumnName="MATT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_GetRolesByUser" FunctionName="QL_SHOPFLOWERModel.Store.sp_GetRolesByUser" />
           <FunctionImportMapping FunctionImportName="sp_ValidateUser" FunctionName="QL_SHOPFLOWERModel.Store.sp_ValidateUser" />
           <EntitySetMapping Name="TAIKHOANs">
@@ -439,6 +586,45 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_LayVaiTroTheoNguoiDung" FunctionName="QL_SHOPFLOWERModel.Store.sp_LayVaiTroTheoNguoiDung" />
           <FunctionImportMapping FunctionImportName="sp_XacThucTaiKhoan" FunctionName="QL_SHOPFLOWERModel.Store.sp_XacThucTaiKhoan" />
+          <EntitySetMapping Name="CTHDs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.CTHD">
+              <MappingFragment StoreEntitySet="CTHD">
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaCTHD" ColumnName="MaCTHD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HOADONs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.HOADON">
+              <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="PhuongThucThanhToan" ColumnName="PhuongThucThanhToan" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SDTNhan" ColumnName="SDTNhan" />
+                <ScalarProperty Name="DiaChiNhan" ColumnName="DiaChiNhan" />
+                <ScalarProperty Name="TenNguoiNhan" ColumnName="TenNguoiNhan" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TINTUCs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.TINTUC">
+              <MappingFragment StoreEntitySet="TINTUC">
+                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+                <ScalarProperty Name="NGAYTHEM" ColumnName="NGAYTHEM" />
+                <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+                <ScalarProperty Name="ANHBIA" ColumnName="ANHBIA" />
+                <ScalarProperty Name="MATT" ColumnName="MATT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

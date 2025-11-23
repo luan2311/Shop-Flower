@@ -1,0 +1,131 @@
+﻿@model ShopFlower.Models.ThanhToanViewModel
+@{
+    ViewBag.Title = "ThanhToan";
+    //Layout = "~/Views/Shared/_LayoutChung.cshtml";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thanh toán - Blossom Corner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link href="~/Contents/CSS/checkout_style.css" rel="stylesheet" />
+</head>
+<body>
+    @using (Html.BeginForm("PlaceOrder", "Checkout", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="checkout-container">
+            <div class="main-content">
+                <div class="logo-container">
+                    <a href="@Url.Action("Trang_chu", "Home")">
+                        <img src="@Url.Content("~/Images/checkout_logo.jpg")" alt="Blossom Corner" class="logo" />
+                    </a>
+                </div>
+                <div class="form-section">
+                    <div class="d-flex justify-content-between">
+                        <h3>Thông tin nhận hàng</h3>
+                        <a href="@Url.Action("Dang_xuat", "Account")">
+                            <i class="fa fa-sign-out"></i>
+                            Đăng xuất
+                        </a>
+                    </div>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.HoTenNguoiNhan, new { @class = "form-control", placeholder = "Họ và tên" })
+                        @Html.ValidationMessageFor(m => m.HoTenNguoiNhan, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.SoDienThoai, new { @class = "form-control", placeholder = "Số điện thoại" })
+                        @Html.ValidationMessageFor(m => m.SoDienThoai, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.DiaChiGiaoHang, new { @class = "form-control", placeholder = "Địa chỉ" })
+                        @Html.ValidationMessageFor(m => m.DiaChiGiaoHang, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            @Html.TextBoxFor(m => m.TinhThanh, new { @class = "form-control", placeholder = "Tỉnh thành" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.TextBoxFor(m => m.QuanHuyen, new { @class = "form-control", placeholder = "Quận huyện" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.TextBoxFor(m => m.PhuongXa, new { @class = "form-control", placeholder = "Phường xã" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.TextAreaFor(m => m.GhiChu, new { @class = "form-control", placeholder = "Ghi chú (tùy chọn)", rows = 3 })
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Thanh toán</h3>
+                    <div class="payment-method">
+                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan, "VNPAY", new { id = "vnpay" })
+                        <label for="vnpay">Thanh toán qua MoMo-QR</label>
+                        <img src="@Url.Content("~/Images/MoMo.png")" class="payment-logo" />
+                    </div>
+                    <div class="payment-method">
+                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan, "COD", new { id = "cod" })
+                        <label for="cod">Thanh toán khi giao hàng (COD)</label>
+                        <i class="fa fa-money-bill-alt payment-logo"></i>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.PhuongThucThanhToan, "", new { @class = "text-danger" })
+                </div>
+                <a href="@Url.Action("Cart", "Cart")" class="back-link">&lt; Quay về giỏ hàng</a>
+            </div>
+            <div class="sidebar-content">
+                <h4>Đơn hàng (@Model.CartItems.Sum(i => i.Quantity) sản phẩm)</h4>
+                <hr />
+                <div class="order-summary">
+                    @if (Model.CartItems != null)
+                    {
+                        foreach (var item in Model.CartItems)
+                        {
+                            <div class="order-item mt-3">
+                                <div class="item-image">
+                                    <img src="@Url.Content("~/Images/" + item.ProductImage)" alt="@item.ProductName" />
+                                    <span class="item-quantity">@item.Quantity</span>
+                                </div>
+                                <div class="item-name">@item.ProductName</div>
+                                <div class="item-price">@((item.Price * item.Quantity).ToString("N0"))đ</div>
+                            </div>
+                        }
+                    }
+                </div>
+                <hr />
+                <div class="total-section">
+                    <div class="total-row">
+                        <span>Tạm tính</span>
+                        <span>@Model.TongTien.ToString("N0")đ</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Phí vận chuyển</span>
+                        <span>Free</span>
+                    </div>
+                </div>
+                <hr />
+                <div class="total-row grand-total">
+                    <span>Tổng cộng</span>
+                    <span class="total-price">@Model.TongTien.ToString("N0")đ</span>
+                </div>
+
+                <div class="form-actions">
+                    <a></a>
+                    <button type="submit" class="btn btn-primary btn-place-order">ĐẶT HÀNG</button>
+                </div>
+            </div>
+        </div>
+    }
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>

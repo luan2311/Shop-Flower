@@ -62,6 +62,7 @@ END
             db.Database.ExecuteSqlCommand(sql);
         }
 
+
         // GET: Dang_nhap
         public ActionResult Dang_nhap()
         {
@@ -252,6 +253,7 @@ END
                 return View();
             }
 
+            // Check uniqueness
             if (db.TAIKHOANs.Any(u => u.TenDangNhap == TenDangNhap))
             {
                 ModelState.AddModelError("", "Tên đăng nhập đã tồn tại.");
@@ -263,7 +265,7 @@ END
                 return View();
             }
 
-            // --- Create salt (16 bytes) and compute SHA256(password + salt) to match your seed SQL ---
+            // Create salt (16 bytes) and compute SHA256(password + salt) to match seeded users
             var salt = Guid.NewGuid().ToByteArray(); // 16 bytes
             var pwdBytes = Encoding.UTF8.GetBytes(MatKhau);
             var concat = new byte[pwdBytes.Length + salt.Length];
@@ -290,7 +292,7 @@ END
             db.TAIKHOANs.Add(newUser);
             db.SaveChanges();
 
-            // Assign default role "User" (create role if missing)
+            // Assign default role "User" (create role if missing) and map to TAIKHOAN_VAITRO
             try
             {
                 var userRole = db.VAITROes.SingleOrDefault(r => r.TenVaiTro == "User");
@@ -300,17 +302,12 @@ END
                     db.VAITROes.Add(userRole);
                     db.SaveChanges();
                 }
-                db.TAIKHOAN_VAITRO.Add(new TAIKHOAN_VAITRO { MaTK = newUser.MaTK, MaVaiTro = userRole.MaVaiTro });
-                db.SaveChanges();
-            }
-            catch
-            {
-                // ignore role assign failure
-            }
 
-            // Optional: allow creating an Admin when a correct secret is provided (for deploy/test only)
-            try
-            {
+                var mapping = new TAIKHOAN_VAITRO { MaTK = newUser.MaTK, MaVaiTro = userRole.MaVaiTro };
+                db.TAIKHOAN_VAITRO.Add(mapping);
+                db.SaveChanges();
+
+                // Optional: create Admin role if AdminCode matches configured secret
                 var secret = System.Configuration.ConfigurationManager.AppSettings["AdminRegistrationKey"];
                 if (!string.IsNullOrEmpty(secret) && !string.IsNullOrEmpty(AdminCode) && AdminCode == secret)
                 {
@@ -327,20 +324,20 @@ END
             }
             catch
             {
-                // ignore admin assign failure
+                // ignore role assign failure
             }
 
-            // Auto-login and redirect to home
-            FormsAuthentication.SetAuthCookie(TenDangNhap, false);
-            return RedirectToAction("Trang_chu", "Home");
+            // Do not auto-login. Show success message and redirect to login page.
+            TempData["RegisterSuccess"] = "Đăng ký thành công. Vui lòng đăng nhập.";
+            return RedirectToAction("Dang_nhap", "Account");
         }
-
         // GET: Quen_mat_khau
         public ActionResult Quen_mat_khau()
         {
-            return View();
+            // Thay vì tìm một view không tồn tại, hãy chuyển hướng đến trang đăng nhập
+            // và dùng tham số để tự động hiển thị form quên mật khẩu.
+            return RedirectToAction("Dang_nhap", new { show_recover = true });
         }
-
         // POST: Quen_mat_khau
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -348,133 +345,71 @@ END
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                ModelState.AddModelError("", "Vui lòng nhập email.");
-                return View();
+                TempData["ForgotError"] = "Vui lòng nhập email.";
+                return RedirectToAction("Dang_nhap", new { show_recover = true });
             }
 
             var user = db.TAIKHOANs.SingleOrDefault(u => u.Email == email);
+
             if (user == null)
             {
-                // Do not reveal whether email exists
-                TempData["ForgotResult"] = "Nếu email tồn tại, bạn sẽ nhận được hướng dẫn đặt lại mật khẩu.";
-                return RedirectToAction("Quen_mat_khau");
+                TempData["ForgotError"] = "Email không tồn tại trong hệ thống.";
+                return RedirectToAction("Dang_nhap", new { show_recover = true });
             }
 
-            // Ensure table exists
-            EnsurePasswordResetsTable();
-
-            var token = Guid.NewGuid().ToString("N");
-            var expiry = DateTime.UtcNow.AddHours(1);
-
-            // Insert token row
-            db.Database.ExecuteSqlCommand(
-                "INSERT INTO PasswordResets (MaTK, Token, Expiry) VALUES (@p0, @p1, @p2)",
-                user.MaTK, token, expiry);
-
-            // Build reset url (use absolute url)
-            var resetUrl = Url.Action("Reset_mat_khau", "Account", new { token = token, email = user.Email }, Request.Url.Scheme);
-
-            // Try to send email - if SMTP not configured, fallback to TempData with link for debugging
-            try
-            {
-                // Configure SMTP in web.config; this is a simple send example
-                using (var msg = new MailMessage())
-                {
-                    msg.To.Add(user.Email);
-                    msg.Subject = "Đặt lại mật khẩu";
-                    msg.Body = $"Vui lòng sử dụng liên kết sau để đặt lại mật khẩu (hết hạn sau 1 giờ): {resetUrl}";
-                    msg.IsBodyHtml = false;
-                    using (var smtp = new SmtpClient())
-                    {
-                        smtp.Send(msg);
-                    }
-                }
-                TempData["ForgotResult"] = "Một email chứa hướng dẫn đã được gửi nếu địa chỉ tồn tại.";
-            }
-            catch (Exception)
-            {
-                // Fallback: show link in TempData for development
-                TempData["ForgotResult"] = "Không thể gửi email (chưa cấu hình SMTP). Link đặt lại (dev): " + resetUrl;
-            }
-
-            return RedirectToAction("Quen_mat_khau");
+            // Nếu email hợp lệ, lấy TenDangNhap và chuyển hướng đến trang Reset_mat_khau
+            return RedirectToAction("Reset_mat_khau", new { tenDangNhap = user.TenDangNhap });
         }
 
         // GET: Reset_mat_khau
-        public ActionResult Reset_mat_khau(string token, string email)
+        public ActionResult Reset_mat_khau(string tenDangNhap)
         {
-            if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(tenDangNhap))
             {
                 return RedirectToAction("Dang_nhap");
             }
 
-            EnsurePasswordResetsTable();
-
-            // Validate token
-            var sql = "SELECT TOP 1 Id, MaTK, Token, Expiry FROM PasswordResets WHERE Token = @p0";
-            var row = db.Database.SqlQuery<PasswordResetRow>(sql, token).FirstOrDefault();
-            if (row == null || row.Expiry < DateTime.UtcNow)
+            var user = db.TAIKHOANs.SingleOrDefault(u => u.TenDangNhap == tenDangNhap);
+            if (user == null)
             {
-                TempData["ResetError"] = "Liên kết đã hết hạn hoặc không hợp lệ.";
-                return RedirectToAction("Quen_mat_khau");
+                TempData["ForgotError"] = "Tài khoản không hợp lệ.";
+                return RedirectToAction("Dang_nhap", new { show_recover = true });
             }
 
-            var user = db.TAIKHOANs.Find(row.MaTK);
-            if (user == null || !string.Equals(user.Email, email, StringComparison.OrdinalIgnoreCase))
-            {
-                TempData["ResetError"] = "Liên kết không hợp lệ.";
-                return RedirectToAction("Quen_mat_khau");
-            }
-
-            ViewBag.Token = token;
-            ViewBag.Email = email;
+            ViewBag.TenDangNhap = tenDangNhap;
             return View();
         }
 
         // POST: Reset_mat_khau
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Reset_mat_khau(string token, string email, string MatKhau, string XacNhanMatKhau)
+        public ActionResult Reset_mat_khau(string tenDangNhap, string MatKhau, string XacNhanMatKhau)
         {
-            if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(tenDangNhap))
             {
                 return RedirectToAction("Dang_nhap");
             }
             if (MatKhau != XacNhanMatKhau)
             {
                 ModelState.AddModelError("", "Mật khẩu và xác nhận mật khẩu không khớp.");
-                ViewBag.Token = token;
-                ViewBag.Email = email;
+                ViewBag.TenDangNhap = tenDangNhap;
                 return View();
             }
 
-            EnsurePasswordResetsTable();
-
-            var sql = "SELECT TOP 1 Id, MaTK, Token, Expiry FROM PasswordResets WHERE Token = @p0";
-            var row = db.Database.SqlQuery<PasswordResetRow>(sql, token).FirstOrDefault();
-            if (row == null || row.Expiry < DateTime.UtcNow)
+            var user = db.TAIKHOANs.SingleOrDefault(u => u.TenDangNhap == tenDangNhap);
+            if (user == null)
             {
-                TempData["ResetError"] = "Liên kết đã hết hạn hoặc không hợp lệ.";
-                return RedirectToAction("Quen_mat_khau");
+                TempData["ResetError"] = "Tài khoản không hợp lệ.";
+                return RedirectToAction("Dang_nhap");
             }
 
-            var user = db.TAIKHOANs.Find(row.MaTK);
-            if (user == null || !string.Equals(user.Email, email, StringComparison.OrdinalIgnoreCase))
-            {
-                TempData["ResetError"] = "Liên kết không hợp lệ.";
-                return RedirectToAction("Quen_mat_khau");
-            }
-
-            // Update password
+            // Cập nhật mật khẩu mới
             var (hash, salt) = HashPassword(MatKhau);
             user.MatKhauHash = hash;
             user.Salt = salt;
             db.SaveChanges();
 
-            // Remove reset token row
-            db.Database.ExecuteSqlCommand("DELETE FROM PasswordResets WHERE Id = @p0", row.Id);
-
-            TempData["ResetSuccess"] = "Mật khẩu đã được đặt lại. Vui lòng đăng nhập.";
+            TempData["ResetSuccess"] = "Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập.";
             return RedirectToAction("Dang_nhap");
         }
 
@@ -522,11 +457,6 @@ END
             return RedirectToAction("Doi_mat_khau");
         }
 
-        public ActionResult OrdersPartial()
-        {
-            var orders = new List<OrderViewModel>();
-            return PartialView("OrdersPartial", orders);
-        }
 
         // Helper class to map PasswordResets query result
         private class PasswordResetRow
@@ -535,6 +465,43 @@ END
             public int MaTK { get; set; }
             public string Token { get; set; }
             public DateTime Expiry { get; set; }
+        }
+
+        [Authorize]
+        public ActionResult Orders()
+        {
+            var user = db.TAIKHOANs.SingleOrDefault(u => u.TenDangNhap == User.Identity.Name);
+            if (user == null)
+            {
+                return RedirectToAction("Dang_nhap");
+            }
+
+            // Lấy danh sách hóa đơn của người dùng và join với các bảng liên quan
+            var orders = db.HOADONs
+                .Where(h => h.MaTK == user.MaTK)
+                .OrderByDescending(h => h.NgayDat)
+                .Select(h => new OrderViewModel
+                {
+                    OrderNumber = h.MaHD.ToString(),
+                    OrderDate = h.NgayDat,
+                    TotalAmount = h.TongTien,
+                    PaymentStatus = h.TrangThai,
+                    ShippingAddress = h.DiaChiNhan,
+                    RecipientName = h.TenNguoiNhan,
+                    RecipientPhone = h.SDTNhan,
+                    PaymentMethod = h.PhuongThucThanhToan,
+                    Note = h.GhiChu,
+                    OrderDetails = h.CTHDs.Select(ct => new OrderDetailViewModel
+                    {
+                        MaSP = ct.MaSP,
+                        TenSP = ct.SANPHAM.TenSP,
+                        AnhSP = ct.SANPHAM.AnhSP,
+                        SoLuong = ct.SoLuong,
+                        DonGia = ct.DonGia
+                    }).ToList()
+                }).ToList();
+
+            return View(orders);
         }
     }
 }

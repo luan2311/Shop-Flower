@@ -9,12 +9,17 @@
         <EntityTypeShape EntityType="QL_SHOPFLOWERModel.SANPHAM" Width="1.5" PointX="3.5" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="QL_SHOPFLOWERModel.FK_SANPHAM" ManuallyRouted="false" />
         <EntityTypeShape EntityType="QL_SHOPFLOWERModel.LIENHE" Width="1.5" PointX="5.625" PointY="2.5" />
-        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TINTUC" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TAIKHOAN" Width="1.5" PointX="8.375" PointY="1" />
         <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TAIKHOAN_VAITRO" Width="1.5" PointX="10.625" PointY="1.375" />
         <EntityTypeShape EntityType="QL_SHOPFLOWERModel.VAITRO" Width="1.5" PointX="8.375" PointY="5.5" />
         <AssociationConnector Association="QL_SHOPFLOWERModel.FK__TAIKHOAN_V__MaTK__5CD6CB2B" />
         <AssociationConnector Association="QL_SHOPFLOWERModel.FK__TAIKHOAN___MaVai__5DCAEF64" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.CTHD" Width="1.5" PointX="12.875" PointY="3.625" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.HOADON" Width="1.5" PointX="10.625" PointY="5.25" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__CTHD__MaHD__778AC167" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__CTHD__MaSP__787EE5A0" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__HOADON__MaTK__6FE99F9F" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TINTUC" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

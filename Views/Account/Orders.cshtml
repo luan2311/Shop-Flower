@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ShopFlower.Models.OrderViewModel>
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="container" style="margin-top: 30px; margin-bottom: 30px;">
+    <h1 class="text-center">Đơn hàng của tôi</h1>
+    <hr />
+
+    @if (TempData["OrderSuccess"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["OrderSuccess"]
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var order in Model)
+        {
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between">
+                    <span><strong>Đơn hàng #@order.OrderNumber</strong> - Ngày đặt: @order.OrderDate.ToString("dd/MM/yyyy")</span>
+                    <span>Trạng thái: <span class="badge badge-info text-bold" style="color: black;">@order.PaymentStatus</span></span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Thông tin người nhận</strong>
+                            <p class="mb-0">@order.RecipientName - @order.RecipientPhone</p>
+                            <p class="mb-0">@order.ShippingAddress</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Hình thức thanh toán</strong>
+                            <p class="mb-0">@order.PaymentMethod</p>
+                            @if (!string.IsNullOrEmpty(order.Note))
+                            {
+                                <strong>Ghi chú:</strong>
+                                <p class="mb-0">@order.Note</p>
+                            }
+                        </div>
+                    </div>
+                    <hr />
+                    <table class="table table-borderless">
+                        <tbody>
+                            @foreach (var item in order.OrderDetails)
+                            {
+                                <tr>
+                                    <td style="width: 10%;">
+                                        <img src="@Url.Content("~/Images/" + item.AnhSP)" alt="@item.TenSP" class="img-fluid rounded" />
+                                    </td>
+                                    <td>
+                                        @item.TenSP <br />
+                                        <small class="text-muted">Số lượng: @item.SoLuong</small>
+                                    </td>
+                                    <td class="text-right">@item.DonGia.ToString("N0")đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer text-right">
+                    <strong>Tổng tiền: <span style="color: #d70018; font-size: 1.2em;">@order.TotalAmount.ToString("N0")đ</span></strong>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="text-center">
+            <p>Bạn chưa có đơn hàng nào.</p>
+            <a href="@Url.Action("tat_ca_san_pham", "SanPham")" class="btn btn-primary">Bắt đầu mua sắm</a>
+        </div>
+    }
+</div>

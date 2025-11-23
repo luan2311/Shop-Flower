@@ -1,9 +1,11 @@
+﻿using ShopFlower.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 
@@ -14,7 +16,9 @@ namespace ShopFlower
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
@@ -37,25 +41,25 @@ namespace ShopFlower
                 // ignore - leave user unauthenticated
             }
         }
-        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
-            var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie == null || string.IsNullOrEmpty(authCookie.Value)) return;
-
-            try
+            var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
             {
-                var ticket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (ticket == null) return;
-
-                var roles = (ticket.UserData ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var id = new GenericIdentity(ticket.Name, "Forms");
-                var principal = new GenericPrincipal(id, roles);
-                HttpContext.Current.User = principal;
-                System.Threading.Thread.CurrentPrincipal = principal;
-            }
-            catch
-            {
-                // ignore invalid ticket
+                try
+                {
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null && !authTicket.Expired)
+                    {
+                        var roles = authTicket.UserData.Split(',');
+                        var user = new GenericPrincipal(new FormsIdentity(authTicket), roles);
+                        HttpContext.Current.User = user;
+                    }
+                }
+                catch
+                {
+                    // Bỏ qua nếu cookie bị lỗi
+                }
             }
         }
     }

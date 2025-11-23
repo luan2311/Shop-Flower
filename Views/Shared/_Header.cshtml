@@ -71,10 +71,16 @@
                                     <li class="li-account">
                                         <a rel="nofollow" href="@Url.Action("Index", "Dashboard", new { area = "Admin" })" title="Tài khoản">Tài khoản</a>
                                     </li>
-                                    <li class="li-account">
+                                    @*<li class="li-account">
                                         <form method="post" action="@Url.Action("Dang_xuat", "Account", new { area = "" })" style="display:inline">
                                             @Html.AntiForgeryToken()
                                             <button type="submit" class="btn btn-link p-0" title="Đăng xuất">Đăng xuất</button>
+                                        </form>
+                                    </li>*@
+                                    <li class="li-account">
+                                        <form method="post" action="@Url.Action("Dang_xuat", "Account", new { area = "" })" style="display:inline" id="logoutForm">
+                                            @Html.AntiForgeryToken()
+                                            <a href="#" rel="nofollow" title="Đăng xuất" onclick="document.getElementById('logoutForm').submit(); return false;">Đăng xuất</a>
                                         </form>
                                     </li>
                                     <li class="li-account">
