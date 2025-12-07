@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7bbde5f5cd834372838b2ff82ebe40cd" Name="Diagram1">
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.CTHD" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.HOADON" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.LIENHE" Width="1.5" PointX="5.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.LOAIHANG" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.SANPHAM" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TAIKHOAN" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TAIKHOAN_VAITRO" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.TINTUC" Width="1.5" PointX="7.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_SHOPFLOWERModel.VAITRO" Width="1.5" PointX="3.75" PointY="7.25" IsExpanded="true" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__CTHD__MaHD__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__CTHD__MaSP__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__HOADON__MaTK__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK_SANPHAM" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__TAIKHOAN_V__MaTK__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_SHOPFLOWERModel.FK__TAIKHOAN___MaVai__4BAC3F29" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

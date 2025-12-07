@@ -1,0 +1,54 @@
+﻿@model ShopFlower.Models.TAIKHOAN
+@{
+    ViewBag.Title = "Tài khoản của tôi";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<section class="account-dashboard container py-4">
+    <div class="row">
+        <aside class="col-lg-3">
+            <div class="block-account">
+                <h5 class="title-account">Trang tài khoản</h5>
+                <p>
+                    Xin chào,
+                    <span style="color:#01567f;">
+                        @{
+                            var displayName = "Khách";
+                            if (Model != null && !String.IsNullOrEmpty(Model.TenHienThi))
+                            {
+                                displayName = Model.TenHienThi;
+                            }
+                            else if (User != null && User.Identity != null && !String.IsNullOrEmpty(User.Identity.Name))
+                            {
+                                displayName = User.Identity.Name;
+                            }
+                        }
+                        @displayName
+                    </span>!
+                </p>
+                <ul>
+                    <li><a class="title-info" href="@Url.Action("Index","Dashboard", new { area = "Admin" })">Tổng quan</a></li>
+                    <li><a class="title-info" href="@Url.Action("Orders","Account", new { area = "" })">Đơn hàng của bạn</a></li>
+                    <li><a class="title-info" href="@Url.Action("Wishlist","Wishlist", new { area = "" })">Danh sách yêu thích (@Html.Action("WishlistPartial", "Wishlist", new { area = "" }))</a></li>
+                    <li><a class="title-info" href="@Url.Action("Doi_mat_khau","Account", new { area = "" })">Đổi mật khẩu</a></li>
+                    @*<li><a class="title-info" href="@Url.Action("Dang_xuat","Account", new { area = "" })">Đăng xuất</a></li>*@
+                </ul>
+            </div>
+        </aside>
+
+        <main class="col-lg-9">
+            <h1 class="title-head">Tổng quan tài khoản</h1>
+            <p>Thông tin cơ bản:</p>
+            <ul>
+                <li>
+                    Tên hiển thị: @{
+                        var name = Model != null && !String.IsNullOrEmpty(Model.TenHienThi) ? Model.TenHienThi :
+                                   (User != null && User.Identity != null ? User.Identity.Name : "");
+                    }
+                    @name
+                </li>
+                <li>Email: @(Model != null ? Model.Email : "")</li>
+            </ul>
+        </main>
+    </div>
+</section>

@@ -1,0 +1,30 @@
+﻿@model ShopFlower.Models.TINTUC
+
+@{
+    ViewBag.Title = "Xóa Tin Tức";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Xóa Tin Tức</h2>
+
+<h3>Bạn có chắc chắn muốn xóa tin tức này không?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.TIEUDE)</dt>
+        <dt>@Html.DisplayNameFor(model => model.NGAYTHEM)</dt>
+        <dd>
+            @(Model.NGAYTHEM?.ToString("dd/MM/yyyy"))
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Trở về danh sách", "QL_TinTuc", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

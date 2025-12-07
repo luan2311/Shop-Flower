@@ -1,0 +1,44 @@
+﻿.title-account,.title-head{
+    font-size: 20px;
+}
+.admin-account-page {
+    padding-top: 20px;
+}
+
+.block-account {
+    background: #fff;
+    padding: 16px;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+}
+
+    .block-account ul {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 0 0;
+    }
+
+    .block-account li {
+        margin-bottom: 8px;
+    }
+
+.title-info {
+    color: #333;
+    text-decoration: none;
+}
+
+    .title-info.active {
+        font-weight: 600;
+        color: #01567f;
+    }
+
+.change-pass-form .form-group {
+    margin-bottom: 12px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

@@ -1,0 +1,841 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QL_SHOPFLOWERModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CTHD">
+          <Key>
+            <PropertyRef Name="MaCTHD" />
+          </Key>
+          <Property Name="MaCTHD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaHD" Type="int" Nullable="false" />
+          <Property Name="MaSP" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="SoLuong" Type="int" Nullable="false" />
+          <Property Name="DonGia" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HOADON">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTK" Type="int" Nullable="false" />
+          <Property Name="NgayDat" Type="datetime" Nullable="false" />
+          <Property Name="TongTien" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TenNguoiNhan" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DiaChiNhan" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SDTNhan" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="GhiChu" Type="nvarchar" MaxLength="500" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhuongThucThanhToan" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LIENHE">
+          <Key>
+            <PropertyRef Name="MALH" />
+          </Key>
+          <Property Name="MALH" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="HOTEN" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="100" />
+          <Property Name="DIENTHOAI" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOIDUNG" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LOAIHANG">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="TenLoai" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="SANPHAM">
+          <Key>
+            <PropertyRef Name="MaSP" />
+          </Key>
+          <Property Name="MaSP" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="TenSP" Type="nvarchar" MaxLength="100" />
+          <Property Name="GiaBan" Type="int" />
+          <Property Name="AnhSP" Type="nvarchar" MaxLength="255" />
+          <Property Name="MoTaSP" Type="nvarchar(max)" />
+          <Property Name="TinhTrang" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThuongHieu" Type="nvarchar" MaxLength="100" />
+          <Property Name="SoLuongTon" Type="int" />
+          <Property Name="MaLoai" Type="char" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TAIKHOAN">
+          <Key>
+            <PropertyRef Name="MaTK" />
+          </Key>
+          <Property Name="MaTK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDangNhap" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MatKhauHash" Type="varbinary" MaxLength="64" Nullable="false" />
+          <Property Name="Salt" Type="varbinary" MaxLength="16" Nullable="false" />
+          <Property Name="TenHienThi" Type="nvarchar" MaxLength="256" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="NgayTao" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TAIKHOAN_VAITRO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTK" Type="int" Nullable="false" />
+          <Property Name="MaVaiTro" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TINTUC">
+          <Key>
+            <PropertyRef Name="MATT" />
+          </Key>
+          <Property Name="MATT" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="ANHBIA" Type="nvarchar" MaxLength="255" />
+          <Property Name="TIEUDE" Type="nvarchar(max)" />
+          <Property Name="NGAYTHEM" Type="date" />
+          <Property Name="MOTA" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="VAITRO">
+          <Key>
+            <PropertyRef Name="MaVaiTro" />
+          </Key>
+          <Property Name="MaVaiTro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenVaiTro" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK__CTHD__MaHD__534D60F1">
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+          <End Role="CTHD" Type="Self.CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOADON">
+              <PropertyRef Name="MaHD" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CTHD__MaSP__5441852A">
+          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+          <End Role="CTHD" Type="Self.CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANPHAM">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HOADON__MaTK__5070F446">
+          <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="1" />
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAIKHOAN">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="HOADON">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TAIKHOAN___MaVai__4BAC3F29">
+          <End Role="VAITRO" Type="Self.VAITRO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TAIKHOAN_VAITRO" Type="Self.TAIKHOAN_VAITRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VAITRO">
+              <PropertyRef Name="MaVaiTro" />
+            </Principal>
+            <Dependent Role="TAIKHOAN_VAITRO">
+              <PropertyRef Name="MaVaiTro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TAIKHOAN_V__MaTK__4AB81AF0">
+          <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TAIKHOAN_VAITRO" Type="Self.TAIKHOAN_VAITRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAIKHOAN">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="TAIKHOAN_VAITRO">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANPHAM">
+          <End Role="LOAIHANG" Type="Self.LOAIHANG" Multiplicity="0..1" />
+          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAIHANG">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="SANPHAM">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="SearchProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_KichHoatTaiKhoan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaTK" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_LayDanhSachLienHe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageNumber" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_LayVaiTroTheoNguoiDung" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TenDangNhap" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemLienHe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="HoTen" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="DienThoai" Type="nvarchar" Mode="In" />
+          <Parameter Name="NoiDung" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="MaLH" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_UpdateTinTuc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaTT" Type="char" Mode="In" />
+          <Parameter Name="AnhBia" Type="nvarchar" Mode="In" />
+          <Parameter Name="TieuDe" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="NgayThem" Type="date" Mode="In" />
+          <Parameter Name="MoTa" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_XacThucTaiKhoan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TenDangNhap" Type="nvarchar" Mode="In" />
+          <Parameter Name="MatKhau" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaTaiKhoanAnToan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaTK" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaTinTuc_That" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaTT" Type="char" Mode="In" />
+        </Function>
+        <EntityContainer Name="QL_SHOPFLOWERModelStoreContainer">
+          <EntitySet Name="CTHD" EntityType="Self.CTHD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LIENHE" EntityType="Self.LIENHE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOAIHANG" EntityType="Self.LOAIHANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SANPHAM" EntityType="Self.SANPHAM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAIKHOAN" EntityType="Self.TAIKHOAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAIKHOAN_VAITRO" EntityType="Self.TAIKHOAN_VAITRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TINTUC" EntityType="Self.TINTUC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VAITRO" EntityType="Self.VAITRO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CTHD__MaHD__534D60F1" Association="Self.FK__CTHD__MaHD__534D60F1">
+            <End Role="HOADON" EntitySet="HOADON" />
+            <End Role="CTHD" EntitySet="CTHD" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CTHD__MaSP__5441852A" Association="Self.FK__CTHD__MaSP__5441852A">
+            <End Role="SANPHAM" EntitySet="SANPHAM" />
+            <End Role="CTHD" EntitySet="CTHD" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HOADON__MaTK__5070F446" Association="Self.FK__HOADON__MaTK__5070F446">
+            <End Role="TAIKHOAN" EntitySet="TAIKHOAN" />
+            <End Role="HOADON" EntitySet="HOADON" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TAIKHOAN___MaVai__4BAC3F29" Association="Self.FK__TAIKHOAN___MaVai__4BAC3F29">
+            <End Role="VAITRO" EntitySet="VAITRO" />
+            <End Role="TAIKHOAN_VAITRO" EntitySet="TAIKHOAN_VAITRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TAIKHOAN_V__MaTK__4AB81AF0" Association="Self.FK__TAIKHOAN_V__MaTK__4AB81AF0">
+            <End Role="TAIKHOAN" EntitySet="TAIKHOAN" />
+            <End Role="TAIKHOAN_VAITRO" EntitySet="TAIKHOAN_VAITRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANPHAM" Association="Self.FK_SANPHAM">
+            <End Role="LOAIHANG" EntitySet="LOAIHANG" />
+            <End Role="SANPHAM" EntitySet="SANPHAM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QL_SHOPFLOWERModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CTHD">
+          <Key>
+            <PropertyRef Name="MaCTHD" />
+          </Key>
+          <Property Name="MaCTHD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaHD" Type="Int32" Nullable="false" />
+          <Property Name="MaSP" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+          <Property Name="DonGia" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="HOADON" Relationship="Self.FK__CTHD__MaHD__534D60F1" FromRole="CTHD" ToRole="HOADON" />
+          <NavigationProperty Name="SANPHAM" Relationship="Self.FK__CTHD__MaSP__5441852A" FromRole="CTHD" ToRole="SANPHAM" />
+        </EntityType>
+        <EntityType Name="HOADON">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTK" Type="Int32" Nullable="false" />
+          <Property Name="NgayDat" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TongTien" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TenNguoiNhan" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiaChiNhan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SDTNhan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="GhiChu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhuongThucThanhToan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CTHDs" Relationship="Self.FK__CTHD__MaHD__534D60F1" FromRole="HOADON" ToRole="CTHD" />
+          <NavigationProperty Name="TAIKHOAN" Relationship="Self.FK__HOADON__MaTK__5070F446" FromRole="HOADON" ToRole="TAIKHOAN" />
+        </EntityType>
+        <EntityType Name="LIENHE">
+          <Key>
+            <PropertyRef Name="MALH" />
+          </Key>
+          <Property Name="MALH" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="HOTEN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DIENTHOAI" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LOAIHANG">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TenLoai" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SANPHAMs" Relationship="Self.FK_SANPHAM" FromRole="LOAIHANG" ToRole="SANPHAM" />
+        </EntityType>
+        <EntityType Name="SANPHAM">
+          <Key>
+            <PropertyRef Name="MaSP" />
+          </Key>
+          <Property Name="MaSP" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TenSP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GiaBan" Type="Int32" />
+          <Property Name="AnhSP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MoTaSP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TinhTrang" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThuongHieu" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SoLuongTon" Type="Int32" />
+          <Property Name="MaLoai" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CTHDs" Relationship="Self.FK__CTHD__MaSP__5441852A" FromRole="SANPHAM" ToRole="CTHD" />
+          <NavigationProperty Name="LOAIHANG" Relationship="Self.FK_SANPHAM" FromRole="SANPHAM" ToRole="LOAIHANG" />
+        </EntityType>
+        <EntityType Name="TAIKHOAN">
+          <Key>
+            <PropertyRef Name="MaTK" />
+          </Key>
+          <Property Name="MaTK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatKhauHash" Type="Binary" MaxLength="64" FixedLength="false" Nullable="false" />
+          <Property Name="Salt" Type="Binary" MaxLength="16" FixedLength="false" Nullable="false" />
+          <Property Name="TenHienThi" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="NgayTao" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="HOADONs" Relationship="Self.FK__HOADON__MaTK__5070F446" FromRole="TAIKHOAN" ToRole="HOADON" />
+          <NavigationProperty Name="TAIKHOAN_VAITRO" Relationship="Self.FK__TAIKHOAN_V__MaTK__4AB81AF0" FromRole="TAIKHOAN" ToRole="TAIKHOAN_VAITRO" />
+        </EntityType>
+        <EntityType Name="TAIKHOAN_VAITRO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTK" Type="Int32" Nullable="false" />
+          <Property Name="MaVaiTro" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TAIKHOAN" Relationship="Self.FK__TAIKHOAN_V__MaTK__4AB81AF0" FromRole="TAIKHOAN_VAITRO" ToRole="TAIKHOAN" />
+          <NavigationProperty Name="VAITRO" Relationship="Self.FK__TAIKHOAN___MaVai__4BAC3F29" FromRole="TAIKHOAN_VAITRO" ToRole="VAITRO" />
+        </EntityType>
+        <EntityType Name="TINTUC">
+          <Key>
+            <PropertyRef Name="MATT" />
+          </Key>
+          <Property Name="MATT" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="ANHBIA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TIEUDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYTHEM" Type="DateTime" Precision="0" />
+          <Property Name="MOTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VAITRO">
+          <Key>
+            <PropertyRef Name="MaVaiTro" />
+          </Key>
+          <Property Name="MaVaiTro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenVaiTro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MoTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TAIKHOAN_VAITRO" Relationship="Self.FK__TAIKHOAN___MaVai__4BAC3F29" FromRole="VAITRO" ToRole="TAIKHOAN_VAITRO" />
+        </EntityType>
+        <Association Name="FK__CTHD__MaHD__534D60F1">
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+          <End Role="CTHD" Type="Self.CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOADON">
+              <PropertyRef Name="MaHD" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CTHD__MaSP__5441852A">
+          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+          <End Role="CTHD" Type="Self.CTHD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANPHAM">
+              <PropertyRef Name="MaSP" />
+            </Principal>
+            <Dependent Role="CTHD">
+              <PropertyRef Name="MaSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HOADON__MaTK__5070F446">
+          <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="1" />
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAIKHOAN">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="HOADON">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANPHAM">
+          <End Role="LOAIHANG" Type="Self.LOAIHANG" Multiplicity="0..1" />
+          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAIHANG">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="SANPHAM">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TAIKHOAN_V__MaTK__4AB81AF0">
+          <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TAIKHOAN_VAITRO" Type="Self.TAIKHOAN_VAITRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAIKHOAN">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="TAIKHOAN_VAITRO">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TAIKHOAN___MaVai__4BAC3F29">
+          <End Role="VAITRO" Type="Self.VAITRO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TAIKHOAN_VAITRO" Type="Self.TAIKHOAN_VAITRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VAITRO">
+              <PropertyRef Name="MaVaiTro" />
+            </Principal>
+            <Dependent Role="TAIKHOAN_VAITRO">
+              <PropertyRef Name="MaVaiTro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QL_SHOPFLOWEREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CTHDs" EntityType="Self.CTHD" />
+          <EntitySet Name="HOADONs" EntityType="Self.HOADON" />
+          <EntitySet Name="LIENHEs" EntityType="Self.LIENHE" />
+          <EntitySet Name="LOAIHANGs" EntityType="Self.LOAIHANG" />
+          <EntitySet Name="SANPHAMs" EntityType="Self.SANPHAM" />
+          <EntitySet Name="TAIKHOANs" EntityType="Self.TAIKHOAN" />
+          <EntitySet Name="TAIKHOAN_VAITRO" EntityType="Self.TAIKHOAN_VAITRO" />
+          <EntitySet Name="TINTUCs" EntityType="Self.TINTUC" />
+          <EntitySet Name="VAITROes" EntityType="Self.VAITRO" />
+          <AssociationSet Name="FK__CTHD__MaHD__534D60F1" Association="Self.FK__CTHD__MaHD__534D60F1">
+            <End Role="HOADON" EntitySet="HOADONs" />
+            <End Role="CTHD" EntitySet="CTHDs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CTHD__MaSP__5441852A" Association="Self.FK__CTHD__MaSP__5441852A">
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+            <End Role="CTHD" EntitySet="CTHDs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HOADON__MaTK__5070F446" Association="Self.FK__HOADON__MaTK__5070F446">
+            <End Role="TAIKHOAN" EntitySet="TAIKHOANs" />
+            <End Role="HOADON" EntitySet="HOADONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANPHAM" Association="Self.FK_SANPHAM">
+            <End Role="LOAIHANG" EntitySet="LOAIHANGs" />
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TAIKHOAN_V__MaTK__4AB81AF0" Association="Self.FK__TAIKHOAN_V__MaTK__4AB81AF0">
+            <End Role="TAIKHOAN" EntitySet="TAIKHOANs" />
+            <End Role="TAIKHOAN_VAITRO" EntitySet="TAIKHOAN_VAITRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TAIKHOAN___MaVai__4BAC3F29" Association="Self.FK__TAIKHOAN___MaVai__4BAC3F29">
+            <End Role="VAITRO" EntitySet="VAITROes" />
+            <End Role="TAIKHOAN_VAITRO" EntitySet="TAIKHOAN_VAITRO" />
+          </AssociationSet>
+          <FunctionImport Name="SearchProducts" ReturnType="Collection(QL_SHOPFLOWERModel.SearchProducts_Result)">
+          <Parameter Name="Keyword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_LayDanhSachLienHe" ReturnType="Collection(QL_SHOPFLOWERModel.sp_LayDanhSachLienHe_Result)">
+            <Parameter Name="PageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_LayVaiTroTheoNguoiDung" ReturnType="Collection(String)">
+          <Parameter Name="TenDangNhap" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemLienHe">
+            <Parameter Name="HoTen" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="DienThoai" Mode="In" Type="String" />
+            <Parameter Name="NoiDung" Mode="In" Type="String" />
+            <Parameter Name="MaLH" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XacThucTaiKhoan" ReturnType="Collection(Int32)">
+            <Parameter Name="TenDangNhap" Mode="In" Type="String" />
+            <Parameter Name="MatKhau" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaTaiKhoanAnToan" ReturnType="Collection(QL_SHOPFLOWERModel.sp_XoaTaiKhoanAnToan_Result)">
+          <Parameter Name="MaTK" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_KichHoatTaiKhoan" ReturnType="Collection(QL_SHOPFLOWERModel.sp_KichHoatTaiKhoan_Result)">
+          <Parameter Name="MaTK" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateTinTuc" ReturnType="Collection(QL_SHOPFLOWERModel.sp_UpdateTinTuc_Result)">
+            <Parameter Name="MaTT" Mode="In" Type="String" />
+            <Parameter Name="AnhBia" Mode="In" Type="String" />
+            <Parameter Name="TieuDe" Mode="In" Type="String" />
+            <Parameter Name="NgayThem" Mode="In" Type="DateTime" />
+            <Parameter Name="MoTa" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(QL_SHOPFLOWERModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(QL_SHOPFLOWERModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="sp_XoaTinTuc_That" ReturnType="Collection(QL_SHOPFLOWERModel.sp_XoaTinTuc_That_Result)">
+          <Parameter Name="MaTT" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateTrangThaiHoaDon">
+            <Parameter Name="MaHD" Mode="In" Type="Int32" />
+            <Parameter Name="TrangThai" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SearchProducts_Result">
+          <Property Type="String" Name="MaSP" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="TenSP" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="GiaBan" Nullable="true" />
+          <Property Type="String" Name="AnhSP" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MoTaSP" Nullable="true" />
+          <Property Type="String" Name="TinhTrang" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ThuongHieu" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="SoLuongTon" Nullable="true" />
+          <Property Type="String" Name="MaLoai" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="sp_LayDanhSachLienHe_Result">
+          <Property Type="String" Name="MALH" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="HOTEN" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMAIL" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DIENTHOAI" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="NOIDUNG" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_XoaTaiKhoanAnToan_Result">
+          <Property Type="Int32" Name="Success" Nullable="false" />
+          <Property Type="String" Name="Message" Nullable="false" MaxLength="24" />
+        </ComplexType>
+        <ComplexType Name="sp_KichHoatTaiKhoan_Result">
+          <Property Type="Int32" Name="Success" Nullable="false" />
+          <Property Type="String" Name="Message" Nullable="false" MaxLength="24" />
+        </ComplexType>
+        <ComplexType Name="sp_UpdateTinTuc_Result">
+          <Property Type="Int32" Name="Success" Nullable="false" />
+          <Property Type="String" Name="Message" Nullable="false" MaxLength="22" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_XoaTinTuc_That_Result">
+          <Property Type="Int32" Name="Success" Nullable="false" />
+          <Property Type="String" Name="Message" Nullable="false" MaxLength="22" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QL_SHOPFLOWERModelStoreContainer" CdmEntityContainer="QL_SHOPFLOWEREntities">
+          <EntitySetMapping Name="CTHDs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.CTHD">
+              <MappingFragment StoreEntitySet="CTHD">
+                <ScalarProperty Name="MaCTHD" ColumnName="MaCTHD" />
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HOADONs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.HOADON">
+              <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+                <ScalarProperty Name="TenNguoiNhan" ColumnName="TenNguoiNhan" />
+                <ScalarProperty Name="DiaChiNhan" ColumnName="DiaChiNhan" />
+                <ScalarProperty Name="SDTNhan" ColumnName="SDTNhan" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="PhuongThucThanhToan" ColumnName="PhuongThucThanhToan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LIENHEs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.LIENHE">
+              <MappingFragment StoreEntitySet="LIENHE">
+                <ScalarProperty Name="MALH" ColumnName="MALH" />
+                <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOAIHANGs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.LOAIHANG">
+              <MappingFragment StoreEntitySet="LOAIHANG">
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="TenLoai" ColumnName="TenLoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SANPHAMs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.SANPHAM">
+              <MappingFragment StoreEntitySet="SANPHAM">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="AnhSP" ColumnName="AnhSP" />
+                <ScalarProperty Name="MoTaSP" ColumnName="MoTaSP" />
+                <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+                <ScalarProperty Name="ThuongHieu" ColumnName="ThuongHieu" />
+                <ScalarProperty Name="SoLuongTon" ColumnName="SoLuongTon" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TAIKHOANs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.TAIKHOAN">
+              <MappingFragment StoreEntitySet="TAIKHOAN">
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MatKhauHash" ColumnName="MatKhauHash" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="TenHienThi" ColumnName="TenHienThi" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TAIKHOAN_VAITRO">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.TAIKHOAN_VAITRO">
+              <MappingFragment StoreEntitySet="TAIKHOAN_VAITRO">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="MaVaiTro" ColumnName="MaVaiTro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TINTUCs">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.TINTUC">
+              <MappingFragment StoreEntitySet="TINTUC">
+                <ScalarProperty Name="MATT" ColumnName="MATT" />
+                <ScalarProperty Name="ANHBIA" ColumnName="ANHBIA" />
+                <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+                <ScalarProperty Name="NGAYTHEM" ColumnName="NGAYTHEM" />
+                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VAITROes">
+            <EntityTypeMapping TypeName="QL_SHOPFLOWERModel.VAITRO">
+              <MappingFragment StoreEntitySet="VAITRO">
+                <ScalarProperty Name="MaVaiTro" ColumnName="MaVaiTro" />
+                <ScalarProperty Name="TenVaiTro" ColumnName="TenVaiTro" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SearchProducts" FunctionName="QL_SHOPFLOWERModel.Store.SearchProducts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.SearchProducts_Result">
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="AnhSP" ColumnName="AnhSP" />
+                <ScalarProperty Name="MoTaSP" ColumnName="MoTaSP" />
+                <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+                <ScalarProperty Name="ThuongHieu" ColumnName="ThuongHieu" />
+                <ScalarProperty Name="SoLuongTon" ColumnName="SoLuongTon" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_LayDanhSachLienHe" FunctionName="QL_SHOPFLOWERModel.Store.sp_LayDanhSachLienHe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_LayDanhSachLienHe_Result">
+                <ScalarProperty Name="MALH" ColumnName="MALH" />
+                <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="DIENTHOAI" ColumnName="DIENTHOAI" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_LayVaiTroTheoNguoiDung" FunctionName="QL_SHOPFLOWERModel.Store.sp_LayVaiTroTheoNguoiDung" />
+          <FunctionImportMapping FunctionImportName="sp_ThemLienHe" FunctionName="QL_SHOPFLOWERModel.Store.sp_ThemLienHe" />
+          <FunctionImportMapping FunctionImportName="sp_XacThucTaiKhoan" FunctionName="QL_SHOPFLOWERModel.Store.sp_XacThucTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_XoaTaiKhoanAnToan" FunctionName="QL_SHOPFLOWERModel.Store.sp_XoaTaiKhoanAnToan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_XoaTaiKhoanAnToan_Result">
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_KichHoatTaiKhoan" FunctionName="QL_SHOPFLOWERModel.Store.sp_KichHoatTaiKhoan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_KichHoatTaiKhoan_Result">
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_UpdateTinTuc" FunctionName="QL_SHOPFLOWERModel.Store.sp_UpdateTinTuc">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_UpdateTinTuc_Result">
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="QL_SHOPFLOWERModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="QL_SHOPFLOWERModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="QL_SHOPFLOWERModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="QL_SHOPFLOWERModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="QL_SHOPFLOWERModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="QL_SHOPFLOWERModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="QL_SHOPFLOWERModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_XoaTinTuc_That" FunctionName="QL_SHOPFLOWERModel.Store.sp_XoaTinTuc_That">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QL_SHOPFLOWERModel.sp_XoaTinTuc_That_Result">
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

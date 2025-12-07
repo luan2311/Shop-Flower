@@ -1,0 +1,43 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<ShopFlower.Models.LIENHE>
+
+@{
+    ViewBag.Title = "Quản lý Liên Hệ";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-center">QUẢN LÝ LIÊN HỆ</h1>
+
+<table class="table table-light table-striped table-hover">
+    <tr>
+        <th>Họ Tên</th>
+        <th>Email</th>
+        <th>Số điện thoại</th>
+        <th>Nội dung</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.HOTEN)</td>
+            <td>@Html.DisplayFor(modelItem => item.EMAIL)</td>
+            <td>@Html.DisplayFor(modelItem => item.DIENTHOAI)</td>
+            <td>@Html.DisplayFor(modelItem => item.NOIDUNG)</td>
+
+        </tr>
+    }
+</table>
+
+<div class="d-flex justify-content-between">
+    <div>
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    </div>
+    <nav aria-label="Page navigation">
+        @Html.PagedListPager(Model, page => Url.Action("QL_LienHe", new { page }), new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            //PageClasses = new string[] { "page-link" }
+        })
+    </nav>
+</div>

@@ -1,0 +1,145 @@
+﻿@model ShopFlower.Models.TINTUC
+@{
+    ViewBag.Title = Model.TIEUDE;
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+<section class="blogpage">
+    <div class="container layout-article" itemscope="" itemtype="https://schema.org/Article" >
+        <div class="bg_blog" >
+            <article class="article-main">
+                <div class="row" >
+                    <div class="right-content col-lg-9 col-12" >
+                        <div class="article-details clearfix">
+                            <h1 class="article-title">@Model.TIEUDE</h1>
+                            <div class="posts">
+                                <div class="time-post f">
+
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-clock fa-w-16"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm216 248c0 118.7-96.1 216-216 216-118.7 0-216-96.1-216-216 0-118.7 96.1-216 216-216 118.7 0 216 96.1 216 216zm-148.9 88.3l-81.2-59c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h14c6.6 0 12 5.4 12 12v146.3l70.5 51.3c5.4 3.9 6.5 11.4 2.6 16.8l-8.2 11.3c-3.9 5.3-11.4 6.5-16.8 2.6z" class=""></path></svg>
+
+                                    @Model.NGAYTHEM
+                                </div>
+                            </div>
+                            <div class="article-image">
+                                <img class="lazyload loaded" src="~/Images/@Model.ANHBIA" data-src="https://bizweb.dktcdn.net/100/487/411/articles/z5968847074391-636bbcd57cd0cb2bdd1b62cb7039fec1.jpg?v=1731490420447" alt="@Model.TIEUDE" data-was-processed="true">
+                            </div>
+                            @Html.Raw(Model.MOTA)
+                        </div>
+
+
+                        <div class="blog_related" >
+                            <div class="title" >Tin tức liên quan</div>
+                            <div class="row" >
+                                @foreach(var item in ViewBag.tinTucLienQuan)
+                                { 
+                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                        <div class="item-blog">
+                                            <a class="block-thumb thumb" href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })" title="@item.TIEUDE">
+
+                                                <img width="400" height="240" class="lazyload duration-300" src="~/Images/@item.ANHBIA" data-src="https://bizweb.dktcdn.net/100/487/411/articles/z5969155691986-ffc7f601f2164a817f993e795c4d78b3.jpg?v=1731488082843" alt="@item.TIEUDE">
+
+                                            </a>
+                                            <div class="block-content">
+                                                <h3>
+                                                    <a href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })" title="@item.TIEUDE" class="line-clamp line-clamp-2">@item.TIEUDE</a>
+                                                </h3>
+                                                <p class="justify line-clamp line-clamp-3">
+                                                    Hoa hồng từ lâu đã trở thành biểu tượng của tình yêu và sự gắn kết, là món quà đặc biệt để bạn thể hiện tình cảm chân thành. Tại Góc Hoa Xinh, chúng tôi tự hào mang đến những bó hoa hồng tinh tế và sang trọng, phù hợp để tặng vào các dịp đặc biệt như sinh nhật, ngày kỷ niệm, và nhiều hơn thế nữa. Hãy cùng tìm hiểu về ý nghĩa của từng màu hoa hồng và những mẫu bó hoa hồng đẹp có thể là lựa chọn hoàn hảo cho bạn.
+                                                    Ý Nghĩa Đặc Biệt Của Các Loại Hoa Hồng
+                                                    Hoa hồng mang nhiều ý nghĩa, tùy thuộc vào màu sắc và cách thể hiện:
+
+                                                    Hoa hồng đỏ: Đại diện cho tình yêu mãnh liệt và đam mê, là lựa chọn lý tưởng để gửi gắm tình cảm đến người yêu.
+                                                    Hoa hồng trắng: Mang ý nghĩa thanh khiết và tôn vinh, là lựa chọn phù hợp cho các dịp trang trọng.
+                                                    Hoa hồng vàng: Biểu thị tình bạn chân thành và hạnh phúc, thường dành để tặng bạn bè thân thiết.
+                                                    Hoa hồng hồng: Tượng trưng cho sự cảm kích và lòng biết ơn, rất thích hợp để tặng mẹ, người thân trong gia đình.
+
+                                                    Những Mẫu Bó Hoa Hồng Tại Góc Hoa Xinh
+                                                    Tại Góc Hoa Xinh, chúng tôi cung cấp nhiều mẫu bó hoa hồng đa dạng để phù hợp với từng dịp đặc biệt. Dưới đây là một số mẫu bạn có thể tham khảo:
+
+
+                                                    Bó hoa hồng mừng sinh nhật: Bó hoa hồng đỏ hoặc hồng phấn thường được lựa chọn để tặng vào dịp sinh nhật người thân hoặc bạn bè. Với số lượng từ 9 đến 12 bông, bó hoa không chỉ là món quà lãng mạn mà còn truyền tải thông điệp sâu sắc về sự quý trọng.
+
+                                                    Bó hoa hồng chúc mừng tốt nghiệp: Hoa hồng vàng hoặc trắng thường được lựa chọn trong các dịp lễ tốt nghiệp, tượng trưng cho khởi đầu mới và những lời chúc tốt lành.
+
+                                                    Bó hoa hồng kỷ niệm ngày cưới: Để kỷ niệm ngày cưới hoặc ngày yêu nhau, bó hoa hồng đỏ là lựa chọn truyền tải thông điệp về sự bền chặt và tình yêu vĩnh cửu. Những bó hoa từ 50 bông trở lên sẽ mang ý nghĩa "tình yêu trọn vẹn," rất phù hợp để kỷ niệm dịp đặc biệt này.
+                                                    Cách Chọn Số Lượng Bông Hoa Hồng Đúng Ý Nghĩa
+                                                    Mỗi số lượng bông hoa hồng trong bó hoa đều mang ý nghĩa riêng, giúp bạn thể hiện được cảm xúc của mình một cách tinh tế:
+
+                                                    1 bông hồng: Em là duy nhất trong trái tim anh.
+                                                    9 bông hồng: Tình yêu của anh sẽ luôn bền chặt.
+                                                    12 bông hồng: Tình yêu của anh mãi không đổi thay.
+                                                    24 bông hồng: Anh luôn nghĩ về em, từng giây phút.
+                                                    50 bông hồng: Yêu em vô điều kiện và mãi mãi.
+                                                    Việc chọn số lượng bông hoa phù hợp không chỉ giúp truyền tải thông điệp yêu thương mà còn tạo điểm nhấn tinh tế cho bó hoa.
+                                                    Đặt Hoa Tươi Đẹp Tại Góc Hoa Xinh
+                                                    Góc Hoa Xinh không chỉ cung cấp các mẫu bó hoa hồng đẹp mà còn cam kết mang lại trải nghiệm mua sắm tuyệt vời với dịch vụ chất lượng cao. Chúng tôi đảm bảo hoa tươi, hình thức giống mẫu và giao đúng giờ, để mỗi bó hoa đến tay bạn đều thể hiện được trọn vẹn tình cảm của người tặng.
+                                                    Tại sao chọn Góc Hoa Xinh?
+
+                                                    Chất lượng hoa tuyệt vời: Hoa hồng tại Góc Hoa Xinh được chọn lọc kỹ lưỡng, luôn tươi mới và bền đẹp.
+                                                    Thiết kế độc đáo: Mỗi bó hoa đều được thiết kế riêng biệt để phù hợp với từng dịp tặng.
+                                                    Giao hàng nhanh chóng: Dịch vụ giao hoa nhanh trong 60 phút của chúng tôi giúp bạn gửi gắm tình cảm đúng lúc.
+
+                                                    Đặt Hoa Hồng Ngay Hôm Nay Tại Góc Hoa Xinh!
+                                                    Nếu bạn đang tìm kiếm một bó hoa hồng đẹp và ý nghĩa để tặng người thân yêu, hãy đến với Góc Hoa Xinh. Chúng tôi luôn sẵn sàng tư vấn để bạn tìm được bó hoa phù hợp nhất cho dịp đặc biệt của mình. Liên hệ ngay để khám phá thêm những mẫu hoa hồng đẹp và độc đáo chỉ có tại Góc Hoa Xinh.
+                                                </p>
+                                                <p class="time-post">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-fill" viewBox="0 0 16 16">
+                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"></path>
+                                                    </svg>
+                                                    <span>
+                                                        @{
+                                                            var ngayThem = item.NGAYTHEM as DateTime?;
+                                                            @(ngayThem.HasValue ? ngayThem.Value.ToString("dd/MM/yyyy") : "")
+                                                        }
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                
+                                
+                            </div>
+                        </div>
+
+                       
+
+
+                    </div>
+                    <div class="blog_left_base col-lg-3 col-12" style="padding-top:30px">
+                        <div class="side-right-stick">
+                            <div class="blog_noibat">
+                                <h2 class="h2_sidebar_blog">
+                                    <a href="~/Home/Tin_tuc" title="Tin tức nổi bật">Tin tức nổi bật</a>
+                                </h2>
+                                <div class="blog_content">
+                                    @foreach (var item in ViewBag.tinTucNoiBat)
+                                    {
+                                        <div class="item clearfix">
+                                            <div class="post-thumb">
+                                                <a class="image-blog scale_hover" href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })" title="@item.TIEUDE"  style=" opacity: inherit;">
+                                                    <img class="img_blog lazyload loaded" src="~/Images/@item.ANHBIA" alt="@item.TIEUDE" data-was-processed="true">
+                                                </a>
+                                            </div>
+                                            <div class="contentright">
+                                                <h3><a title="@item.TIEUDE" href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })">@item.TIEUDE</a></h3>
+                                                <p class="time-post">
+                                                    <span>
+                                                        @{
+                                                            var ngayThem = item.NGAYTHEM as DateTime?;
+                                                            @(ngayThem.HasValue ? ngayThem.Value.ToString("dd/MM/yyyy") : "")
+                                                        }
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+

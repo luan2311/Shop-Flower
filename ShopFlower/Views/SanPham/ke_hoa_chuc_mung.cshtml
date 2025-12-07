@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewBag.Title = "Kệ hoa mừng khai trương, sự kiện";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="layout-collection">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-title">
+                <h1>Kệ hoa chúc mừng khai trương</h1>
+            </div>
+            <div class="col-12 col-list-cate">
+                <div class="menu-list">
+                </div>
+            </div>
+
+            <div class="block-collection col-lg-12 col-12">
+                <div class="category-products products-view products-view-grid list_hover_pro">
+                    <div class="filter-containers">
+
+                        <div class="sort-cate clearfix">
+                            <div class="sort-cate-right">
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"></path>
+                                        <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"></path>
+                                    </svg> Xếp theo
+                                </h3>
+                                <ul>
+                                    <li class="btn-quick-sort default @(ViewBag.CurrentSort == "" || ViewBag.CurrentSort == "default" ? "active" : "")">
+                                        @Html.ActionLink("Mặc định", "ke_hoa_chuc_mung", new { sortOrder = "default" }, new { title = "Mặc định" })
+                                    </li>
+                                    <li class="btn-quick-sort alpha-asc @(ViewBag.CurrentSort == "alpha-asc" ? "active" : "")">
+                                        @Html.ActionLink("Tên A-Z", "ke_hoa_chuc_mung", new { sortOrder = "alpha-asc" }, new { title = "Tên A-Z" })
+                                    </li>
+                                    <li class="btn-quick-sort alpha-desc @(ViewBag.CurrentSort == "alpha-desc" ? "active" : "")">
+                                        @Html.ActionLink("Tên Z-A", "ke_hoa_chuc_mung", new { sortOrder = "alpha-desc" }, new { title = "Tên Z-A" })
+                                    </li>
+                                    <li class="btn-quick-sort price-asc @(ViewBag.CurrentSort == "price-asc" ? "active" : "")">
+                                        @Html.ActionLink("Giá thấp đến cao", "ke_hoa_chuc_mung", new { sortOrder = "price-asc" }, new { title = "Giá thấp đến cao" })
+                                    </li>
+                                    <li class="btn-quick-sort price-desc @(ViewBag.CurrentSort == "price-desc" ? "active" : "")">
+                                        @Html.ActionLink("Giá cao xuống thấp", "ke_hoa_chuc_mung", new { sortOrder = "price-desc" }, new { title = "Giá cao xuống thấp" })
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="products-view products-view-grid list_hover_pro">
+                        <div class="row">
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-6 col-md-3">
+                                    <div class="item_product_main">
+
+                                        <form action="@Url.Action("ThemGioHang", "Cart", new { @ms = item.MaSP, @strURL = Request.Url.ToString()})" method="post" class="variants product-action item-product-main duration-300" data-cart-form="" data-id="product-actions-57772035" enctype="multipart/form-data">
+
+                                            <div class="product-thumbnail">
+                                                <a class="image_thumb scale_hover" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">
+                                                    <img class="lazyload duration-300 loaded" src="~/Images/@item.AnhSP" alt="@item.TenSP" data-was-processed="true">
+                                                </a>
+                                                <div class="action-button">
+                                                    @*<a title="Xem nhanh" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" class="xem_nhanh btn-circle btn-views btn_view btn right-to quick-view">
+                                                        <img class="view_img" width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/eye.svg?1757405855081" alt="Xem nhanh">
+                                                    </a>*@
+
+                                                    <a href="@Url.Action("ThemVaoYeuThich", "WishList", new { @ms = item.MaSP, @strURL = Request.Url.ToString()})" class="setWishlist btn-views btn-circle" tabindex="0" title="Thêm vào yêu thích">
+                                                        <img width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/heart.png?1757405855081" alt="Thêm vào yêu thích">
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <div class="product-info">
+                                                <h3 class="product-name line-clamp line-clamp-2">
+                                                    <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" title="@item.TenSP">@item.TenSP</a>
+                                                </h3>
+                                                <div class="product-price-cart">
+                                                    <div class="price-box">
+                                                        <span class="price">@String.Format("{0:N0} đ", @item.GiaBan)</span>
+                                                    </div>
+                                                    <div class="product-button">
+                                                        <input type="hidden" name="variantId" value="171650104">
+                                                        <button class="btn-cart btn-views add_to_cart " title="Thêm vào giỏ hàng">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                                                                <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"></path>
+                                                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                            <div class="pagenav">
+                                <nav class="collection-paginate clearfix relative nav_pagi w_100">
+                                    <ul class="pagination clearfix">
+                                        @if (ViewBag.CurrentPage > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("ke_hoa_chuc_mung", new { page = ViewBag.CurrentPage - 1, sortOrder = ViewBag.CurrentSort })">«</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">«</a>
+                                            </li>
+                                        }
+
+                                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                        {
+                                            if (i == ViewBag.CurrentPage)
+                                            {
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="javascript:;" style="pointer-events:none">@i</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Url.Action("ke_hoa_chuc_mung", new { page = i, sortOrder = ViewBag.CurrentSort })">@i</a>
+                                                </li>
+                                            }
+                                        }
+
+                                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("ke_hoa_chuc_mung", new { page = ViewBag.CurrentPage + 1, sortOrder = ViewBag.CurrentSort })">»</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">»</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="motaabc col-lg-12 col-12" bis_skin_checked="1">
+
+
+
+                        <div class="descrip_coll content_coll add_apper active" bis_skin_checked="1">
+                            <h2 style="text-align: center;"><strong>Kệ Hoa Mừng Khai Trương – Món Quà Tinh Tế Cho Khởi Đầu Thành Công</strong></h2>
+                            <p>Khai trương luôn là sự kiện đặc biệt, đánh dấu một khởi đầu mới với nhiều hy vọng và mục tiêu lớn. Chính vì vậy, việc chọn một <a href="https://gochoaxinh.com/ke-mung-khai-truong"><strong>kệ hoa chúc mừng khai trương</strong></a> để gửi tặng không chỉ mang lại may mắn mà còn thể hiện sự trân trọng, quan tâm đối với người nhận. Một kệ hoa đẹp không chỉ tô điểm cho không gian sự kiện mà còn giúp khích lệ tinh thần, gửi gắm những lời chúc thành công, phát triển bền vững.</p>
+                            <h2><strong>Vì sao nên chọn kệ hoa mừng khai trương?</strong></h2>
+                            <p>Một <strong>kệ hoa chúc mừng khai trương</strong> không chỉ là món quà mà còn mang ý nghĩa sâu sắc. Nó thể hiện sự phồn vinh, thịnh vượng và may mắn, giúp người nhận cảm thấy được động viên và hứng khởi trong công việc mới. Với những loại hoa phổ biến như hồng, ly, lan... mỗi kệ hoa đều mang đến thông điệp riêng nhưng đều chung mục đích là chúc mừng thành công.</p>
+                            <p><img data-thumb="original" original-height="844" original-width="844" src="//bizweb.dktcdn.net/100/487/411/files/ke-hoa-mung-khai-truong.jpg?v=1726042648445" style="width: 640px; height: 640px;"></p>
+                            <h3><strong>Kệ hoa chúc mừng sự kiện – Tạo dấu ấn ấn tượng</strong></h3>
+                            <p>Trong các sự kiện quan trọng như hội nghị, hội thảo hay triển lãm, một <strong>kệ hoa chúc mừng sự kiện</strong> không chỉ là món quà gửi đến người tổ chức mà còn là cách tạo điểm nhấn cho không gian. Những kệ hoa tươi với sắc màu rực rỡ sẽ giúp sự kiện trở nên trang trọng và thu hút hơn.</p>
+                            <p>Với <strong>kệ hoa sự kiện</strong>, bạn có thể chọn nhiều phong cách khác nhau tùy theo tính chất buổi lễ. Những kệ hoa đơn giản với màu sắc nhẹ nhàng phù hợp cho những sự kiện thanh lịch, trong khi các sự kiện lớn có thể chọn những kệ hoa hoành tráng, nhiều tầng để tạo sự ấn tượng.</p>
+                            <h2><strong>Làm thế nào để chọn kệ hoa tươi khai trương phù hợp?</strong></h2>
+                            <p>Khi lựa chọn <a href="https://gochoaxinh.com/ke-mung-khai-truong"><strong>kệ hoa tươi khai trương</strong></a>, nhiều người thường lo ngại về ngân sách. Tuy nhiên, có nhiều sự lựa chọn khác nhau phù hợp với túi tiền của mỗi người mà vẫn đảm bảo vẻ đẹp và sự sang trọng. Các <strong>kệ hoa khai trương giá rẻ</strong> thường được làm từ những loại hoa phổ biến như cúc, hướng dương, hoa đồng tiền... Những loại hoa này không chỉ có giá thành phải chăng mà còn mang ý nghĩa may mắn, thịnh vượng.</p>
+                            <p>Nếu muốn đầu tư vào những kệ hoa cao cấp hơn, bạn có thể chọn hoa lan, hoa hồng nhập khẩu, giúp nâng tầm món quà và thể hiện sự tinh tế, sang trọng.</p>
+                            <h3><strong>Kệ Hoa Mừng Thành Lập – Cột mốc đáng nhớ</strong></h3>
+                            <p>Bên cạnh các sự kiện khai trương, ngày thành lập công ty cũng là một dịp đặc biệt. Đây là thời điểm để nhìn lại những thành tựu đã đạt được và hướng tới tương lai phát triển hơn. Một <strong>kệ hoa mừng thành lập</strong> không chỉ là lời chúc mừng mà còn thể hiện sự động viên và niềm tin vào sự phát triển của doanh nghiệp.</p>
+                            <p>Những kệ hoa cho dịp này thường mang phong cách trang trọng, sử dụng những loại hoa cao cấp và được thiết kế tỉ mỉ để thể hiện sự chuyên nghiệp và thành công của công ty.</p>
+                            <p><img data-thumb="original" original-height="823" original-width="823" src="//bizweb.dktcdn.net/100/487/411/files/ke-hoa-mung-khai-truong-1.jpg?v=1726045462074" style="width: 640px; height: 640px;"></p>
+                            <h3><strong>Kệ Hoa Mừng Triển Lãm – Tôn vinh sự sáng tạo</strong></h3>
+                            <p>Một <strong>kệ hoa mừng triển lãm</strong> là cách tuyệt vời để tôn vinh những sản phẩm, ý tưởng hay nghệ thuật được trưng bày. Triển lãm thường là dịp quan trọng để chia sẻ và giới thiệu những thành tựu mới nhất, do đó, kệ hoa trong dịp này cũng cần phải thật độc đáo và sáng tạo để phù hợp với không gian và nội dung triển lãm.</p>
+                            <p>Các loại hoa thường được dùng trong kệ hoa triển lãm thường có vẻ đẹp lạ, kết hợp giữa những gam màu nổi bật, tạo nên sự khác biệt và thu hút sự chú ý của khách tham dự.</p>
+                            <h3><strong>Kệ Hoa Mừng Khai Trương Cửa Hàng – Lời chúc đầy ý nghĩa</strong></h3>
+                            <p>Khai trương một cửa hàng mới là bước khởi đầu quan trọng trong sự nghiệp kinh doanh của nhiều người. Một <strong>kệ hoa mừng khai trương cửa hàng</strong> không chỉ là món quà tinh thần mà còn là lời chúc phát tài, phát lộc. Kệ hoa với sắc đỏ, vàng – những màu tượng trưng cho sự may mắn – sẽ mang lại cảm giác phấn khởi cho người nhận và tạo không khí vui tươi, hân hoan cho sự kiện.</p>
+                            <p>Khi chọn <a href="~/SanPham/ke_hoa_chuc_mung"><strong>kệ hoa khai trương cửa hàng</strong></a>, bạn nên chú ý đến màu sắc và thông điệp của từng loại hoa. Hoa hồng đỏ mang ý nghĩa chúc phúc, hoa đồng tiền tượng trưng cho tài lộc, còn hoa lan biểu trưng cho sự thanh cao và sang trọng.</p>
+                            <p><strong>Kệ Hoa Sự Kiện – Tạo điểm nhấn cho không gian</strong></p>
+                            <p>Trong các sự kiện lớn nhỏ, việc có một <strong>kệ hoa sự kiện</strong> đẹp là yếu tố không thể thiếu để làm nổi bật không gian. Từ những buổi họp mặt thân mật đến các lễ hội lớn, kệ hoa sự kiện luôn giúp tôn lên vẻ đẹp trang trọng và mang lại sự tươi mới cho không gian.</p>
+                            <p>Khi lựa chọn kệ hoa cho sự kiện, cần chú ý đến chủ đề và màu sắc chính của buổi lễ. Những kệ hoa với gam màu tươi sáng, hài hòa sẽ giúp tạo nên không khí vui tươi, chào đón, trong khi các sự kiện trang trọng có thể chọn những mẫu hoa đơn giản nhưng tinh tế.</p>
+                            <p><strong>Kết Luận</strong></p>
+                            <p>Dù là <strong>kệ hoa mừng khai trương</strong>, <strong>kệ hoa chúc mừng sự kiện</strong> hay bất kỳ loại kệ hoa nào khác, việc chọn đúng mẫu hoa phù hợp sẽ giúp bạn gửi gắm những thông điệp chúc mừng ý nghĩa nhất. Mỗi kệ hoa không chỉ mang lại niềm vui cho người nhận mà còn thể hiện sự quan tâm, trân trọng trong từng dịp quan trọng.</p>
+
+                            <div class="bg_cl active" bis_skin_checked="1"></div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

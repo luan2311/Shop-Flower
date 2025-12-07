@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Admin</title>
+    <link rel="stylesheet" href="~/Areas/Admin/Views/Dashboard/admin_style.css" />
+</head>
+<body>
+    <header class="admin-header">
+        <div class="container">
+            <h1 class="logo">ShopFlower - Admin</h1>
+            <nav class="admin-nav">
+                <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })">Dashboard</a> |
+                <a href="@Url.Action("tat_ca_san_pham", "SanPham", new { area = "" })">Site</a> |
+                <a href="@Url.Action("Dang_xuat", "Account", new { area = "" })">Đăng xuất</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-main container">
+        @RenderBody()
+    </main>
+
+    <footer class="admin-footer">
+        <div class="container">© @DateTime.Now.Year - ShopFlower Admin</div>
+    </footer>
+</body>
+</html>

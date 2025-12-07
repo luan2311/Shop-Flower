@@ -1,0 +1,137 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<ShopFlower.Models.TAIKHOAN>
+
+@{
+    ViewBag.Title = "Quản lý Tài Khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-center">QUẢN LÝ TÀI KHOẢN</h1>
+
+@*@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}*@
+
+
+<div class="d-flex justify-content-between mb-3">
+    @using (Html.BeginForm("QL_TaiKhoan", "Dashboard", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo tên đăng nhập hoặc email..." })
+        </div>
+        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
+    }
+    <p class="text-right mb-0">
+        @Html.ActionLink("Tạo tài khoản mới", "Create_Account", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+
+@Html.AntiForgeryToken()
+
+
+<table class="table table-light table-striped table-hover">
+    <tr>
+        <th>Họ Tên</th>
+        <th>Tên Đăng Nhập</th>
+        <th>Email</th>
+        <th>Trạng thái</th>
+        <th>Ngày tạo</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.TenHienThi)</td>
+            <td>@Html.DisplayFor(modelItem => item.TenDangNhap)</td>
+            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+            <td>@Html.CheckBoxFor(modelItem => item.IsActive, new { @disabled = "disabled" })</td>
+            <td>@Html.DisplayFor(modelItem => item.NgayTao)</td>
+            <td>
+
+                @if (item.IsActive)
+                {
+                    using (Html.BeginForm("Delete_Account", "Dashboard", new { id = item.MaTK }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không?');">
+                            Vô hiệu hóa
+                        </button>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("Activate_Account", "Dashboard", new { id = item.MaTK }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-success btn-sm"
+                                onclick="return confirm('Bạn có chắc chắn muốn kích hoạt lại tài khoản này không?');">
+                            Kích hoạt
+                        </button>
+                    }
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="d-flex justify-content-between">
+    <div>
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    </div>
+    <nav aria-label="Page navigation">
+        @Html.PagedListPager(Model, page => Url.Action("QL_TaiKhoan", new { page }), new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            //PageClasses = new string[] { "page-link" }
+        })
+    </nav>
+</div>
+
+@*@section scripts {
+        <script>
+            $(document).ready(function () {
+                $('.delete-btn').click(function (e) {
+                    e.preventDefault();
+
+                    var id = $(this).data('id');
+                    if (!confirm('Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không?')) {
+                        return;
+                    }
+
+                    var token = $('#deleteForm input[name="__RequestVerificationToken"]').val();
+
+                    $.ajax({
+                        url: '@Url.Action("Delete_Account", "Dashboard", new { area = "Admin" })',
+                        type: 'POST',
+                        data: {
+                            __RequestVerificationToken: token,
+                            id: id
+                        },
+                        success: function (result) {
+
+                            if (result.success) {
+                                $('#row-' + id).fadeOut('slow', function () {
+                                    $(this).remove();
+                                });
+                            } else {
+                                alert("Lỗi: " + result.message);
+                            }
+                        },
+                        error: function (xhr) {
+                            console.log(xhr.responseText);
+                            alert('Đã xảy ra lỗi khi cố gắng xóa tài khoản.');
+                        }
+                    });
+                });
+            });
+        </script>
+    }*@
+

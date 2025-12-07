@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập tài khoản";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+    var returnUrl = Request.QueryString["ReturnUrl"] ?? "";
+}
+
+<div class="bg-gray">
+    <section class="section">
+        <div class="container">
+            <div class="page_login">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xl-4 offset-0 offset-xl-4 offset-lg-4 offset-md-3 offset-xl-3 col-12 account-animate">
+                        <div class="page-login pagecustome clearfix">
+                            <div class="wpx">
+                                <h1 class="title_heads a-center"><span>Đăng nhập</span></h1>
+
+                                @if (TempData["ForgotResult"] != null)
+                                {
+                                    <div class="alert alert-success">@TempData["ForgotResult"]</div>
+                                }
+                                @if (TempData["ForgotError"] != null)
+                                {
+                                    <div class="alert alert-danger">@TempData["ForgotError"]</div>
+                                }
+
+                                <div id="login" class="section">
+                                    @using (Html.BeginForm("Dang_nhap", "Account", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <span class="form-signup text-danger">
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        </span>
+
+                                        <div class="form-signup clearfix">
+                                            <fieldset class="form-group">
+                                                <input type="text"
+                                                       class="form-control form-control-lg"
+                                                       value=""
+                                                       name="TenDangNhap"
+                                                       placeholder="Tên đăng nhập"
+                                                       required />
+                                            </fieldset>
+
+                                            <fieldset class="form-group">
+                                                <input type="password"
+                                                       class="form-control form-control-lg"
+                                                       name="MatKhau"
+                                                       placeholder="Mật khẩu"
+                                                       required />
+                                            </fieldset>
+
+                                            <div class="pull-xs-left">
+                                                <input class="btn btn-primary btn-style" type="submit" value="ĐĂNG NHẬP" />
+                                            </div>
+
+                                            <div class="btn_boz_khac">
+                                                <div class="btn_khac">
+                                                    <span class="quenmk" style="cursor: pointer;">Quên mật khẩu?</span>
+                                                    <a href="@Url.Action("Dang_ky", "Account")" class="btn-link-style btn-register" title="Đăng ký tại đây">Đăng ký tại đây</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="h_recover" style="display:none;">
+                                    <h1 class="title_heads a-center"><span>Lấy lại mật khẩu</span></h1>
+                                    <div id="recover-password" class="form-signup page-login">
+                                        @using (Html.BeginForm("Quen_mat_khau", "Account", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <div class="form-signup clearfix">
+                                                <p>Chúng tôi sẽ gửi cho bạn một email để kích hoạt việc đặt lại mật khẩu.</p>
+                                                <fieldset class="form-group">
+                                                    <input type="email" class="form-control form-control-lg" value="" name="email" id="recover-email" placeholder="Email" required="">
+                                                </fieldset>
+                                            </div>
+                                            <div class="action_bottom">
+                                                <input class="btn btn-primary" style="margin-top: 0px;" type="submit" value="Gửi">
+                                                <span class="btn btn-link quay_lai" style="cursor: pointer;">Hủy</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var loginForm = document.getElementById('login');
+            var recoverDiv = document.querySelector('.h_recover');
+            var mainTitle = document.querySelector('h1.title_heads'); // Chỉ có một H1 chính
+
+            function showRecoverForm() {
+                loginForm.style.display = 'none';
+                if(mainTitle) mainTitle.style.display = 'none';
+                recoverDiv.style.display = 'block';
+            }
+
+            function showLoginForm() {
+                recoverDiv.style.display = 'none';
+                loginForm.style.display = 'block';
+                if(mainTitle) mainTitle.style.display = 'block';
+            }
+
+            document.querySelector('.quenmk').addEventListener('click', showRecoverForm);
+            document.querySelector('.quay_lai').addEventListener('click', showLoginForm);
+
+            // Kiểm tra URL để quyết định form nào sẽ hiển thị khi tải lại trang
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('show_recover')) {
+                showRecoverForm();
+            }
+        });
+    </script>
+}

@@ -1,0 +1,79 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<ShopFlower.Models.TINTUC>
+
+@{
+    ViewBag.Title = "Quản lý Tin Tức";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-center">QUẢN LÝ TIN TỨC</h1>
+
+<div class="d-flex justify-content-between mb-3">
+    @using (Html.BeginForm("QL_TinTuc", "Dashboard", FormMethod.Get, new { @class = "form-inline mb-3" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo tiêu đề..." })
+        </div>
+        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
+    }
+    <p class="text-right">
+        @Html.ActionLink("Tạo tin tức mới", "CreateTinTuc", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+    
+<table class="table table-light table-striped table-hover">
+    <tr>
+        <th>Tiêu Đề</th>
+        <th>Ngày Đăng</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.TIEUDE)</td>
+            <td>
+                @(item.NGAYTHEM?.ToString("dd/MM/yyyy"))
+            </td>
+            <td>
+
+                @using (Html.BeginForm("EditTinTuc", "Dashboard", FormMethod.Get))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", item.MATT)
+
+                    
+                    <button type="submit"
+                            class="btn btn-primary btn-sm">
+                        Sửa
+                    </button>
+                }
+                @using (Html.BeginForm("DeleteTinTuc", "Dashboard", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", item.MATT)
+
+                    <button type="submit"
+                            class="btn btn-danger mt-2 btn-sm"
+                            onclick="return confirm('Bạn có chắc muốn xóa tin tức này không?');">
+                        Xóa
+                    </button>
+                }
+
+            </td>
+        </tr>
+    }
+</table>
+<div class="d-flex justify-content-between">
+    <div>
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    </div>
+    <nav aria-label="Page navigation">
+        @Html.PagedListPager(Model, page => Url.Action("QL_TinTuc", new { page }), new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            //PageClasses = new string[] { "page-link" }
+        })
+    </nav>
+</div>

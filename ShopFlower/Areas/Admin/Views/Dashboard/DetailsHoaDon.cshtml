@@ -1,0 +1,52 @@
+﻿@model ShopFlower.Models.HOADON
+
+@{
+    ViewBag.Title = "Chi tiết Hóa Đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center">CHI TIẾT HÓA ĐƠN</h2>
+
+<div>
+    <h4>Hóa Đơn #@Model.MaHD</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Tên Người Nhận</dt>
+        <dd>@Html.DisplayFor(model => model.TenNguoiNhan)</dd>
+
+        <dt>Ngày Đặt</dt>
+        <dd>@Model.NgayDat.ToString("dd/MM/yyyy")</dd>
+
+        <dt>Tổng Tiền</dt>
+        <dd>@Model.TongTien.ToString("N0") VNĐ</dd>
+
+        <dt>Trạng Thái</dt>
+        <dd>@Html.DisplayFor(model => model.TrangThai)</dd>
+
+        <dt>Địa Chỉ Giao Hàng</dt>
+        <dd>@Html.DisplayFor(model => model.DiaChiNhan)</dd>
+
+        <dt>Tài Khoản</dt>
+        <dd>@Html.DisplayFor(model => model.TAIKHOAN.TenDangNhap)</dd>
+    </dl>
+
+    <h4>Chi Tiết Sản Phẩm</h4>
+    <table class="table">
+        <tr>
+            <th>Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Đơn Giá</th>
+        </tr>
+        @foreach (var item in Model.CTHDs)
+        {
+            <tr>
+                <td>@item.SANPHAM.TenSP</td>
+                <td>@item.SoLuong</td>
+                <td>@item.DonGia.ToString("N0") VNĐ</td>
+            </tr>
+        }
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Trở về danh sách", "QL_HoaDon", null, new { @class = "btn btn-default" })
+</p>

@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - Admin</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="~/Contents/CSS/Dashboard.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3 style="text-align:center;">Admin</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a href="@Url.Action("Dashboard", "Dashboard", new { area = "Admin" })"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QL_SanPham", "Dashboard", new { area = "Admin" })"><i class="fas fa-box"></i> Quản lý Sản phẩm</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QL_HoaDon", "Dashboard", new { area = "Admin" })"><i class="fas fa-file-invoice"></i> Quản lý Hóa đơn</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QL_TaiKhoan", "Dashboard", new { area = "Admin" })"><i class="fas fa-users"></i>  Quản lý Tài khoản</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QL_TinTuc", "Dashboard", new { area = "Admin" })"><i class="fas fa-newspaper"></i>  Quản lý Tin tức</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QL_LienHe", "Dashboard", new { area = "Admin" })"><i class="fas fa-address-book"></i> Quản lý Liên hệ</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-bell"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user"></i> Admin
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                    <form method="post" action="@Url.Action("Dang_xuat", "Account", new { area = "" })" style="display:inline" id="logoutForm">
+                                        @Html.AntiForgeryToken()
+                                        <a class="dropdown-item" href="#" rel="nofollow" title="Đăng xuất" onclick="document.getElementById('logoutForm').submit(); return false;">Logout</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content-body">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('.sidebar').toggleClass('active');
+                $('.main-content').toggleClass('active');
+            });
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

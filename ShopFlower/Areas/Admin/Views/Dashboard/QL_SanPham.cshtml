@@ -1,0 +1,100 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<ShopFlower.Models.SANPHAM>
+
+@{
+    ViewBag.Title = "Quản lý Sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-center">QUẢN LÝ SẢN PHẢM</h1>
+
+<div class="d-flex justify-content-between mb-3">
+    @using (Html.BeginForm("QL_SanPham", "Dashboard", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm sản phẩm..." })
+        </div>
+        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
+    }
+    <p class="text-right mb-0">
+        @Html.ActionLink("Tạo sản phẩm mới", "CreateSanPham", null, new { @class = "btn btn-success" })
+    </p>
+</div>
+
+<table class="table table table-light table-striped table-hover">
+    <tr>
+        <th>
+            Tên Sản Phẩm
+        </th>
+        <th>
+            Giá Bán
+        </th>
+        <th>
+            Số lượng tồn kho
+        </th>
+        <th>
+            Tên loại hàng
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenSP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiaBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuongTon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LOAIHANG.TenLoai)
+            </td>
+            <td>
+
+                @using (Html.BeginForm("EditSanPham", "Dashboard", FormMethod.Get))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", item.MaSP)
+                    <button type="submit"
+                            class="btn btn-primary btn-sm" >
+                        Sửa
+                    </button>
+                    
+                }
+                    @*@Html.ActionLink("Sửa", "EditSanPham", new { id = item.MaSP }, new { @class = "btn btn-primary btn-sm" }) |*@
+                    @*@Html.ActionLink("Xóa", "DeleteSanPham", new { id = item.MaSP }, new { @class = "btn btn-danger btn-sm" })*@
+
+                @using (Html.BeginForm("DeleteSanPham", "Dashboard", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", item.MaSP)
+
+                    <button type="submit"
+                            class="btn btn-danger mt-2 btn-sm">
+                        Xóa
+                    </button>
+                    }
+            </td>
+        </tr>
+    }
+
+</table>
+
+@* Thêm phần hiển thị phân trang *@
+<div class="d-flex justify-content-between">
+    <div>
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    </div>
+    <nav aria-label="Page navigation">
+        @Html.PagedListPager(Model, page => Url.Action("QL_SanPham", new { page }), new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            //PageClasses = new string[] { "page-link" }
+        })
+    </nav>
+</div>

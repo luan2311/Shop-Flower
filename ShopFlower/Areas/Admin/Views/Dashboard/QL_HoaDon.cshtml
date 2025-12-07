@@ -1,0 +1,70 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<ShopFlower.Models.HOADON>
+
+@{
+    ViewBag.Title = "Quản lý Hóa Đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-center">QUẢN LÝ HÓA ĐƠN</h1>
+
+@using (Html.BeginForm("QL_HoaDon", "Dashboard", FormMethod.Get, new { @class = "form-inline mb-3" }))
+{
+    <div class="form-group">
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo tên hoặc tài khoản..." })
+    </div>
+    <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
+}
+
+<table class="table table-light table-striped table-hover">
+    <tr>
+        <th>Mã HĐ</th>
+        <th>Tên Người Nhận</th>
+        <th>Tài Khoản</th>
+        <th>Ngày Đặt</th>
+        <th>Trạng Thái</th>
+        <th>Tổng Tiền</th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.MaHD</td>
+            <td>@item.TenNguoiNhan</td>
+            <td>@item.TAIKHOAN.TenDangNhap</td>
+            <td>@item.NgayDat.ToString("dd/MM/yyyy")</td>
+            <td>
+                @item.TrangThai.ToString()
+            </td>
+            <td>@item.TongTien.ToString("N0")</td>
+
+            <td>
+                @Html.ActionLink("Chi tiết", "DetailsHoaDon", new { id = item.MaHD }, new { @class = "btn btn-info btn-sm" })
+                
+                @using (Html.BeginForm("UpdateOrderStatus", "Dashboard", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", item.MaHD)
+
+                    <button type="submit"
+                            class="btn btn-success mt-2 btn-sm complete-order-btn"
+                            onclick="return confirm('Bạn có chắc đơn hàng này đã thanh toán?');">
+                        Completed
+                    </button>
+                }
+            </td>
+
+        </tr>
+    }
+</table>
+
+<div class="d-flex justify-content-between">
+    <div>Trang @(Model.PageNumber) / @Model.PageCount</div>
+
+    <nav aria-label="Page navigation">
+        @Html.PagedListPager(Model, page => Url.Action("QL_HoaDon", new { page }))
+    </nav>
+</div>

@@ -1,0 +1,91 @@
+﻿
+.CartHeaderContainer .cart--empty-message .btn-continue-shopping {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: #537453;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border: 2px solid #537453;
+    text-align: center;
+}
+
+    .CartHeaderContainer .cart--empty-message .btn-continue-shopping:hover {
+        background: #ea8725;
+        border-color: #ea8725;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .CartHeaderContainer .cart--empty-message .btn-continue-shopping i {
+        margin-right: 8px;
+    }
+
+/* Responsive cho button */
+@media (max-width: 768px) {
+    .CartHeaderContainer .cart--empty-message .btn-continue-shopping {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .CartHeaderContainer .cart--empty-message .btn-continue-shopping {
+        padding: 8px 16px;
+        font-size: 13px;
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+.favorite-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .favorite-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    }
+
+.btn-action {
+    font-size: 13px;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+    .btn-action:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+.add-cart:hover {
+    background: #c8e6c9 !important;
+}
+
+.remove-fav:hover {
+    background: #ffcdd2 !important;
+}
+
+@@media (max-width: 768px) {
+    .favorite-card img {
+        height: 180px !important;
+    }
+
+    .favorite-info h5 {
+        font-size: 14px !important;
+        min-height: 40px !important;
+    }
+
+    .favorite-price {
+        font-size: 16px !important;
+    }
+
+    .btn-action {
+        padding: 6px 8px !important;
+        font-size: 12px !important;
+    }
+}

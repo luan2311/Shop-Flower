@@ -1,0 +1,13 @@
+﻿razor Views\Shared\Unauthorized.cshtml
+@{
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+    ViewBag.Title = "Không có quyền";
+}
+<div class="container" style="padding:40px 0;">
+    <h2>Không có quyền truy cập</h2>
+    <p>Bạn cần đăng nhập hoặc tài khoản của bạn chưa được phân quyền để xem trang này.</p>
+    <p>
+        <a class="btn btn-primary" href="@Url.Action("Dang_nhap", "Account")">Đăng nhập</a>
+        <a class="btn btn-link" href="@Url.Action("Trang_chu", "Home")">Về trang chủ</a>
+    </p>
+</div>

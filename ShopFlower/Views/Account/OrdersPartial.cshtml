@@ -1,0 +1,53 @@
+﻿@model List<ShopFlower.Models.OrderViewModel>
+
+<div class="col-lg-9 col-12 col-right-ac">
+    <h1 class="title-head margin-top-0">Đơn hàng của bạn</h1>
+
+    <div class="my-account">
+        <div class="dashboard">
+            <div class="recent-orders">
+                <div class="table-responsive-block tab-all" style="overflow-x:auto;">
+                    <table class="table table-cart table-order" id="my-orders-table">
+                        <thead class="thead-default">
+                            <tr>
+                                <th>Đơn hàng</th>
+                                <th>Ngày</th>
+                                <th>Địa chỉ</th>
+                                <th>Giá trị đơn hàng</th>
+                                <th>TT thanh toán</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model == null || !Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="5">
+                                        <p>Không có đơn hàng nào.</p>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var o in Model)
+                                {
+                                    <tr>
+                                        <td>@o.OrderNumber</td>
+                                        <td>@o.OrderDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@o.ShippingAddress</td>
+                                        <td>@string.Format("{0:N0}₫", o.TotalAmount)</td>
+                                        <td>@o.PaymentStatus</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="paginate-pages pull-right page-account text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- pagination nếu có -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

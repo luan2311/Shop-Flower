@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Đổi mật khẩu";
+    Layout = "~/Views/Shared/_LayoutChung.cshtml";
+}
+
+<div class="bg-gray">
+    <section class="section">
+        <div class="container">
+            <div class="page_change">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xl-4 offset-0 offset-xl-4 offset-lg-4 offset-md-3 col-12 account-animate">
+                        <div class="page-change pagecustome clearfix">
+                            <div class="wpx">
+                                <h1 class="title_heads a-center"><span>Đổi mật khẩu</span></h1>
+
+                                @if (TempData["ChangePasswordSuccess"] != null)
+                                {
+                                    <div class="alert alert-success">@TempData["ChangePasswordSuccess"]</div>
+                                }
+
+                                @using (Html.BeginForm("Doi_mat_khau", "Account", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <span class="form-signup text-danger">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </span>
+
+                                    <div class="form-signup clearfix">
+                                        <fieldset class="form-group">
+                                            <input type="password" name="OldPassword" class="form-control form-control-lg" placeholder="Mật khẩu hiện tại" required />
+                                        </fieldset>
+
+                                        <fieldset class="form-group">
+                                            <input type="password" name="NewPassword" class="form-control form-control-lg" placeholder="Mật khẩu mới" required />
+                                        </fieldset>
+
+                                        <fieldset class="form-group">
+                                            <input type="password" name="ConfirmPassword" class="form-control form-control-lg" placeholder="Xác nhận mật khẩu mới" required />
+                                        </fieldset>
+
+                                        <div class="pull-xs-left">
+                                            <input class="btn btn-primary btn-style" type="submit" value="Cập nhật mật khẩu" />
+                                        </div>
+
+                                        <div class="btn_boz_khac" style="margin-top:10px;">
+                                            <div class="btn_khac">
+                                                <a href="@Url.Action("Dang_nhap", "Account")" class="btn-link-style">Quay lại đăng nhập</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
