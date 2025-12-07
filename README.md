@@ -9,4 +9,4 @@ Sau đó chụp toàn bộ mục trong References lên chatGPT để nó hướn
 
 C2:  Xóa các packages cũ rồi update mới tương ứng. Xóa file đuôi .tt của model đuôi .edmx sau đó cập nhật mới lại. Các bước còn lại tùy máy mà xử lý tương ứng.
 
-C3: Nếu References chỉ bị đỏ vài dòng không liên quan lên đến hơn 30 lỗi thì chạy 1 lần cho nó lỗi rồi Clean -> Build -> Rebuild. Rồi để đó  tầm 10 - 15p sau là nó hết.
+C3: Nếu References chỉ bị đỏ vài dòng không liên quan lên đến hơn 30 lỗi thì chạy 1 lần cho nó lỗi rồi Clean -> Build -> Rebuild. Rồi để đó  tầm 10 - 15p sau là nó chạy được (có thể vẫn đỏ). Nếu không được thì ưu tiên làm C1.
