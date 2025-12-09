@@ -99,9 +99,14 @@
                                     <div class="custom custom-btn-number show" bis_skin_checked="1">
                                         <span>Số lượng: </span>
                                         <div class="input_number_product" bis_skin_checked="1">
-                                            <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro &gt; 1 ) result.value--;return false;" type="button" fdprocessedid="2ilisv">-</button>
-                                            <input type="text" id="qtym" name="quantity" value="1" maxlength="3" class="form-control prd_quantity" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;" fdprocessedid="evp16j">
-                                            <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button" fdprocessedid="low33n"><span>+</span></button>
+                                            @*<button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro &gt; 1 ) result.value--;return false;" type="button" fdprocessedid="2ilisv">-</button>*@
+                                            <input type="button" id="qtym" name="quantity" 
+                                                   value="1" maxlength="3" class="form-control prd_quantity"
+                                                   onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" 
+                                                   onchange="if(this.value == 0)this.value=1;" fdprocessedid="evp16j"
+                                                   style="font-size:1.4rem; border: 2px solid #537453; border-radius:10px; padding: 10px 0;"
+                                                   >
+                                            @*<button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button" fdprocessedid="low33n"><span>+</span></button>*@
                                         </div>
                                     </div>
                                     <div class="btn-mua button_actions clearfix" bis_skin_checked="1">

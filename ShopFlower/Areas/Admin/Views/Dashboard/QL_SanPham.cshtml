@@ -25,6 +25,9 @@
 <table class="table table table-light table-striped table-hover">
     <tr>
         <th>
+            Ảnh Sản Phẩm
+        </th>
+        <th>
             Tên Sản Phẩm
         </th>
         <th>
@@ -42,6 +45,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                <img src="@Url.Content("~/Images/"+item.AnhSP)" style="max-width: 100px;"/>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TenSP)
             </td>

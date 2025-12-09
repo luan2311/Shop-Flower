@@ -17,13 +17,15 @@ namespace ShopFlower
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            // Web API phải đăng ký TRƯỚC MVC routes
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            // Web API configuration
-            GlobalConfiguration.Configure(WebApiConfig.Register);
         }
+
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
             var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
@@ -45,6 +47,7 @@ namespace ShopFlower
                 // ignore - leave user unauthenticated
             }
         }
+
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
             var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];

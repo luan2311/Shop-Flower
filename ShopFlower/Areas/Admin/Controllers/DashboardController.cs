@@ -115,13 +115,24 @@ namespace ShopFlower.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Dashboard/CreateSanPham
+        //// POST: Admin/Dashboard/CreateSanPham
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateSanPham([Bind(Include = "MaSP,TenSP,GiaBan,AnhSP,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanpham)
+        public ActionResult CreateSanPham([Bind(Include = "MaSP,TenSP,GiaBan,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanpham, HttpPostedFileBase AnhBiaFile)
         {
             if (ModelState.IsValid)
             {
+                if (AnhBiaFile != null && AnhBiaFile.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(AnhBiaFile.FileName);
+
+                    sanpham.AnhSP = fileName;
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Vui lòng chọn ảnh bìa.");
+                    return View(sanpham);
+                }
                 db.SANPHAMs.Add(sanpham);
                 db.SaveChanges();
                 return RedirectToAction("QL_SanPham");
@@ -130,6 +141,7 @@ namespace ShopFlower.Areas.Admin.Controllers
             ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
             return View(sanpham);
         }
+        
         // GET: Admin/Dashboard/EditSanPham/5
         public ActionResult EditSanPham(string id)
         {

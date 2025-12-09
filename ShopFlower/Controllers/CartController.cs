@@ -161,16 +161,65 @@ namespace ShopFlower.Controllers
         }
 
         //Cập nhật số lượng giỏ hàng
-        public ActionResult CapNhatGioHang(string MaSP, FormCollection f)
+        //public ActionResult CapNhatGioHang(string MaSP, FormCollection f)
+        //{
+        //    List<Cart> lstGioHang = LayGioHang();
+        //    Cart SP = lstGioHang.Single(x => x.ProductId == MaSP);
+        //    //nếu có thì update
+        //    if (SP != null)
+        //    {
+        //        SP.Quantity = int.Parse(f["txtSoLuong"].ToString());
+        //    }
+        //    return RedirectToAction("Cart", "Cart");
+        //}
+        //[HttpPost]
+        public ActionResult CapNhatGioHang(string MaSP, int txtSoLuong)
         {
-            List<Cart> lstGioHang = LayGioHang();
-            Cart SP = lstGioHang.Single(x => x.ProductId == MaSP);
-            //nếu có thì update
-            if (SP != null)
+            try
             {
-                SP.Quantity = int.Parse(f["txtSoLuong"].ToString());
+                List<Cart> lstGioHang = LayGioHang();
+                if (lstGioHang == null)
+                {
+                    return Json(new { success = false, message = "Giỏ hàng không tồn tại." });
+                }
+
+                Cart itemToUpdate = lstGioHang.FirstOrDefault(item => item.ProductId == MaSP);
+
+                if (itemToUpdate != null)
+                {
+                    // Ensure quantity is at least 1
+                    if (txtSoLuong < 1)
+                    {
+                        txtSoLuong = 1;
+                    }
+                    itemToUpdate.Quantity = txtSoLuong;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Sản phẩm không tìm thấy trong giỏ." });
+                }
+
+                // Recalculate totals correctly
+                double cartSubtotal = lstGioHang.Sum(item => item.Price * item.Quantity);
+                int cartCount = lstGioHang.Sum(item => item.Quantity);
+
+                // Save updated cart back to session
+                Session["GioHang"] = lstGioHang;
+
+                // Return JSON data for the client-side script to use
+                return Json(new
+                {
+                    success = true,
+                    itemTotalPrice = (itemToUpdate.Price * itemToUpdate.Quantity).ToString("N0"),
+                    cartSubtotal = cartSubtotal.ToString("N0"),
+                    cartCount = cartCount
+                });
             }
-            return RedirectToAction("Cart", "Cart");
+            catch (Exception ex)
+            {
+                // Log the exception (ex) for debugging
+                return Json(new { success = false, message = "Đã có lỗi xảy ra trên máy chủ." });
+            }
         }
     }
 }

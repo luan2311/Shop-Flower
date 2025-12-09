@@ -97,38 +97,32 @@
         </div>
     </div>
 </section>
+
+
 @section scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Sử dụng 'input' event để bắt cả việc gõ và nhấn mũi tên
-            $('.cart-quantity-input').on('input', function () {
-                var input = $(this);
-                var productId = input.data('product-id');
-                var quantity = parseInt(input.val());
-
-                // Đảm bảo số lượng không nhỏ hơn 1
+            // Function to update cart via AJAX
+            function updateCart(productId, quantity) {
+                // Prevent sending requests for invalid quantities
                 if (isNaN(quantity) || quantity < 1) {
-                    quantity = 1; // Đặt lại là 1 để tránh lỗi
+                    return;
                 }
 
                 $.ajax({
-                    url: '@Url.Action("UpdateCartQuantity", "Cart")',
+                    url: '@Url.Action("CapNhatGioHang", "Cart")', // Make sure this points to the correct action
                     type: 'POST',
                     data: {
-                        productId: productId,
-                        quantity: quantity
+                        MaSP: productId,      // Changed from 'productId' to 'MaSP'
+                        txtSoLuong: quantity  // Changed from 'quantity' to 'txtSoLuong'
                     },
                     success: function (response) {
+                        // Your existing success logic will now work correctly
                         if (response.success) {
-                            // Tìm dòng (row) của sản phẩm và cập nhật thành tiền của sản phẩm đó
                             var productRow = $('.ajaxcart__row[data-product-id="' + productId + '"]');
                             productRow.find('.item-total-price').text(response.itemTotalPrice + '₫');
-
-                            // Cập nhật tổng tiền của giỏ hàng
                             $('.cart-subtotal-price').text(response.cartSubtotal + '₫');
-
-                            // Sửa lại selector ở đây để nhắm đúng vào class của bạn
                             $('.count_item_pr').text(response.cartCount);
                         } else {
                             alert('Lỗi: ' + response.message);
@@ -138,6 +132,30 @@
                         alert('Đã xảy ra lỗi khi cập nhật giỏ hàng. Vui lòng thử lại.');
                     }
                 });
+            }
+
+            // Event for typing or using arrows in the input
+            $('.cart-quantity-input').on('input', function () {
+                var input = $(this);
+                var productId = input.data('product-id');
+                var quantity = parseInt(input.val());
+                updateCart(productId, quantity);
+            });
+
+            // Event for the "-" button
+            $('.btn-qty-minus').on('click', function () {
+                var input = $(this).siblings('.cart-quantity-input');
+                var currentVal = parseInt(input.val());
+                if (currentVal > 1) {
+                    input.val(currentVal - 1).trigger('input'); // Trigger the input event to fire AJAX
+                }
+            });
+
+            // Event for the "+" button
+            $('.btn-qty-plus').on('click', function () {
+                var input = $(this).siblings('.cart-quantity-input');
+                var currentVal = parseInt(input.val());
+                input.val(currentVal + 1).trigger('input'); // Trigger the input event to fire AJAX
             });
         });
     </script>
