@@ -244,14 +244,14 @@
                                         </div>
                                         <div class="product-info">
                                             <h3 class="product-name line-clamp line-clamp-2">
-                                                <a href="~/SanPham/Details?MaSP = @bohoatuoi.MaSP"
+                                                <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = bohoatuoi.MaSP.Trim() })"
                                                    title="@bohoatuoi.TenSP">
                                                     @bohoatuoi.TenSP
                                                 </a>
                                             </h3>
                                             <div class="product-price-cart">
                                                 <div class="price-box">
-                                                    <span class="price">@bohoatuoi.GiaBan₫</span>
+                                                    <span class="price">@String.Format("{0:N0} đ", bohoatuoi.GiaBan)</span>
                                                 </div>
                                                 <div class="product-button">
                                                     <input type="hidden" name="variantId" value="171650109">
@@ -392,14 +392,14 @@
                                         </div>
                                         <div class="product-info">
                                             <h3 class="product-name line-clamp line-clamp-2">
-                                                <a href="~/SanPham/Details?MaSP = @ke_hoa.MaSP"
+                                                <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = ke_hoa.MaSP.Trim() })"
                                                    title="@ke_hoa.TenSP">
                                                     @ke_hoa.TenSP
                                                 </a>
                                             </h3>
                                             <div class="product-price-cart">
                                                 <div class="price-box">
-                                                    <span class="price">@ke_hoa.GiaBan₫</span>
+                                                    <span class="price">@String.Format("{0:N0} đ", ke_hoa.GiaBan)</span>
                                                 </div>
                                                 <div class="product-button">
                                                     <input type="hidden" name="variantId" value="171650109">
@@ -473,14 +473,14 @@
                                         </div>
                                         <div class="product-info">
                                             <h3 class="product-name line-clamp line-clamp-2">
-                                                <a href="~/SanPham/Details?MaSP = @gio_hoa.MaSP"
+                                                <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = gio_hoa.MaSP.Trim() })"
                                                    title="@gio_hoa.TenSP">
                                                     @gio_hoa.TenSP
                                                 </a>
                                             </h3>
                                             <div class="product-price-cart">
                                                 <div class="price-box">
-                                                    <span class="price">@gio_hoa.GiaBan₫</span>
+                                                    <span class="price">@String.Format("{0:N0} đ", gio_hoa.GiaBan)</span>
                                                 </div>
                                                 <div class="product-button">
                                                     <input type="hidden" name="variantId" value="171650109">
@@ -584,14 +584,14 @@
                                         </div>
                                         <div class="product-info">
                                             <h3 class="product-name line-clamp line-clamp-2">
-                                                <a href="~/SanPham/Details?MaSP = @hoasap.MaSP"
+                                                <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = hoasap.MaSP.Trim() })"
                                                    title="@hoasap.TenSP">
                                                     @hoasap.TenSP
                                                 </a>
                                             </h3>
                                             <div class="product-price-cart">
                                                 <div class="price-box">
-                                                    <span class="price">@hoasap.GiaBan₫</span>
+                                                    <span class="price">@String.Format("{0:N0} đ", hoasap.GiaBan)</span>
                                                 </div>
                                                 <div class="product-button">
                                                     <input type="hidden" name="variantId" value="171650109">
@@ -716,14 +716,14 @@
                                         </div>
                                         <div class="product-info">
                                             <h3 class="product-name line-clamp line-clamp-2">
-                                                <a href="~/SanPham/Details?MaSP = @hoacuoi.MaSP"
+                                                <a href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = hoacuoi.MaSP.Trim() })"
                                                    title="@hoacuoi.TenSP">
                                                     @hoacuoi.TenSP
                                                 </a>
                                             </h3>
                                             <div class="product-price-cart">
                                                 <div class="price-box">
-                                                    <span class="price">@hoacuoi.GiaBan₫</span>
+                                                    <span class="price">@String.Format("{0:N0} đ", hoacuoi.GiaBan)</span>
                                                 </div>
                                                 <div class="product-button">
                                                     <input type="hidden" name="variantId" value="171650109">
