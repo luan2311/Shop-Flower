@@ -177,8 +177,13 @@ namespace ShopFlower.Controllers
         {
             try
             {
-                List<Cart> lstGioHang = LayGioHang();
-                if (lstGioHang == null)
+                var username = User?.Identity?.Name;
+                var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
+                
+                // Lấy giỏ hàng từ session với sessionKey đúng
+                List<Cart> lstGioHang = Session[sessionKey] as List<Cart>;
+                
+                if (lstGioHang == null || !lstGioHang.Any())
                 {
                     return Json(new { success = false, message = "Giỏ hàng không tồn tại." });
                 }
@@ -203,8 +208,8 @@ namespace ShopFlower.Controllers
                 double cartSubtotal = lstGioHang.Sum(item => item.Price * item.Quantity);
                 int cartCount = lstGioHang.Sum(item => item.Quantity);
 
-                // Save updated cart back to session
-                Session["GioHang"] = lstGioHang;
+                // Lưu lại vào session với sessionKey đúng
+                Session[sessionKey] = lstGioHang;
 
                 // Return JSON data for the client-side script to use
                 return Json(new
@@ -218,7 +223,7 @@ namespace ShopFlower.Controllers
             catch (Exception ex)
             {
                 // Log the exception (ex) for debugging
-                return Json(new { success = false, message = "Đã có lỗi xảy ra trên máy chủ." });
+                return Json(new { success = false, message = "Đã có lỗi xảy ra trên máy chủ: " + ex.Message });
             }
         }
     }
