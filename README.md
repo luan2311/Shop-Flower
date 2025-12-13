@@ -1,4 +1,12 @@
 # ShopFlower
+Download project về từ tag hoặc clone(đính kèm file SQL)
+Sau khi tải project vào package console chạy 2 lệnh tải package
+```
+Install-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform
+Install-Package Microsoft.Net.Compilers
+```
+Chạy project
+
 Có 3 cách sửa lỗi nếu tải bị lỗi file:
 
 C1: Tạo ASP.net mới chọn MVC Empty. Rồi Code toàn bộ thư mục từ file đã tải ( copy các thư mục dưới vào ASP.net mới). 
