@@ -374,10 +374,6 @@
     <Content Include="Areas\Admin\Views\Dashboard\DeleteLienHeConfirmed.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Create_Account.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\CreateTinTuc.cshtml" />
-    <Content Include="AJAX_IMPLEMENTATION_GUIDE.md" />
-    <Content Include="AJAX_SUMMARY.md" />
-    <Content Include="AJAX_QUICKSTART.md" />
-    <Content Include="AJAX_CHECKLIST.md" />
     <None Include="packages.config" />
     <Content Include="Views\Account\Dang_ky.cshtml" />
     <Content Include="Views\Account\Dang_nhap.cshtml" />
