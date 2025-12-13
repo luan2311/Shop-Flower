@@ -22,9 +22,15 @@ namespace ShopFlower.Models
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Vui lòng chọn tỉnh thành")]
         public string TinhThanh { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn quận huyện")]
         public string QuanHuyen { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn phường xã")]
         public string PhuongXa { get; set; }
+
         public string GhiChu { get; set; }
 
         [Required(ErrorMessage = "Vui lòng chọn phương thức thanh toán")]

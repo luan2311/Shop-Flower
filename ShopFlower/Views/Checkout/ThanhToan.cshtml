@@ -1,7 +1,6 @@
 ﻿@model ShopFlower.Models.ThanhToanViewModel
 @{
-    ViewBag.Title = "ThanhToan";
-    //Layout = "~/Views/Shared/_LayoutChung.cshtml";
+    ViewBag.Title = "Thanh Toán";
     Layout = null;
 }
 
@@ -12,6 +11,43 @@
     <title>Thanh toán - Blossom Corner</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link href="~/Contents/CSS/checkout_style.css" rel="stylesheet" />
+    <style>
+        /* Autocomplete Styles */
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 15px;
+            right: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+            .autocomplete-items div {
+                padding: 10px;
+                cursor: pointer;
+                background-color: #fff;
+                border-bottom: 1px solid #d4d4d4;
+            }
+
+                .autocomplete-items div:hover {
+                    background-color: #e9e9e9;
+                }
+
+        .autocomplete-active {
+            background-color: #537547 !important;
+            color: #ffffff;
+        }
+
+        .form-group {
+            position: relative;
+        }
+    </style>
 </head>
 <body>
     @using (Html.BeginForm("PlaceOrder", "Checkout", FormMethod.Post))
@@ -53,13 +89,16 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            @Html.TextBoxFor(m => m.TinhThanh, new { @class = "form-control", placeholder = "Tỉnh thành" })
+                            @Html.TextBoxFor(m => m.TinhThanh, new { @class = "form-control", placeholder = "Tỉnh thành", id = "TinhThanh", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.TinhThanh, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-md-4">
-                            @Html.TextBoxFor(m => m.QuanHuyen, new { @class = "form-control", placeholder = "Quận huyện" })
+                            @Html.TextBoxFor(m => m.QuanHuyen, new { @class = "form-control", placeholder = "Quận huyện", id = "QuanHuyen", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.QuanHuyen, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-md-4">
-                            @Html.TextBoxFor(m => m.PhuongXa, new { @class = "form-control", placeholder = "Phường xã" })
+                            @Html.TextBoxFor(m => m.PhuongXa, new { @class = "form-control", placeholder = "Phường xã", id = "PhuongXa", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.PhuongXa, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -70,8 +109,8 @@
                 <div class="form-section">
                     <h3>Thanh toán</h3>
                     <div class="payment-method">
-                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan, "VNPAY", new { id = "vnpay" })
-                        <label for="vnpay">Thanh toán qua MoMo-QR</label>
+                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan, "MOMO", new { id = "momo" })
+                        <label for="momo">Thanh toán qua MoMo-QR</label>
                         <img src="@Url.Content("~/Images/MoMo.png")" class="payment-logo" />
                     </div>
                     <div class="payment-method">
@@ -126,6 +165,173 @@
             </div>
         </div>
     }
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        // Dữ liệu mẫu cho autocomplete
+        var tinhThanhData = [
+            "TP Hồ Chí Minh", "Hà Nội", "Đà Nẵng", "Hải Phòng", "Cần Thơ",
+            "An Giang", "Bà Rịa - Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu",
+            "Bắc Ninh", "Bến Tre", "Bình Định", "Bình Dương", "Bình Phước",
+            "Bình Thuận", "Cà Mau", "Cao Bằng", "Đắk Lắk", "Đắk Nông",
+            "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang",
+            "Hà Nam", "Hà Tĩnh", "Hải Dương", "Hậu Giang", "Hòa Bình"
+        ];
+
+        var quanHuyenData = {
+            "TP Hồ Chí Minh": [
+                "Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6",
+                "Quận 7", "Quận 8", "Quận 9", "Quận 10", "Quận 11", "Quận 12",
+                "Bình Thạnh", "Tân Bình", "Tân Phú", "Phú Nhuận", "Gò Vấp",
+                "Bình Tân", "Thủ Đức"
+            ],
+            "Hà Nội": [
+                "Ba Đình", "Hoàn Kiếm", "Tây Hồ", "Long Biên", "Cầu Giấy",
+                "Đống Đa", "Hai Bà Trưng", "Hoàng Mai", "Thanh Xuân", "Hà Đông",
+                "Nam Từ Liêm", "Bắc Từ Liêm"
+            ],
+            "Đà Nẵng": [
+                "Hải Châu", "Thanh Khê", "Sơn Trà", "Ngũ Hành Sơn", "Liên Chiểu", "Cẩm Lệ"
+            ]
+        };
+
+        var phuongXaData = {
+            "Quận 7": [
+                "Tân Thuận Đông", "Tân Thuận Tây", "Tân Kiểng", "Tân Hưng",
+                "Bình Thuận", "Tân Quy", "Phú Thuận", "Tân Phú", "Tân Phong", "Phú Mỹ"
+            ],
+            "Quận 1": [
+                "Tân Định", "Đa Kao", "Bến Nghé", "Bến Thành", "Nguyễn Thái Bình",
+                "Phạm Ngũ Lão", "Cô Giang", "Nguyễn Cư Trinh", "Cầu Ông Lãnh", "Cầu Kho"
+            ],
+            "Bình Thạnh": [
+                "Phường 1", "Phường 2", "Phường 3", "Phường 5", "Phường 6", "Phường 7",
+                "Phường 11", "Phường 12", "Phường 13", "Phường 14", "Phường 15"
+            ],
+            "Ba Đình": [
+                "Phúc Xá", "Trúc Bạch", "Vĩnh Phúc", "Cống Vị", "Liễu Giai",
+                "Nguyễn Trung Trực", "Quán Thánh", "Ngọc Hà", "Điện Biên", "Đội Cấn"
+            ]
+        };
+
+        function autocomplete(inp, arr) {
+            var currentFocus;
+
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+
+                a = document.createElement("DIV");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].toUpperCase().indexOf(val.toUpperCase()) > -1) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = arr[i];
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+
+                        b.addEventListener("click", function (e) {
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+
+                            // Trigger change event
+                            var event = new Event('change');
+                            inp.dispatchEvent(event);
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+
+            inp.addEventListener("keydown", function (e) {
+                var x = this.parentNode.querySelector(".autocomplete-items");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) { // Down
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) { // Up
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) { // Enter
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+
+            function addActive(x) {
+                if (!x) return false;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+
+            function removeActive(x) {
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+
+            function closeAllLists(elmnt) {
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        // Khởi tạo khi DOM load xong
+        document.addEventListener('DOMContentLoaded', function () {
+            // Khởi tạo autocomplete cho Tỉnh Thành
+            var tinhThanhInput = document.getElementById("TinhThanh");
+            autocomplete(tinhThanhInput, tinhThanhData);
+
+            // Cập nhật Quận Huyện khi chọn Tỉnh Thành
+            tinhThanhInput.addEventListener("change", function () {
+                var quanHuyenInput = document.getElementById("QuanHuyen");
+                var phuongXaInput = document.getElementById("PhuongXa");
+                var selectedTinh = this.value;
+
+                quanHuyenInput.value = "";
+                phuongXaInput.value = "";
+
+                if (quanHuyenData[selectedTinh]) {
+                    autocomplete(quanHuyenInput, quanHuyenData[selectedTinh]);
+                } else {
+                    autocomplete(quanHuyenInput, []);
+                }
+            });
+
+            // Cập nhật Phường Xã khi chọn Quận Huyện
+            var quanHuyenInput = document.getElementById("QuanHuyen");
+            quanHuyenInput.addEventListener("change", function () {
+                var phuongXaInput = document.getElementById("PhuongXa");
+                var selectedQuan = this.value;
+
+                phuongXaInput.value = "";
+
+                if (phuongXaData[selectedQuan]) {
+                    autocomplete(phuongXaInput, phuongXaData[selectedQuan]);
+                } else {
+                    autocomplete(phuongXaInput, []);
+                }
+            });
+
+            // Khởi tạo ban đầu (empty)
+            autocomplete(quanHuyenInput, []);
+            autocomplete(document.getElementById("PhuongXa"), []);
+        });
+    </script>
 </body>
 </html>

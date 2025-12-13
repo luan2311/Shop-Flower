@@ -79,15 +79,23 @@ namespace ShopFlower.Controllers
                 return RedirectToAction("Dang_nhap", "Account");
             }
 
+            // Tạo địa chỉ đầy đủ theo format: địa chỉ, phường/xã, quận/huyện, tỉnh/thành phố
+            var diaChiDayDu = string.Format("{0}, {1}, {2}, {3}",
+                model.DiaChiGiaoHang,
+                model.PhuongXa,
+                model.QuanHuyen,
+                model.TinhThanh);
+
             // 1. Tạo và lưu hóa đơn
             var hoadon = new HOADON
             {
                 MaTK = user.MaTK,
                 NgayDat = DateTime.Now,
                 TongTien = model.TongTien,
-                DiaChiNhan = model.DiaChiGiaoHang,
+                DiaChiNhan = diaChiDayDu, // Lưu địa chỉ đầy đủ
                 SDTNhan = model.SoDienThoai,
                 TenNguoiNhan = model.HoTenNguoiNhan,
+                Email = model.Email,
                 GhiChu = model.GhiChu,
                 TrangThai = "Pending",
                 PhuongThucThanhToan = model.PhuongThucThanhToan

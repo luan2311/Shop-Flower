@@ -7,46 +7,112 @@
 
 <h2 class="text-center">CHI TIẾT HÓA ĐƠN</h2>
 
-<div>
-    <h4>Hóa Đơn #@Model.MaHD</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Tên Người Nhận</dt>
-        <dd>@Html.DisplayFor(model => model.TenNguoiNhan)</dd>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Hóa Đơn #@Model.MaHD</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-4">Tên Người Nhận</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.TenNguoiNhan)</dd>
 
-        <dt>Ngày Đặt</dt>
-        <dd>@Model.NgayDat.ToString("dd/MM/yyyy")</dd>
+                <dt class="col-sm-4">Số Điện Thoại</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.SDTNhan)</dd>
 
-        <dt>Tổng Tiền</dt>
-        <dd>@Model.TongTien.ToString("N0") VNĐ</dd>
+                <dt class="col-sm-4">Email</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
 
-        <dt>Trạng Thái</dt>
-        <dd>@Html.DisplayFor(model => model.TrangThai)</dd>
+                <dt class="col-sm-4">Địa Chỉ Giao Hàng</dt>
+                <dd class="col-sm-8">
+                    <i class="fa fa-map-marker text-danger"></i> @Html.DisplayFor(model => model.DiaChiNhan)
+                </dd>
 
-        <dt>Địa Chỉ Giao Hàng</dt>
-        <dd>@Html.DisplayFor(model => model.DiaChiNhan)</dd>
+                <dt class="col-sm-4">Ghi Chú</dt>
+                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.GhiChu) ? "Không có" : Model.GhiChu)</dd>
+            </dl>
+        </div>
 
-        <dt>Tài Khoản</dt>
-        <dd>@Html.DisplayFor(model => model.TAIKHOAN.TenDangNhap)</dd>
-    </dl>
+        <div class="col-md-6">
+            <h4>Thông Tin Đơn Hàng</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-4">Tài Khoản</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.TAIKHOAN.TenDangNhap)</dd>
 
-    <h4>Chi Tiết Sản Phẩm</h4>
-    <table class="table">
-        <tr>
-            <th>Sản Phẩm</th>
-            <th>Số Lượng</th>
-            <th>Đơn Giá</th>
-        </tr>
-        @foreach (var item in Model.CTHDs)
-        {
+                <dt class="col-sm-4">Ngày Đặt</dt>
+                <dd class="col-sm-8">@Model.NgayDat.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-4">Phương Thức TT</dt>
+                <dd class="col-sm-8">
+                    @if (Model.PhuongThucThanhToan == "COD")
+                    {
+                        <span class="badge badge-warning">Thanh toán khi nhận hàng (COD)</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-success">Thanh toán online - @Model.PhuongThucThanhToan</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Trạng Thái</dt>
+                <dd class="col-sm-8">
+                    @if (Model.TrangThai == "Completed")
+                    {
+                        <span class="badge badge-success">Đã hoàn thành</span>
+                    }
+                    else if (Model.TrangThai == "Pending")
+                    {
+                        <span class="badge badge-warning">Đang xử lý</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-secondary">@Model.TrangThai</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Tổng Tiền</dt>
+                <dd class="col-sm-8"><strong style="color: #d70018; font-size: 1.3em;">@Model.TongTien.ToString("N0") VNĐ</strong></dd>
+            </dl>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Chi Tiết Sản Phẩm</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
             <tr>
-                <td>@item.SANPHAM.TenSP</td>
-                <td>@item.SoLuong</td>
-                <td>@item.DonGia.ToString("N0") VNĐ</td>
+                <th>Ảnh</th>
+                <th>Sản Phẩm</th>
+                <th class="text-center">Số Lượng</th>
+                <th class="text-right">Đơn Giá</th>
+                <th class="text-right">Thành Tiền</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CTHDs)
+            {
+                <tr>
+                    <td style="width: 80px;">
+                        <img src="@Url.Content("~/Images/" + item.SANPHAM.AnhSP)"
+                             alt="@item.SANPHAM.TenSP"
+                             class="img-thumbnail"
+                             style="max-width: 60px; max-height: 60px;" />
+                    </td>
+                    <td>@item.SANPHAM.TenSP</td>
+                    <td class="text-center">@item.SoLuong</td>
+                    <td class="text-right">@item.DonGia.ToString("N0") VNĐ</td>
+                    <td class="text-right"><strong>@((item.DonGia * item.SoLuong).ToString("N0")) VNĐ</strong></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-right"><strong>Tổng cộng:</strong></td>
+                <td class="text-right"><strong style="color: #d70018; font-size: 1.2em;">@Model.TongTien.ToString("N0") VNĐ</strong></td>
+            </tr>
+        </tfoot>
     </table>
 </div>
-<p>
-    @Html.ActionLink("Trở về danh sách", "QL_HoaDon", null, new { @class = "btn btn-danger" })
+
+<p class="mt-3">
+    @Html.ActionLink("« Trở về danh sách", "QL_HoaDon", null, new { @class = "btn btn-secondary" })
 </p>
