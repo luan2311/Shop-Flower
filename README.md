@@ -72,7 +72,7 @@ Nếu project sử dụng `.edmx` (ADO.NET Entity Data Model):
 1. Trong Visual Studio: chọn project web làm Startup Project (chuột phải → Set as StartUp Project).
 2. Clean Solution → Build Solution.
 3. Nếu Build thành công, nhấn F5 (IIS Express) để chạy hoặc Ctrl+F5 để chạy không debug.
-4. Mở trình duyệt đến URL hiển thị (ví dụ https://localhost:xxxx) để kiểm tra trang.
+4. Mở trình duyệt đến URL hiển thị (ví dụ https://localhost:44357) để kiểm tra trang.
 
 ---
 
@@ -100,9 +100,3 @@ Nếu project sử dụng `.edmx` (ADO.NET Entity Data Model):
 - Clone repo → Tạo DB bằng file SQL → Cập nhật connection string → Restore NuGet → Update `.edmx` nếu cần → Build → Run (IIS Express).
 
 ---
-
-Nếu bạn muốn, mình có thể:
-- Cập nhật README.md trực tiếp trong repo (mở PR hoặc commit) với nội dung trên.
-- Hoặc viết thêm phần chạy bằng Docker nếu bạn muốn chạy trong container.
-
-Cho mình biết bạn muốn mình push thay đổi vào repo hay mở PR hay chỉ gửi nội dung README như trên.
