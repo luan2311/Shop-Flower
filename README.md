@@ -8,17 +8,11 @@ Hướng dẫn chạy dự án ShopFlower (ASP.NET MVC)
 - .NET Framework phù hợp với project (mặc định thường là 4.6.x hoặc 4.7.x). Nếu không rõ, mở file `.csproj` hoặc `ShopFlower.sln` để kiểm tra.
 - NuGet (đã tích hợp trong Visual Studio) hoặc `nuget.exe`.
 
-> Lưu ý: Nếu bạn muốn chạy từ dòng lệnh, một số bước trong hướng dẫn dưới đây giả định bạn sử dụng Visual Studio GUI. Nếu cần hướng dẫn chạy bằng CLI (msbuild/nuget/dotnet), báo mình biết để mình bổ sung.
-
----
-
 ## Bước 1 — Lấy mã nguồn
 Clone repo hoặc download theo tag:
 git clone https://github.com/luan2311/Shop-Flower.git
 
 Hoặc tải file zip từ GitHub và giải nén.
-
----
 
 ## Bước 2 — Chuẩn bị database
 Trong repository có file SQL (nếu tác giả đính kèm). Thực hiện:
@@ -31,8 +25,6 @@ Nếu repository không kèm file SQL, bạn cần:
 - Yêu cầu tác giả cung cấp file SQL hoặc
 - Tạo thủ công database theo cấu trúc model (.edmx) nếu có hướng dẫn.
 
----
-
 ## Bước 3 — Cập nhật chuỗi kết nối
 1. Mở `Web.config` (hoặc file cấu hình tương ứng trong project).
 2. Tìm phần `<connectionStrings>` và chỉnh sửa để trỏ tới database bạn vừa tạo. Ví dụ:
@@ -42,8 +34,6 @@ Nếu repository không kèm file SQL, bạn cần:
 </connectionStrings>
 ```
 Thay `YOUR_SERVER` và `ShopFlowerDB` phù hợp với môi trường của bạn.
-
----
 
 ## Bước 4 — Mở solution và phục hồi gói NuGet
 1. Mở `ShopFlower.sln` bằng Visual Studio.
@@ -57,8 +47,6 @@ Install-Package Microsoft.Net.Compilers
    - Chụp danh sách References (các mục bị dấu vàng) và dùng để tìm và cài các NuGet tương ứng.
    - Hoặc dùng "Manage NuGet Packages for Solution..." để tìm và cài.
 
----
-
 ## Bước 5 — Model Entity (.edmx)
 Nếu project sử dụng `.edmx` (ADO.NET Entity Data Model):
 - Nếu file `.edmx` mất metadata hoặc bị lỗi, làm như sau:
@@ -66,15 +54,11 @@ Nếu project sử dụng `.edmx` (ADO.NET Entity Data Model):
   2. Nếu file `.tt` (Text Template) có vấn đề, xoá file `.tt` cũ và tạo lại hoặc regen bằng cách chuột phải vào `.edmx` → "Run Custom Tool".
 - Nếu bạn không muốn sửa, một cách an toàn là tạo project ASP.NET MVC mới (Empty MVC) và copy toàn bộ thư mục code từ repo vào project mới, sau đó sửa lại model theo kiểu “EF Designer from Database”.
 
----
-
 ## Bước 6 — Build và chạy
 1. Trong Visual Studio: chọn project web làm Startup Project (chuột phải → Set as StartUp Project).
 2. Clean Solution → Build Solution.
 3. Nếu Build thành công, nhấn F5 (IIS Express) để chạy hoặc Ctrl+F5 để chạy không debug.
 4. Mở trình duyệt đến URL hiển thị (ví dụ https://localhost:44357) để kiểm tra trang.
-
----
 
 ## Khắc phục lỗi thường gặp
 - Lỗi thiếu assembly / reference (vàng trong References):
@@ -86,17 +70,11 @@ Nếu project sử dụng `.edmx` (ADO.NET Entity Data Model):
   - Xoá `.tt` cũ và tạo lại từ `.edmx` hoặc chạy "Run Custom Tool" trên `.tt`.
 - Nếu project cũ / framework không tương thích:
   - Tạo một ASP.NET MVC mới (Empty), copy code qua, cài package mới nhất tương ứng, rồi rebuild.
-  
----
 
 ## Gợi ý khi vẫn không chạy được
 1. Ghi lại tất cả lỗi compile hoặc runtime (copy toàn bộ lỗi) và gửi cho mình — mình sẽ giúp phân tích cụ thể.
 2. Chụp màn hình phần References (nếu có dấu vàng) để mình hướng dẫn cài các NuGet tương ứng.
 3. Cung cấp file SQL (nếu chưa có) hoặc thông tin connection string hiện tại.
 
----
-
 ## Tóm tắt nhanh
 - Clone repo → Tạo DB bằng file SQL → Cập nhật connection string → Restore NuGet → Update `.edmx` nếu cần → Build → Run (IIS Express).
-
----
