@@ -125,6 +125,7 @@
     <Content Include="Areas\Admin\Views\Dashboard\admin_style.css" />
     <Content Include="Contents\CSS\404page.css" />
     <Content Include="Contents\CSS\account_style.css" />
+    <Content Include="Contents\CSS\ajax-notification.css" />
     <Content Include="Contents\CSS\blog_style.css" />
     <Content Include="Contents\CSS\breadcrumb_style.css" />
     <Content Include="Contents\CSS\cart_style.css" />
@@ -137,6 +138,7 @@
     <Content Include="Contents\CSS\Style_Layout.css" />
     <Content Include="Contents\CSS\trangchu_style.css" />
     <Content Include="Contents\CSS\wishlist_style.css" />
+    <Content Include="Contents\JS\ajax-handler.js" />
     <Content Include="Contents\JS\main.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Global.asax" />
@@ -372,6 +374,10 @@
     <Content Include="Areas\Admin\Views\Dashboard\DeleteLienHeConfirmed.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Create_Account.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\CreateTinTuc.cshtml" />
+    <Content Include="AJAX_IMPLEMENTATION_GUIDE.md" />
+    <Content Include="AJAX_SUMMARY.md" />
+    <Content Include="AJAX_QUICKSTART.md" />
+    <Content Include="AJAX_CHECKLIST.md" />
     <None Include="packages.config" />
     <Content Include="Views\Account\Dang_ky.cshtml" />
     <Content Include="Views\Account\Dang_nhap.cshtml" />

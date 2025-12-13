@@ -12,6 +12,7 @@ namespace ShopFlower.Controllers
     {
         // GET: Cart
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
+
         public List<Cart> LayGioHang()
         {
             List<Cart> lstGioHang = Session["Cart"] as List<Cart>;
@@ -24,24 +25,6 @@ namespace ShopFlower.Controllers
             return lstGioHang;
         }
 
-        //public ActionResult ThemGioHang(string ms, string strURL)
-        //{
-        //    //Lấy giỏ hàng
-        //    List<Cart> lstGioHang = LayGioHang();
-        //    //Kiểm tra hoa có tồn tại trong Session["Cart"] chưa?
-        //    Cart SP = lstGioHang.Find(x => x.ProductId == ms);
-        //    if (SP == null) //chưa có trong giỏ
-        //    {
-        //        SP = new Cart(ms);
-        //        lstGioHang.Add(SP);
-        //        return Redirect(strURL);
-        //    }
-        //    else // có thì +1
-        //    {
-        //        SP.Quantity++;
-        //        return Redirect(strURL);
-        //    }
-        //}
         public ActionResult ThemGioHang(string ms, string strURL)
         {
             var username = User?.Identity?.Name;
@@ -88,19 +71,6 @@ namespace ShopFlower.Controllers
             return ttt;
         }
 
-        //Trang Giỏ hàng
-        //public ActionResult Cart()
-        //{
-        //    if (Session["Cart"] == null)
-        //    {
-        //        return RedirectToAction("empty_cart", "Cart");
-        //    }
-        //    List<Cart> lstGioHang = LayGioHang();
-
-        //    ViewBag.TongSoLuong = TongSoLuong();
-        //    ViewBag.TongThanhTien = TongThanhTien();
-        //    return View(lstGioHang);
-        //}
         public ActionResult Cart()
         {
             var username = User?.Identity?.Name;
@@ -117,12 +87,6 @@ namespace ShopFlower.Controllers
             return View();
         }
 
-        //Icon Giỏ hàng + Show Số lượng SP trong giỏ
-        //public ActionResult CartPartial()
-        //{
-        //    ViewBag.TongSoLuong = TongSoLuong();
-        //    return PartialView();
-        //}
         public ActionResult CartPartial()
         {
             var username = User?.Identity?.Name;
@@ -132,22 +96,49 @@ namespace ShopFlower.Controllers
             return PartialView("CartPartial");
         }
 
-        //Xóa 1 SP trong Cart
+        //Xóa 1 SP trong Cart - Hỗ trợ AJAX
         public ActionResult XoaGioHang(string MaSP)
         {
-            List<Cart> lstGioHang = LayGioHang();
+            var username = User?.Identity?.Name;
+            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
+            var lstGioHang = Session[sessionKey] as List<Cart> ?? new List<Cart>();
+
             //kiểm tra hoa cần xóa còn trong Cart không
             Cart SP = lstGioHang.SingleOrDefault(s => s.ProductId == MaSP);
             if (SP != null) //có thì xóa
             {
                 lstGioHang.RemoveAll(s => s.ProductId == MaSP);
-                
+                Session[sessionKey] = lstGioHang;
+
+                // Tính toán lại
+                double cartSubtotal = lstGioHang.Sum(item => item.Price * item.Quantity);
+                int cartCount = lstGioHang.Sum(item => item.Quantity);
+
+                // Nếu là AJAX request, trả về JSON
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        cartSubtotal = cartSubtotal.ToString("N0"),
+                        cartCount = cartCount,
+                        isEmpty = lstGioHang.Count == 0
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
                 if (lstGioHang.Count == 0) //Cart empty
                 {
                     return RedirectToAction("empty_cart", "Cart");
                 }
                 return RedirectToAction("Cart", "Cart");
             }
+
+            // Nếu là AJAX request và không tìm thấy sản phẩm
+            if (Request.IsAjaxRequest())
+            {
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm" }, JsonRequestBehavior.AllowGet);
+            }
+
             return RedirectToAction("Cart", "Cart");
         }
 
@@ -161,28 +152,16 @@ namespace ShopFlower.Controllers
         }
 
         //Cập nhật số lượng giỏ hàng
-        //public ActionResult CapNhatGioHang(string MaSP, FormCollection f)
-        //{
-        //    List<Cart> lstGioHang = LayGioHang();
-        //    Cart SP = lstGioHang.Single(x => x.ProductId == MaSP);
-        //    //nếu có thì update
-        //    if (SP != null)
-        //    {
-        //        SP.Quantity = int.Parse(f["txtSoLuong"].ToString());
-        //    }
-        //    return RedirectToAction("Cart", "Cart");
-        //}
-        //[HttpPost]
         public ActionResult CapNhatGioHang(string MaSP, int txtSoLuong)
         {
             try
             {
                 var username = User?.Identity?.Name;
                 var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-                
+
                 // Lấy giỏ hàng từ session với sessionKey đúng
                 List<Cart> lstGioHang = Session[sessionKey] as List<Cart>;
-                
+
                 if (lstGioHang == null || !lstGioHang.Any())
                 {
                     return Json(new { success = false, message = "Giỏ hàng không tồn tại." });
@@ -225,6 +204,22 @@ namespace ShopFlower.Controllers
                 // Log the exception (ex) for debugging
                 return Json(new { success = false, message = "Đã có lỗi xảy ra trên máy chủ: " + ex.Message });
             }
+        }
+
+        // API lấy thông tin giỏ hàng (cho AJAX)
+        [HttpGet]
+        public ActionResult GetCartInfo()
+        {
+            var username = User?.Identity?.Name;
+            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
+            var cart = Session[sessionKey] as List<Cart> ?? new List<Cart>();
+
+            return Json(new
+            {
+                success = true,
+                count = cart.Sum(c => c.Quantity),
+                total = cart.Sum(c => c.TotalPrice).ToString("N0")
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

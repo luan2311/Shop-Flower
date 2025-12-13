@@ -282,5 +282,87 @@ namespace ShopFlower.Controllers
 
             return View(paginatedProducts);
         }
+        
+        // API Search qua AJAX - Bổ sung mới
+        [HttpGet]
+        public ActionResult SearchAjax(string keyword)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(keyword))
+                {
+                    return Json(new { success = false, message = "Vui lòng nhập từ khóa tìm kiếm" }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Tìm kiếm sản phẩm
+                var products = db.SANPHAMs
+                    .Where(p => p.TenSP.Contains(keyword) || 
+                                p.MoTaSP.Contains(keyword) ||
+                                p.LOAIHANG.TenLoai.Contains(keyword))
+                    .Take(10) // Giới hạn 10 kết quả
+                    .Select(p => new
+                    {
+                        MaSP = p.MaSP,
+                        TenSP = p.TenSP,
+                        GiaBan = p.GiaBan,
+                        AnhSP = p.AnhSP,
+                        MoTaSP = p.MoTaSP
+                    })
+                    .ToList();
+
+                return Json(new
+                {
+                    success = true,
+                    products = products,
+                    count = products.Count
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+   
+        // API lấy thông tin sản phẩm qua AJAX
+        [HttpGet]
+        public ActionResult GetProductInfo(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    return Json(new { success = false, message = "Mã sản phẩm không hợp lệ" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var product = db.SANPHAMs
+                    .Where(p => p.MaSP == id)
+                    .Select(p => new
+                    {
+                        MaSP = p.MaSP,
+                        TenSP = p.TenSP,
+                        GiaBan = p.GiaBan,
+                        AnhSP = p.AnhSP,
+                        MoTaSP = p.MoTaSP,
+                        SoLuongTon = p.SoLuongTon,
+                        TenLoai = p.LOAIHANG.TenLoai
+                    })
+                    .FirstOrDefault();
+
+                if (product == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy sản phẩm" }, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    product = product
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

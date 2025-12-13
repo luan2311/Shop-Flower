@@ -106,7 +106,7 @@ namespace ShopFlower.Controllers
             return PartialView("WishlistPartial");
         }
 
-        // Xóa 1 SP trong Wishlist
+        // Xóa 1 SP trong Wishlist - Hỗ trợ AJAX
         public ActionResult XoaSanPhamYeuThich(string MaSP)
         {
             var lstWishlist = LayDanhSachYeuThich();
@@ -119,12 +119,30 @@ namespace ShopFlower.Controllers
                 var key = GetSessionKey();
                 Session[key] = lstWishlist;
 
+                // Nếu là AJAX request, trả về JSON
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        count = lstWishlist.Count,
+                        isEmpty = lstWishlist.Count == 0
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
                 if (lstWishlist.Count == 0) //Wishlist empty
                 {
                     return RedirectToAction("empty_wishlist", "Wishlist");
                 }
                 return RedirectToAction("Wishlist", "Wishlist");
             }
+
+            // Nếu là AJAX request và không tìm thấy sản phẩm
+            if (Request.IsAjaxRequest())
+            {
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm" }, JsonRequestBehavior.AllowGet);
+            }
+
             return RedirectToAction("Wishlist", "Wishlist");
         }
 
@@ -179,6 +197,19 @@ namespace ShopFlower.Controllers
             }
 
             return RedirectToAction("Wishlist", "Wishlist");
+        }
+
+        // API lấy thông tin wishlist (cho AJAX)
+        [HttpGet]
+        public ActionResult GetWishlistInfo()
+        {
+            var list = LayDanhSachYeuThich();
+
+            return Json(new
+            {
+                success = true,
+                count = list.Count
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }
