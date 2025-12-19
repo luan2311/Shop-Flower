@@ -1,6 +1,5 @@
 ﻿// ========================================
 // AJAX Handler for Shop Flower
-// Xử lý các request AJAX không làm thay đổi bố cục và logic hiện tại
 // ========================================
 
 (function ($) {
