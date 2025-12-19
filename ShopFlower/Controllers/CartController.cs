@@ -1,82 +1,428 @@
 ﻿using ShopFlower.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using ShopFlower.Models;
 
 namespace ShopFlower.Controllers
 {
     public class CartController : Controller
     {
-        // GET: Cart
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
 
-        public List<Cart> LayGioHang()
+        #region Helper Methods
+
+        private int? GetCurrentUserId()
         {
-            List<Cart> lstGioHang = Session["Cart"] as List<Cart>;
-            if (lstGioHang == null)
+            if (User.Identity.IsAuthenticated)
             {
-                //Nếu lstGioHang chưa tồn tại thì khởi tạo mới'
-                lstGioHang = new List<Cart>();
-                Session["Cart"] = lstGioHang;
+                var username = User.Identity.Name;
+                var user = db.TAIKHOANs.FirstOrDefault(u => u.TenDangNhap == username);
+                return user?.MaTK;
             }
-            return lstGioHang;
+            return null;
         }
+
+        private string GetSessionKey()
+        {
+            var username = User.Identity.Name;
+            return !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
+        }
+
+        private string GetConnectionString()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["QL_SHOPFLOWEREntities"].ConnectionString;
+            var builder = new System.Data.Entity.Core.EntityClient.EntityConnectionStringBuilder(connStr);
+            return builder.ProviderConnectionString;
+        }
+
+        #endregion
+
+        #region Get Cart
+
+        private List<Cart> LayGioHang()
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
+            {
+                return GetCartFromDatabase(userId.Value);
+            }
+            else
+            {
+                return GetCartFromSession();
+            }
+        }
+
+        private List<Cart> GetCartFromDatabase(int maTK)
+        {
+            var cartList = new List<Cart>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetCartItems", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                cartList.Add(new Cart(
+                                    maCartItem: Convert.ToInt32(reader["MaCartItem"]),
+                                    productId: reader["MaSP"].ToString(),
+                                    productName: reader["TenSP"].ToString(),
+                                    productImage: reader["AnhSP"].ToString(),
+                                    price: Convert.ToDouble(reader["GiaBan"]),
+                                    quantity: Convert.ToInt32(reader["SoLuong"])
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting cart from database: {ex.Message}");
+            }
+
+            return cartList;
+        }
+
+        private List<Cart> GetCartFromSession()
+        {
+            var sessionKey = GetSessionKey();
+            var cart = Session[sessionKey] as List<Cart>;
+
+            if (cart == null)
+            {
+                cart = new List<Cart>();
+                Session[sessionKey] = cart;
+            }
+
+            return cart;
+        }
+
+        #endregion
+
+        #region Add to Cart
 
         public ActionResult ThemGioHang(string ms, string strURL)
         {
-            var username = User?.Identity?.Name;
-            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-            var cart = Session[sessionKey] as List<Cart> ?? new List<Cart>();
+            var userId = GetCurrentUserId();
 
-            var item = cart.FirstOrDefault(c => c.ProductId == ms);
+            if (userId.HasValue)
+            {
+                return ThemGioHangDatabase(userId.Value, ms, strURL);
+            }
+            else
+            {
+                return ThemGioHangSession(ms, strURL);
+            }
+        }
+
+        private ActionResult ThemGioHangDatabase(int maTK, string maSP, string strURL)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_AddToCart", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+                        cmd.Parameters.AddWithValue("@MaSP", maSP);
+                        cmd.Parameters.AddWithValue("@SoLuong", 1);
+
+                        conn.Open();
+                        int result = cmd.ExecuteNonQuery();
+
+                        if (Request.IsAjaxRequest())
+                        {
+                            int count = GetCartCountFromDatabase(maTK);
+                            return Json(new { success = true, count = count });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+
+            return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
+        }
+
+        private ActionResult ThemGioHangSession(string maSP, string strURL)
+        {
+            var cart = GetCartFromSession();
+
+            var item = cart.FirstOrDefault(c => c.ProductId == maSP);
             if (item != null)
             {
                 item.Quantity += 1;
             }
             else
             {
-                cart.Add(new Cart(ms));
+                cart.Add(new Cart(maSP));
             }
 
+            var sessionKey = GetSessionKey();
             Session[sessionKey] = cart;
 
-            if (Request.IsAjaxRequest()) return Json(new { success = true, count = cart.Sum(c => c.Quantity) });
+            if (Request.IsAjaxRequest())
+            {
+                return Json(new { success = true, count = cart.Sum(c => c.Quantity) });
+            }
+
             return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
         }
 
-        //Tổng số lượng
-        private int TongSoLuong()
+        #endregion
+
+        #region Update Cart
+
+        public ActionResult CapNhatGioHang(string MaSP, int txtSoLuong)
         {
-            int tsl = 0;
-            List<Cart> lstGioHang = Session["Cart"] as List<Cart>;
-            if (lstGioHang != null)
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
             {
-                tsl = lstGioHang.Sum(x => x.Quantity);
+                return CapNhatGioHangDatabase(userId.Value, MaSP, txtSoLuong);
             }
-            return tsl;
+            else
+            {
+                return CapNhatGioHangSession(MaSP, txtSoLuong);
+            }
         }
 
-        //Tổng thành tiền
-        private double TongThanhTien()
+        private ActionResult CapNhatGioHangDatabase(int maTK, string maSP, int soLuong)
         {
-            double ttt = 0;
-            List<Cart> lstGioHang = Session["Cart"] as List<Cart>;
-            if (lstGioHang != null)
+            try
             {
-                ttt = lstGioHang.Sum(x => x.TotalPrice);
+                if (soLuong < 1) soLuong = 1;
+
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_UpdateCartItem", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+                        cmd.Parameters.AddWithValue("@MaSP", maSP);
+                        cmd.Parameters.AddWithValue("@SoLuong", soLuong);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        var cart = GetCartFromDatabase(maTK);
+                        var item = cart.FirstOrDefault(c => c.ProductId == maSP);
+
+                        return Json(new
+                        {
+                            success = true,
+                            itemTotalPrice = item != null ? (item.Price * item.Quantity).ToString("N0") : "0",
+                            cartSubtotal = cart.Sum(c => c.TotalPrice).ToString("N0"),
+                            cartCount = cart.Sum(c => c.Quantity)
+                        });
+                    }
+                }
             }
-            return ttt;
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
+
+        private ActionResult CapNhatGioHangSession(string maSP, int soLuong)
+        {
+            try
+            {
+                if (soLuong < 1) soLuong = 1;
+
+                var cart = GetCartFromSession();
+                var item = cart.FirstOrDefault(c => c.ProductId == maSP);
+
+                if (item != null)
+                {
+                    item.Quantity = soLuong;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Sản phẩm không tìm thấy trong giỏ." });
+                }
+
+                var sessionKey = GetSessionKey();
+                Session[sessionKey] = cart;
+
+                return Json(new
+                {
+                    success = true,
+                    itemTotalPrice = (item.Price * item.Quantity).ToString("N0"),
+                    cartSubtotal = cart.Sum(c => c.TotalPrice).ToString("N0"),
+                    cartCount = cart.Sum(c => c.Quantity)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        #endregion
+
+        #region Remove from Cart
+
+        public ActionResult XoaGioHang(string MaSP)
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
+            {
+                return XoaGioHangDatabase(userId.Value, MaSP);
+            }
+            else
+            {
+                return XoaGioHangSession(MaSP);
+            }
+        }
+
+        private ActionResult XoaGioHangDatabase(int maTK, string maSP)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_RemoveFromCart", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+                        cmd.Parameters.AddWithValue("@MaSP", maSP);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        var cart = GetCartFromDatabase(maTK);
+
+                        if (Request.IsAjaxRequest())
+                        {
+                            return Json(new
+                            {
+                                success = true,
+                                cartSubtotal = cart.Sum(c => c.TotalPrice).ToString("N0"),
+                                cartCount = cart.Sum(c => c.Quantity),
+                                isEmpty = cart.Count == 0
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+
+                        if (cart.Count == 0)
+                        {
+                            return RedirectToAction("empty_cart", "Cart");
+                        }
+                        return RedirectToAction("Cart", "Cart");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+                return RedirectToAction("Cart", "Cart");
+            }
+        }
+
+        private ActionResult XoaGioHangSession(string maSP)
+        {
+            var cart = GetCartFromSession();
+            var item = cart.SingleOrDefault(s => s.ProductId == maSP);
+
+            if (item != null)
+            {
+                cart.RemoveAll(s => s.ProductId == maSP);
+
+                var sessionKey = GetSessionKey();
+                Session[sessionKey] = cart;
+
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        cartSubtotal = cart.Sum(c => c.TotalPrice).ToString("N0"),
+                        cartCount = cart.Sum(c => c.Quantity),
+                        isEmpty = cart.Count == 0
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (cart.Count == 0)
+                {
+                    return RedirectToAction("empty_cart", "Cart");
+                }
+                return RedirectToAction("Cart", "Cart");
+            }
+
+            if (Request.IsAjaxRequest())
+            {
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return RedirectToAction("Cart", "Cart");
+        }
+
+        #endregion
+
+        #region Clear Cart
+
+        public ActionResult XoaGioHang_All()
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
+            {
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("sp_ClearCart", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@MaTK", userId.Value);
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch { }
+            }
+            else
+            {
+                var cart = GetCartFromSession();
+                cart.Clear();
+                Session[GetSessionKey()] = cart;
+            }
+
+            return RedirectToAction("empty_cart", "Cart");
+        }
+
+        #endregion
+
+        #region Views
 
         public ActionResult Cart()
         {
-            var username = User?.Identity?.Name;
-            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-            var cart = Session[sessionKey] as List<Cart> ?? new List<Cart>();
-
+            var cart = LayGioHang();
             ViewBag.TongSoLuong = cart.Sum(c => c.Quantity);
             ViewBag.TongThanhTien = cart.Sum(c => c.TotalPrice);
             return View(cart);
@@ -89,137 +435,118 @@ namespace ShopFlower.Controllers
 
         public ActionResult CartPartial()
         {
-            var username = User?.Identity?.Name;
-            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-            var cart = Session[sessionKey] as List<Cart> ?? new List<Cart>();
-            ViewBag.CartCount = cart.Sum(c => c.Quantity);
+            var userId = GetCurrentUserId();
+            int count = 0;
+
+            if (userId.HasValue)
+            {
+                count = GetCartCountFromDatabase(userId.Value);
+            }
+            else
+            {
+                var cart = GetCartFromSession();
+                count = cart.Sum(c => c.Quantity);
+            }
+
+            ViewBag.CartCount = count;
             return PartialView("CartPartial");
         }
 
-        //Xóa 1 SP trong Cart - Hỗ trợ AJAX
-        public ActionResult XoaGioHang(string MaSP)
-        {
-            var username = User?.Identity?.Name;
-            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-            var lstGioHang = Session[sessionKey] as List<Cart> ?? new List<Cart>();
+        #endregion
 
-            //kiểm tra hoa cần xóa còn trong Cart không
-            Cart SP = lstGioHang.SingleOrDefault(s => s.ProductId == MaSP);
-            if (SP != null) //có thì xóa
-            {
-                lstGioHang.RemoveAll(s => s.ProductId == MaSP);
-                Session[sessionKey] = lstGioHang;
+        #region API
 
-                // Tính toán lại
-                double cartSubtotal = lstGioHang.Sum(item => item.Price * item.Quantity);
-                int cartCount = lstGioHang.Sum(item => item.Quantity);
-
-                // Nếu là AJAX request, trả về JSON
-                if (Request.IsAjaxRequest())
-                {
-                    return Json(new
-                    {
-                        success = true,
-                        cartSubtotal = cartSubtotal.ToString("N0"),
-                        cartCount = cartCount,
-                        isEmpty = lstGioHang.Count == 0
-                    }, JsonRequestBehavior.AllowGet);
-                }
-
-                if (lstGioHang.Count == 0) //Cart empty
-                {
-                    return RedirectToAction("empty_cart", "Cart");
-                }
-                return RedirectToAction("Cart", "Cart");
-            }
-
-            // Nếu là AJAX request và không tìm thấy sản phẩm
-            if (Request.IsAjaxRequest())
-            {
-                return Json(new { success = false, message = "Không tìm thấy sản phẩm" }, JsonRequestBehavior.AllowGet);
-            }
-
-            return RedirectToAction("Cart", "Cart");
-        }
-
-        //Xóa ALL SP
-        public ActionResult XoaGioHang_All()
-        {
-            //Lấy giỏ hàng
-            List<Cart> lstGioHang = LayGioHang();
-            lstGioHang.Clear();
-            return RedirectToAction("empty_cart", "Cart");
-        }
-
-        //Cập nhật số lượng giỏ hàng
-        public ActionResult CapNhatGioHang(string MaSP, int txtSoLuong)
-        {
-            try
-            {
-                var username = User?.Identity?.Name;
-                var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-
-                // Lấy giỏ hàng từ session với sessionKey đúng
-                List<Cart> lstGioHang = Session[sessionKey] as List<Cart>;
-
-                if (lstGioHang == null || !lstGioHang.Any())
-                {
-                    return Json(new { success = false, message = "Giỏ hàng không tồn tại." });
-                }
-
-                Cart itemToUpdate = lstGioHang.FirstOrDefault(item => item.ProductId == MaSP);
-
-                if (itemToUpdate != null)
-                {
-                    // Ensure quantity is at least 1
-                    if (txtSoLuong < 1)
-                    {
-                        txtSoLuong = 1;
-                    }
-                    itemToUpdate.Quantity = txtSoLuong;
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Sản phẩm không tìm thấy trong giỏ." });
-                }
-
-                // Recalculate totals correctly
-                double cartSubtotal = lstGioHang.Sum(item => item.Price * item.Quantity);
-                int cartCount = lstGioHang.Sum(item => item.Quantity);
-
-                // Lưu lại vào session với sessionKey đúng
-                Session[sessionKey] = lstGioHang;
-
-                // Return JSON data for the client-side script to use
-                return Json(new
-                {
-                    success = true,
-                    itemTotalPrice = (itemToUpdate.Price * itemToUpdate.Quantity).ToString("N0"),
-                    cartSubtotal = cartSubtotal.ToString("N0"),
-                    cartCount = cartCount
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (ex) for debugging
-                return Json(new { success = false, message = "Đã có lỗi xảy ra trên máy chủ: " + ex.Message });
-            }
-        }
-
-        // API lấy thông tin giỏ hàng (cho AJAX)
         [HttpGet]
         public ActionResult GetCartInfo()
         {
-            var username = User?.Identity?.Name;
-            var sessionKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-            var cart = Session[sessionKey] as List<Cart> ?? new List<Cart>();
+            var userId = GetCurrentUserId();
 
-            return Json(new
+            if (userId.HasValue)
             {
-                success = true,
-                count = cart.Sum(c => c.Quantity),
-                total = cart.Sum(c => c.TotalPrice).ToString("N0")
-            }, JsonRequestBehavior.AllowGet);
+                var cart = GetCartFromDatabase(userId.Value);
+                return Json(new
+                {
+                    success = true,
+                    count = cart.Sum(c => c.Quantity),
+                    total = cart.Sum(c => c.TotalPrice).ToString("N0")
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var cart = GetCartFromSession();
+                return Json(new
+                {
+                    success = true,
+                    count = cart.Sum(c => c.Quantity),
+                    total = cart.Sum(c => c.TotalPrice).ToString("N0")
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
+
+        #endregion
+
+        #region Helper - Get Count
+
+        private int GetCartCountFromDatabase(int maTK)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetCartCount", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+
+                        conn.Open();
+                        object result = cmd.ExecuteScalar();
+                        return result != null ? Convert.ToInt32(result) : 0;
+                    }
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        #endregion
+
+        #region Migration - Chuyển Session sang Database khi đăng nhập
+
+        public void MigrateSessionCartToDatabase(int maTK)
+        {
+            try
+            {
+                var sessionCart = GetCartFromSession();
+                if (sessionCart == null || sessionCart.Count == 0)
+                    return;
+
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    conn.Open();
+                    foreach (var item in sessionCart)
+                    {
+                        using (SqlCommand cmd = new SqlCommand("sp_AddToCart", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@MaTK", maTK);
+                            cmd.Parameters.AddWithValue("@MaSP", item.ProductId);
+                            cmd.Parameters.AddWithValue("@SoLuong", item.Quantity);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                Session[GetSessionKey()] = null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error migrating cart: {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 }

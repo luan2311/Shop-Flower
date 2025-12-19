@@ -1,143 +1,301 @@
 ﻿using ShopFlower.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ShopFlower.Controllers
 {
     public class WishlistController : Controller
     {
-        // GET: Wishlist
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
 
-        // Centralize session key logic to match CartController pattern:
+        #region Helper Methods
+
+        private int? GetCurrentUserId()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var username = User.Identity.Name;
+                var user = db.TAIKHOANs.FirstOrDefault(u => u.TenDangNhap == username);
+                return user?.MaTK;
+            }
+            return null;
+        }
+
         private string GetSessionKey()
         {
-            var username = User?.Identity?.Name;
+            var username = User.Identity.Name;
             return !string.IsNullOrEmpty(username) ? "Wish_" + username : "Wish";
         }
 
-        // Return the wishlist for current session/key. Migrate old Session["Wishlist"] if present.
+        private string GetConnectionString()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["QL_SHOPFLOWEREntities"].ConnectionString;
+            var builder = new System.Data.Entity.Core.EntityClient.EntityConnectionStringBuilder(connStr);
+            return builder.ProviderConnectionString;
+        }
+
+        #endregion
+
+        #region Get Wishlist
+
         public List<Wishlist> LayDanhSachYeuThich()
         {
-            var key = GetSessionKey();
-            var lstWishlist = Session[key] as List<Wishlist>;
-            if (lstWishlist == null)
-            {
-                lstWishlist = new List<Wishlist>();
+            var userId = GetCurrentUserId();
 
-                // Migrate from legacy Session["Wishlist"] if any items exist there
+            if (userId.HasValue)
+            {
+                return GetWishlistFromDatabase(userId.Value);
+            }
+            else
+            {
+                return GetWishlistFromSession();
+            }
+        }
+
+        private List<Wishlist> GetWishlistFromDatabase(int maTK)
+        {
+            var wishlist = new List<Wishlist>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetWishlistItems", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                wishlist.Add(new Wishlist(
+                                    maWishlist: Convert.ToInt32(reader["MaWishlist"]),
+                                    productId: reader["MaSP"].ToString(),
+                                    productName: reader["TenSP"].ToString(),
+                                    productImage: reader["AnhSP"].ToString(),
+                                    price: Convert.ToInt32(reader["GiaBan"]),
+                                    ngayThem: Convert.ToDateTime(reader["NgayThem"])
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting wishlist from database: {ex.Message}");
+            }
+
+            return wishlist;
+        }
+
+        private List<Wishlist> GetWishlistFromSession()
+        {
+            var sessionKey = GetSessionKey();
+            var wishlist = Session[sessionKey] as List<Wishlist>;
+
+            if (wishlist == null)
+            {
+                wishlist = new List<Wishlist>();
+
+                // Migrate từ legacy session nếu có
                 var legacy = Session["Wishlist"] as List<Wishlist>;
                 if (legacy != null && legacy.Count > 0)
                 {
-                    // Avoid duplicates when migrating
                     foreach (var w in legacy)
                     {
-                        if (!lstWishlist.Any(x => x.ProductId == w.ProductId))
+                        if (!wishlist.Any(x => x.ProductId == w.ProductId))
                         {
-                            lstWishlist.Add(w);
+                            wishlist.Add(w);
                         }
                     }
-                    // Clear legacy storage (optional)
                     Session["Wishlist"] = null;
                 }
 
-                Session[key] = lstWishlist;
+                Session[sessionKey] = wishlist;
             }
-            return lstWishlist;
+
+            return wishlist;
         }
 
-        // Add item to wishlist (per-user session). Mirrors CartController behavior.
+        #endregion
+
+        #region Add to Wishlist
+
         public ActionResult ThemVaoYeuThich(string ms, string strURL)
         {
             if (string.IsNullOrEmpty(ms))
             {
-                if (Request.IsAjaxRequest()) return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                if (Request.IsAjaxRequest())
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                 return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
             }
 
-            var list = LayDanhSachYeuThich();
+            var userId = GetCurrentUserId();
 
-            if (!list.Any(x => x.ProductId == ms))
+            if (userId.HasValue)
             {
-                list.Add(new Wishlist(ms));
+                return ThemVaoYeuThichDatabase(userId.Value, ms, strURL);
+            }
+            else
+            {
+                return ThemVaoYeuThichSession(ms, strURL);
+            }
+        }
+
+        private ActionResult ThemVaoYeuThichDatabase(int maTK, string maSP, string strURL)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_AddToWishlist", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+                        cmd.Parameters.AddWithValue("@MaSP", maSP);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        if (Request.IsAjaxRequest())
+                        {
+                            int count = GetWishlistCountFromDatabase(maTK);
+                            return Json(new { success = true, count = count }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
             }
 
-            // Persist list back to session (LayDanhSachYeuThich already ensures storage)
-            var key = GetSessionKey();
-            Session[key] = list;
-
-            if (Request.IsAjaxRequest()) return Json(new { success = true, count = list.Count }, JsonRequestBehavior.AllowGet);
             return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
         }
 
-        // Tổng số sản phẩm yêu thích
-        private int TongSoSanPham()
+        private ActionResult ThemVaoYeuThichSession(string maSP, string strURL)
         {
-            var lstWishlist = LayDanhSachYeuThich();
-            return lstWishlist?.Count ?? 0;
-        }
+            var wishlist = GetWishlistFromSession();
 
-        // Trang Danh sách yêu thích
-        public ActionResult Wishlist()
-        {
-            var lstWishlist = LayDanhSachYeuThich();
-            if (lstWishlist == null || lstWishlist.Count == 0)
+            if (!wishlist.Any(x => x.ProductId == maSP))
             {
-                return RedirectToAction("empty_wishlist", "Wishlist");
+                wishlist.Add(new Wishlist(maSP));
             }
 
-            ViewBag.TongSoSanPham = lstWishlist.Count;
-            return View(lstWishlist);
+            var sessionKey = GetSessionKey();
+            Session[sessionKey] = wishlist;
+
+            if (Request.IsAjaxRequest())
+            {
+                return Json(new { success = true, count = wishlist.Count }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
         }
 
-        public ActionResult empty_wishlist()
-        {
-            return View();
-        }
+        #endregion
 
-        // Icon Wishlist + Show Số lượng SP yêu thích (per-user)
-        public ActionResult WishlistPartial()
-        {
-            var count = TongSoSanPham();
-            ViewBag.WishlistCount = count;
-            return PartialView("WishlistPartial");
-        }
+        #region Remove from Wishlist
 
-        // Xóa 1 SP trong Wishlist - Hỗ trợ AJAX
         public ActionResult XoaSanPhamYeuThich(string MaSP)
         {
-            var lstWishlist = LayDanhSachYeuThich();
-            // kiểm tra sản phẩm cần xóa còn trong Wishlist không
-            var SP = lstWishlist.SingleOrDefault(s => s.ProductId == MaSP);
-            if (SP != null) // có thì xóa
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
             {
-                lstWishlist.RemoveAll(s => s.ProductId == MaSP);
+                return XoaSanPhamYeuThichDatabase(userId.Value, MaSP);
+            }
+            else
+            {
+                return XoaSanPhamYeuThichSession(MaSP);
+            }
+        }
 
-                var key = GetSessionKey();
-                Session[key] = lstWishlist;
+        private ActionResult XoaSanPhamYeuThichDatabase(int maTK, string maSP)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_RemoveFromWishlist", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+                        cmd.Parameters.AddWithValue("@MaSP", maSP);
 
-                // Nếu là AJAX request, trả về JSON
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        var wishlist = GetWishlistFromDatabase(maTK);
+
+                        if (Request.IsAjaxRequest())
+                        {
+                            return Json(new
+                            {
+                                success = true,
+                                count = wishlist.Count,
+                                isEmpty = wishlist.Count == 0
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+
+                        if (wishlist.Count == 0)
+                        {
+                            return RedirectToAction("empty_wishlist", "Wishlist");
+                        }
+                        return RedirectToAction("Wishlist", "Wishlist");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+                return RedirectToAction("Wishlist", "Wishlist");
+            }
+        }
+
+        private ActionResult XoaSanPhamYeuThichSession(string maSP)
+        {
+            var wishlist = GetWishlistFromSession();
+            var item = wishlist.SingleOrDefault(s => s.ProductId == maSP);
+
+            if (item != null)
+            {
+                wishlist.RemoveAll(s => s.ProductId == maSP);
+
+                var sessionKey = GetSessionKey();
+                Session[sessionKey] = wishlist;
+
                 if (Request.IsAjaxRequest())
                 {
                     return Json(new
                     {
                         success = true,
-                        count = lstWishlist.Count,
-                        isEmpty = lstWishlist.Count == 0
+                        count = wishlist.Count,
+                        isEmpty = wishlist.Count == 0
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                if (lstWishlist.Count == 0) //Wishlist empty
+                if (wishlist.Count == 0)
                 {
                     return RedirectToAction("empty_wishlist", "Wishlist");
                 }
                 return RedirectToAction("Wishlist", "Wishlist");
             }
 
-            // Nếu là AJAX request và không tìm thấy sản phẩm
             if (Request.IsAjaxRequest())
             {
                 return Json(new { success = false, message = "Không tìm thấy sản phẩm" }, JsonRequestBehavior.AllowGet);
@@ -146,51 +304,117 @@ namespace ShopFlower.Controllers
             return RedirectToAction("Wishlist", "Wishlist");
         }
 
-        // Xóa ALL SP yêu thích
+        #endregion
+
+        #region Clear Wishlist
+
         public ActionResult XoaDanhSachYeuThich_All()
         {
-            var lstWishlist = LayDanhSachYeuThich();
-            lstWishlist.Clear();
-            var key = GetSessionKey();
-            Session[key] = lstWishlist;
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
+            {
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("sp_ClearWishlist", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@MaTK", userId.Value);
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch { }
+            }
+            else
+            {
+                var wishlist = GetWishlistFromSession();
+                wishlist.Clear();
+                Session[GetSessionKey()] = wishlist;
+            }
+
             return RedirectToAction("empty_wishlist", "Wishlist");
         }
 
-        // Chuyển sản phẩm từ Wishlist sang Cart
+        #endregion
+
+        #region Move to Cart
+
         public ActionResult ChuyenVaoGioHang(string MaSP)
         {
-            var lstWishlist = LayDanhSachYeuThich();
-            var SP = lstWishlist.SingleOrDefault(s => s.ProductId == MaSP);
+            var userId = GetCurrentUserId();
 
-            if (SP != null)
+            if (userId.HasValue)
             {
-                // Thêm vào giỏ hàng (keep Cart behavior)
-                var username = User?.Identity?.Name;
-                var cartKey = !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
-                List<Cart> lstGioHang = Session[cartKey] as List<Cart>;
-                if (lstGioHang == null)
+                return ChuyenVaoGioHangDatabase(userId.Value, MaSP);
+            }
+            else
+            {
+                return ChuyenVaoGioHangSession(MaSP);
+            }
+        }
+
+        private ActionResult ChuyenVaoGioHangDatabase(int maTK, string maSP)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
                 {
-                    lstGioHang = new List<Cart>();
-                    Session[cartKey] = lstGioHang;
+                    using (SqlCommand cmd = new SqlCommand("sp_MoveWishlistToCart", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+                        cmd.Parameters.AddWithValue("@MaSP", maSP);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        var wishlist = GetWishlistFromDatabase(maTK);
+                        if (wishlist.Count == 0)
+                        {
+                            return RedirectToAction("empty_wishlist", "Wishlist");
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            return RedirectToAction("Wishlist", "Wishlist");
+        }
+
+        private ActionResult ChuyenVaoGioHangSession(string maSP)
+        {
+            var wishlist = GetWishlistFromSession();
+            var item = wishlist.SingleOrDefault(s => s.ProductId == maSP);
+
+            if (item != null)
+            {
+                var cartKey = GetCurrentUserId().HasValue ? "Cart_" + User.Identity.Name : "Cart";
+                var cart = Session[cartKey] as List<Cart>;
+                if (cart == null)
+                {
+                    cart = new List<Cart>();
+                    Session[cartKey] = cart;
                 }
 
-                Cart cartItem = lstGioHang.Find(x => x.ProductId == MaSP);
+                var cartItem = cart.Find(x => x.ProductId == maSP);
                 if (cartItem == null)
                 {
-                    cartItem = new Cart(MaSP);
-                    lstGioHang.Add(cartItem);
+                    cart.Add(new Cart(maSP));
                 }
                 else
                 {
                     cartItem.Quantity++;
                 }
 
-                // Xóa khỏi wishlist
-                lstWishlist.RemoveAll(s => s.ProductId == MaSP);
-                var key = GetSessionKey();
-                Session[key] = lstWishlist;
+                wishlist.RemoveAll(s => s.ProductId == maSP);
+                Session[GetSessionKey()] = wishlist;
 
-                if (lstWishlist.Count == 0)
+                if (wishlist.Count == 0)
                 {
                     return RedirectToAction("empty_wishlist", "Wishlist");
                 }
@@ -199,17 +423,144 @@ namespace ShopFlower.Controllers
             return RedirectToAction("Wishlist", "Wishlist");
         }
 
-        // API lấy thông tin wishlist (cho AJAX)
+        #endregion
+
+        #region Views
+
+        public ActionResult Wishlist()
+        {
+            var wishlist = LayDanhSachYeuThich();
+            if (wishlist == null || wishlist.Count == 0)
+            {
+                return RedirectToAction("empty_wishlist", "Wishlist");
+            }
+
+            ViewBag.TongSoSanPham = wishlist.Count;
+            return View(wishlist);
+        }
+
+        public ActionResult empty_wishlist()
+        {
+            return View();
+        }
+
+        public ActionResult WishlistPartial()
+        {
+            var userId = GetCurrentUserId();
+            int count = 0;
+
+            if (userId.HasValue)
+            {
+                count = GetWishlistCountFromDatabase(userId.Value);
+            }
+            else
+            {
+                var wishlist = GetWishlistFromSession();
+                count = wishlist.Count;
+            }
+
+            ViewBag.WishlistCount = count;
+            return PartialView("WishlistPartial");
+        }
+
+        #endregion
+
+        #region API
+
         [HttpGet]
         public ActionResult GetWishlistInfo()
         {
-            var list = LayDanhSachYeuThich();
+            var userId = GetCurrentUserId();
 
-            return Json(new
+            if (userId.HasValue)
             {
-                success = true,
-                count = list.Count
-            }, JsonRequestBehavior.AllowGet);
+                int count = GetWishlistCountFromDatabase(userId.Value);
+                return Json(new
+                {
+                    success = true,
+                    count = count
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var wishlist = GetWishlistFromSession();
+                return Json(new
+                {
+                    success = true,
+                    count = wishlist.Count
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
+
+        #endregion
+
+        #region Helper - Get Count
+
+        private int GetWishlistCountFromDatabase(int maTK)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetWishlistCount", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+
+                        conn.Open();
+                        object result = cmd.ExecuteScalar();
+                        return result != null ? Convert.ToInt32(result) : 0;
+                    }
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        private int TongSoSanPham()
+        {
+            var wishlist = LayDanhSachYeuThich();
+            return wishlist?.Count ?? 0;
+        }
+
+        #endregion
+
+        #region Migration - Chuyển Session sang Database khi đăng nhập
+
+        public void MigrateSessionWishlistToDatabase(int maTK)
+        {
+            try
+            {
+                var sessionWishlist = GetWishlistFromSession();
+                if (sessionWishlist == null || sessionWishlist.Count == 0)
+                    return;
+
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    conn.Open();
+                    foreach (var item in sessionWishlist)
+                    {
+                        using (SqlCommand cmd = new SqlCommand("sp_AddToWishlist", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@MaTK", maTK);
+                            cmd.Parameters.AddWithValue("@MaSP", item.ProductId);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                Session[GetSessionKey()] = null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error migrating wishlist: {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 }

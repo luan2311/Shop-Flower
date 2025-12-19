@@ -191,33 +191,17 @@ END
                 };
                 Response.Cookies.Add(cookie);
 
-                // migrate anonymous session cart/wish
-                var username = TenDangNhap;
-                var anonCart = Session["Cart"] as List<Cart>;
-                if (anonCart != null)
+                // ============================================================
+                // MIGRATION: Chuyển Cart và Wishlist từ Session sang Database
+                // ============================================================
+                try
                 {
-                    var userKey = "Cart_" + username;
-                    var userCart = Session[userKey] as List<Cart> ?? new List<Cart>();
-                    foreach (var it in anonCart)
-                    {
-                        var existing = userCart.FirstOrDefault(c => c.ProductId == it.ProductId);
-                        if (existing != null) existing.Quantity += it.Quantity;
-                        else userCart.Add(it);
-                    }
-                    Session[userKey] = userCart;
-                    Session.Remove("Cart");
+                    MigrateSessionToDatabase(user.MaTK);
                 }
-                var anonWish = Session["Wish"] as List<string>;
-                if (anonWish != null)
+                catch (Exception ex)
                 {
-                    var userWishKey = "Wish_" + username;
-                    var userWish = Session[userWishKey] as List<string> ?? new List<string>();
-                    foreach (var pid in anonWish)
-                    {
-                        if (!userWish.Contains(pid)) userWish.Add(pid);
-                    }
-                    Session[userWishKey] = userWish;
-                    Session.Remove("Wish");
+                    // Log error nhưng không fail login
+                    System.Diagnostics.Debug.WriteLine($"Migration error: {ex.Message}");
                 }
 
                 // Redirect logic: ReturnUrl > admin if Admin role > homepage
@@ -238,162 +222,189 @@ END
             return View();
         }
 
-        //public ActionResult Dang_nhap(string TenDangNhap, string MatKhau, string returnUrl)
-        //{
-        //    if (string.IsNullOrWhiteSpace(TenDangNhap) || string.IsNullOrWhiteSpace(MatKhau))
-        //    {
-        //        ModelState.AddModelError("", "Vui lòng nhập tên đăng nhập và mật khẩu.");
-        //        return View();
-        //    }
+        /// <summary>
+        /// Migration Cart và Wishlist từ Session sang Database khi user đăng nhập
+        /// </summary>
+        private void MigrateSessionToDatabase(int maTK)
+        {
+            try
+            {
+                // 1. MIGRATE CART
+                MigrateCartSessionToDatabase(maTK);
 
-        //    int? maTK = null;
-        //    var user = db.TAIKHOANs.SingleOrDefault(u => u.TenDangNhap == TenDangNhap);
-        //    if (user != null)
-        //    {
-        //        try
-        //        {
-        //            var storedHash = user.MatKhauHash;
-        //            var storedSalt = user.Salt;
+                // 2. MIGRATE WISHLIST
+                MigrateWishlistSessionToDatabase(maTK);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in MigrateSessionToDatabase: {ex.Message}");
+                throw;
+            }
+        }
 
-        //            if (storedHash != null && storedSalt != null && storedHash.Length > 0 && storedSalt.Length > 0)
-        //            {
-        //                // 1. PBKDF2 verify (new users)
-        //                if (VerifyPassword(MatKhau, storedHash, storedSalt))
-        //                {
-        //                    maTK = user.MaTK;
-        //                }
-        //                else
-        //                {
-        //                    // 2. SHA256(password + salt) fallback for seeded users
-        //                    using (var sha = SHA256.Create())
-        //                    {
-        //                        var pwdBytes = Encoding.UTF8.GetBytes(MatKhau);
-        //                        var concat = new byte[pwdBytes.Length + storedSalt.Length];
-        //                        Buffer.BlockCopy(pwdBytes, 0, concat, 0, pwdBytes.Length);
-        //                        Buffer.BlockCopy(storedSalt, 0, concat, pwdBytes.Length, storedSalt.Length);
-        //                        var computed = sha.ComputeHash(concat);
-        //                        if (computed.Length == storedHash.Length && computed.SequenceEqual(storedHash))
-        //                        {
-        //                            maTK = user.MaTK;
-        //                            // Re-hash with PBKDF2 on first successful SHA256 login (optional upgrade)
-        //                            try
-        //                            {
-        //                                var (newHash, newSalt) = HashPassword(MatKhau);
-        //                                user.MatKhauHash = newHash;
-        //                                user.Salt = newSalt;
-        //                                db.SaveChanges();
-        //                            }
-        //                            catch
-        //                            {
-        //                                // ignore upgrade failure
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        catch
-        //        {
-        //            // Do not reveal internal errors to user
-        //        }
-        //    }
+        /// <summary>
+        /// Migrate Cart từ Session sang Database
+        /// </summary>
+        private void MigrateCartSessionToDatabase(int maTK)
+        {
+            try
+            {
+                // Lấy cart từ session (bao gồm cả anonymous cart)
+                var anonCart = Session["Cart"] as List<Cart>;
+                var userSessionKey = "Cart_" + User.Identity.Name;
+                var userCart = Session[userSessionKey] as List<Cart>;
 
-        //    // optional fallback to stored proc auth (keeps compatibility)
-        //    if (!maTK.HasValue)
-        //    {
-        //        try
-        //        {
-        //            maTK = db.Database.SqlQuery<int?>(
-        //                "EXEC dbo.sp_XacThucTaiKhoan @TenDangNhap, @MatKhau",
-        //                new SqlParameter("@TenDangNhap", TenDangNhap),
-        //                new SqlParameter("@MatKhau", MatKhau)
-        //            ).FirstOrDefault();
-        //        }
-        //        catch
-        //        {
-        //            // ignore
-        //        }
-        //    }
+                // Merge cart anonymous và user session cart
+                var allItems = new List<Cart>();
+                if (anonCart != null) allItems.AddRange(anonCart);
+                if (userCart != null)
+                {
+                    foreach (var item in userCart)
+                    {
+                        var existing = allItems.FirstOrDefault(c => c.ProductId == item.ProductId);
+                        if (existing != null)
+                        {
+                            existing.Quantity += item.Quantity;
+                        }
+                        else
+                        {
+                            allItems.Add(item);
+                        }
+                    }
+                }
 
-        //    if (maTK.HasValue)
-        //    {
-        //        // fetch roles (may be empty)
-        //        List<string> roles;
-        //        try
-        //        {
-        //            roles = db.Database.SqlQuery<string>(
-        //                "EXEC dbo.sp_LayVaiTroTheoNguoiDung @TenDangNhap",
-        //                new SqlParameter("@TenDangNhap", TenDangNhap)
-        //            ).ToList();
-        //        }
-        //        catch
-        //        {
-        //            roles = new List<string>();
-        //        }
+                if (allItems.Count == 0)
+                    return;
 
-        //        var rolesString = string.Join(",", roles);
+                // Gọi CartController để migrate
+                var cartController = new CartController();
+                cartController.ControllerContext = new ControllerContext(this.ControllerContext.RequestContext, cartController);
 
-        //        var ticket = new FormsAuthenticationTicket(1, TenDangNhap, DateTime.Now, DateTime.Now.AddHours(8), false, rolesString);
-        //        var encrypted = FormsAuthentication.Encrypt(ticket);
-        //        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted)
-        //        {
-        //            HttpOnly = true,
-        //            Secure = Request.IsSecureConnection
-        //        };
-        //        Response.Cookies.Add(cookie);
+                // Sử dụng reflection để gọi private method (hoặc có thể public method)
+                var migrateMethod = typeof(CartController).GetMethod(
+                    "MigrateSessionCartToDatabase",
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance
+                );
 
-        //        // migrate anonymous session cart/wish
-        //        var username = TenDangNhap;
-        //        var anonCart = Session["Cart"] as List<Cart>;
-        //        if (anonCart != null)
-        //        {
-        //            var userKey = "Cart_" + username;
-        //            var userCart = Session[userKey] as List<Cart> ?? new List<Cart>();
-        //            foreach (var it in anonCart)
-        //            {
-        //                var existing = userCart.FirstOrDefault(c => c.ProductId == it.ProductId);
-        //                if (existing != null) existing.Quantity += it.Quantity;
-        //                else userCart.Add(it);
-        //            }
-        //            Session[userKey] = userCart;
-        //            Session.Remove("Cart");
-        //        }
-        //        var anonWish = Session["Wish"] as List<string>;
-        //        if (anonWish != null)
-        //        {
-        //            var userWishKey = "Wish_" + username;
-        //            var userWish = Session[userWishKey] as List<string> ?? new List<string>();
-        //            foreach (var pid in anonWish)
-        //            {
-        //                if (!userWish.Contains(pid)) userWish.Add(pid);
-        //            }
-        //            Session[userWishKey] = userWish;
-        //            Session.Remove("Wish");
-        //        }
+                if (migrateMethod != null)
+                {
+                    migrateMethod.Invoke(cartController, new object[] { maTK });
+                }
+                else
+                {
+                    // Fallback: Thêm từng item vào database
+                    foreach (var item in allItems)
+                    {
+                        try
+                        {
+                            db.Database.ExecuteSqlCommand(
+                                "EXEC sp_AddToCart @MaTK, @MaSP, @SoLuong",
+                                new SqlParameter("@MaTK", maTK),
+                                new SqlParameter("@MaSP", item.ProductId),
+                                new SqlParameter("@SoLuong", item.Quantity)
+                            );
+                        }
+                        catch
+                        {
+                            // Continue với items khác nếu có lỗi
+                        }
+                    }
+                }
 
-        //        // Redirect logic: ReturnUrl > admin if Admin role > homepage
-        //        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-        //        {
-        //            return Redirect(returnUrl);
-        //        }
+                // Xóa session cart sau khi migrate thành công
+                Session.Remove("Cart");
+                Session.Remove(userSessionKey);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error migrating cart: {ex.Message}");
+            }
+        }
 
-        //        if (roles.Any(r => string.Equals(r, "Admin", StringComparison.OrdinalIgnoreCase)))
-        //        {
-        //            return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
-        //        }
+        /// <summary>
+        /// Migrate Wishlist từ Session sang Database
+        /// </summary>
+        private void MigrateWishlistSessionToDatabase(int maTK)
+        {
+            try
+            {
+                // Lấy wishlist từ session
+                var anonWish = Session["Wish"] as List<Wishlist>;
+                var legacyWish = Session["Wishlist"] as List<Wishlist>;
+                var userSessionKey = "Wish_" + User.Identity.Name;
+                var userWish = Session[userSessionKey] as List<Wishlist>;
 
-        //        return RedirectToAction("Trang_chu", "Home");
-        //    }
+                // Merge tất cả wishlist items
+                var allWishItems = new HashSet<string>(); // Dùng HashSet để tránh duplicate
 
-        //    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
-        //    return View();
-        //}
+                if (anonWish != null)
+                    foreach (var item in anonWish)
+                        allWishItems.Add(item.ProductId);
+
+                if (legacyWish != null)
+                    foreach (var item in legacyWish)
+                        allWishItems.Add(item.ProductId);
+
+                if (userWish != null)
+                    foreach (var item in userWish)
+                        allWishItems.Add(item.ProductId);
+
+                if (allWishItems.Count == 0)
+                    return;
+
+                // Gọi WishlistController để migrate
+                var wishlistController = new WishlistController();
+                wishlistController.ControllerContext = new ControllerContext(this.ControllerContext.RequestContext, wishlistController);
+
+                var migrateMethod = typeof(WishlistController).GetMethod(
+                    "MigrateSessionWishlistToDatabase",
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance
+                );
+
+                if (migrateMethod != null)
+                {
+                    migrateMethod.Invoke(wishlistController, new object[] { maTK });
+                }
+                else
+                {
+                    // Fallback: Thêm từng item vào database
+                    foreach (var productId in allWishItems)
+                    {
+                        try
+                        {
+                            db.Database.ExecuteSqlCommand(
+                                "EXEC sp_AddToWishlist @MaTK, @MaSP",
+                                new SqlParameter("@MaTK", maTK),
+                                new SqlParameter("@MaSP", productId)
+                            );
+                        }
+                        catch
+                        {
+                            // Continue với items khác nếu có lỗi
+                        }
+                    }
+                }
+
+                // Xóa session wishlist sau khi migrate thành công
+                Session.Remove("Wish");
+                Session.Remove("Wishlist");
+                Session.Remove(userSessionKey);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error migrating wishlist: {ex.Message}");
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Dang_xuat()
         {
             FormsAuthentication.SignOut();
+
+            // Optional: Xóa session data khi logout
+            Session.Clear();
+
             return RedirectToAction("Dang_nhap");
         }
 
@@ -498,6 +509,7 @@ END
             TempData["RegisterSuccess"] = "Đăng ký thành công. Vui lòng đăng nhập.";
             return RedirectToAction("Dang_nhap", "Account");
         }
+
         // GET: Quen_mat_khau
         public ActionResult Quen_mat_khau()
         {
@@ -505,6 +517,7 @@ END
             // và dùng tham số để tự động hiển thị form quên mật khẩu.
             return RedirectToAction("Dang_nhap", new { show_recover = true });
         }
+
         // POST: Quen_mat_khau
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -623,7 +636,6 @@ END
             TempData["ChangePasswordSuccess"] = "Đổi mật khẩu thành công.";
             return RedirectToAction("Doi_mat_khau");
         }
-
 
         // Helper class to map PasswordResets query result
         private class PasswordResetRow
