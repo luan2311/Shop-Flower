@@ -85,7 +85,16 @@
                                 <td>@order.TAIKHOAN.TenHienThi</td>
                                 <td>@order.NgayDat.ToString("dd/MM/yyyy")</td>
                                 <td>@order.TongTien.ToString("N0")</td>
-                                <td><span class="status-completed">@order.TrangThai</span></td>
+                                <td>
+                                    @if (order.TrangThai == "Pending")
+                                    {
+                                        <span class="status-pending">@order.TrangThai</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-completed">@order.TrangThai</span>
+                                    }
+                                </td>
                             </tr>
                         }
                     </tbody>

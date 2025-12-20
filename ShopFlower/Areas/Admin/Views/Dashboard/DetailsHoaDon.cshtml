@@ -56,17 +56,13 @@
 
                 <dt class="col-sm-4">Trạng Thái</dt>
                 <dd class="col-sm-8">
-                    @if (Model.TrangThai == "Completed")
+                    @if (Model.TrangThai == "Pending")
                     {
-                        <span class="badge badge-success">Đã hoàn thành</span>
-                    }
-                    else if (Model.TrangThai == "Pending")
-                    {
-                        <span class="badge badge-warning">Đang xử lý</span>
+                        <span class="status-pending">@Model.TrangThai</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">@Model.TrangThai</span>
+                        <span class="status-completed">@Model.TrangThai</span>
                     }
                 </dd>
 

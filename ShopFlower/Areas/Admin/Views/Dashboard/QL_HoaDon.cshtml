@@ -47,17 +47,13 @@
                 </td>
                 <td>@item.NgayDat.ToString("dd/MM/yyyy")</td>
                 <td>
-                    @if (item.TrangThai == "Completed")
+                    @if (item.TrangThai == "Pending")
                     {
-                        <span class="badge badge-success">Hoàn thành</span>
-                    }
-                    else if (item.TrangThai == "Pending")
-                    {
-                        <span class="badge badge-warning">Đang xử lý</span>
+                        <span class="status-pending">@item.TrangThai</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">@item.TrangThai</span>
+                        <span class="status-completed">@item.TrangThai</span>
                     }
                 </td>
                 <td><strong>@item.TongTien.ToString("N0")đ</strong></td>
