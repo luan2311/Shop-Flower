@@ -24,7 +24,6 @@ namespace ShopFlower.Controllers
         [Authorize]
         public ActionResult ThanhToan()
         {
-            // **QUAN TRỌNG**: Lấy đúng session key
             var cartKey = User.Identity.IsAuthenticated ? "Cart_" + User.Identity.Name : "Cart";
             var cart = Session[cartKey] as List<Cart>;
 
@@ -35,7 +34,7 @@ namespace ShopFlower.Controllers
 
             var model = new ThanhToanViewModel
             {
-                CartItems = cart, // Truyền giỏ hàng chứa thông tin ảnh
+                CartItems = cart,
                 TongTien = (decimal)cart.Sum(item => item.TotalPrice)
             };
 
