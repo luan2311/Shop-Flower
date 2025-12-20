@@ -48,17 +48,17 @@ namespace ShopFlower.Controllers
         private void EnsurePasswordResetsTable()
         {
             var sql = @"
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PasswordResets' AND xtype='U')
-BEGIN
-    CREATE TABLE PasswordResets
-    (
-        Id INT IDENTITY(1,1) PRIMARY KEY,
-        MaTK INT NOT NULL,
-        Token NVARCHAR(200) NOT NULL,
-        Expiry DATETIME NOT NULL
-    )
-END
-";
+            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PasswordResets' AND xtype='U')
+            BEGIN
+                CREATE TABLE PasswordResets
+                (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    MaTK INT NOT NULL,
+                    Token NVARCHAR(200) NOT NULL,
+                    Expiry DATETIME NOT NULL
+                )
+            END
+            ";
             db.Database.ExecuteSqlCommand(sql);
         }
 
