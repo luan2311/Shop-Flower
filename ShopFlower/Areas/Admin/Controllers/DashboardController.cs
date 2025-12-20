@@ -85,11 +85,51 @@ namespace ShopFlower.Areas.Admin.Controllers
                                       })
                                       .OrderByDescending(p => p.TotalSold)
                                       .Take(3)
-                                      .ToList()
+                                      .ToList(),
+                RevenueChartData = new List<RevenueChartData>()
             };
 
             return View("Dashboard", viewModel);
         }
+
+        // GET: Admin/Dashboard/GetRevenueData
+        [HttpGet]
+        public JsonResult GetRevenueData(DateTime? fromDate, DateTime? toDate)
+        {
+            try
+            {
+                // Nếu không có ngày bắt đầu, lấy 7 ngày gần đây
+                var startDate = fromDate ?? DateTime.Today.AddDays(-7);
+                var endDate = toDate ?? DateTime.Today;
+
+                // Đảm bảo endDate bao gồm cả ngày đó
+                endDate = endDate.Date.AddDays(1).AddSeconds(-1);
+
+                var revenueData = db.HOADONs
+                    .Where(h => h.TrangThai == "Completed" && h.NgayDat >= startDate && h.NgayDat <= endDate)
+                    .GroupBy(h => DbFunctions.TruncateTime(h.NgayDat))
+                    .Select(g => new
+                    {
+                        Date = g.Key,
+                        Revenue = g.Sum(h => h.TongTien)
+                    })
+                    .OrderBy(x => x.Date)
+                    .ToList();
+
+                var chartData = revenueData.Select(r => new
+                {
+                    Date = r.Date.HasValue ? r.Date.Value.ToString("dd/MM/yyyy") : "",
+                    Revenue = r.Revenue
+                }).ToList();
+
+                return Json(new { success = true, data = chartData }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult QL_SanPham(string searchString, int? page)
         {
             ViewBag.CurrentFilter = searchString;

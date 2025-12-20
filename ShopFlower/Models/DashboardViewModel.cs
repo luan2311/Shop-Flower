@@ -13,6 +13,7 @@ namespace ShopFlower.Models
         public decimal TotalRevenue { get; set; }
         public List<HOADON> RecentOrders { get; set; }
         public List<TopSellingProduct> TopSellingProducts { get; set; }
+        public List<RevenueChartData> RevenueChartData { get; set; }
     }
 
     public class TopSellingProduct
@@ -20,5 +21,11 @@ namespace ShopFlower.Models
         public string ProductName { get; set; }
         public int SL { get; set; } 
         public decimal TotalSold { get; set; }
+    }
+
+    public class RevenueChartData
+    {
+        public string Date { get; set; }
+        public decimal Revenue { get; set; }
     }
 }
