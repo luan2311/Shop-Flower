@@ -73,6 +73,18 @@
         </script>
     }
     
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="ajax-notification success" style="display: block;" id="temp-success-notification">
+     @TempData["SuccessMessage"]
+  </div>
+        <script>
+          setTimeout(function() {
+       document.getElementById('temp-success-notification').style.display = 'none';
+        }, 3000);
+        </script>
+ }
+    
     <!-- Header -->
     @Html.Partial("_Header")
     <!-- Body -->

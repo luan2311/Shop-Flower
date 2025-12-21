@@ -346,6 +346,21 @@ namespace ShopFlower.Controllers
 
         public ActionResult ChuyenVaoGioHang(string MaSP)
         {
+            // Kiểm tra sản phẩm có tồn tại và còn bán không
+            var sanpham = db.SANPHAMs.FirstOrDefault(s => s.MaSP == MaSP);
+
+            if (sanpham == null)
+            {
+                TempData["ErrorMessage"] = "Sản phẩm không tồn tại.";
+                return RedirectToAction("Wishlist", "Wishlist");
+            }
+
+            if (sanpham.SoLuongTon == 0)
+            {
+                TempData["ErrorMessage"] = "Sản phẩm đã ngừng kinh doanh. Không thể thêm vào giỏ hàng.";
+                return RedirectToAction("Wishlist", "Wishlist");
+            }
+
             var userId = GetCurrentUserId();
 
             if (userId.HasValue)
@@ -373,6 +388,8 @@ namespace ShopFlower.Controllers
                         conn.Open();
                         cmd.ExecuteNonQuery();
 
+                        TempData["SuccessMessage"] = "Đã thêm sản phẩm vào giỏ hàng!";
+
                         var wishlist = GetWishlistFromDatabase(maTK);
                         if (wishlist.Count == 0)
                         {
@@ -381,7 +398,11 @@ namespace ShopFlower.Controllers
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi thêm vào giỏ hàng.";
+                System.Diagnostics.Debug.WriteLine($"Error moving to cart: {ex.Message}");
+            }
 
             return RedirectToAction("Wishlist", "Wishlist");
         }
@@ -413,6 +434,8 @@ namespace ShopFlower.Controllers
 
                 wishlist.RemoveAll(s => s.ProductId == maSP);
                 Session[GetSessionKey()] = wishlist;
+
+                TempData["SuccessMessage"] = "Đã thêm sản phẩm vào giỏ hàng!";
 
                 if (wishlist.Count == 0)
                 {
