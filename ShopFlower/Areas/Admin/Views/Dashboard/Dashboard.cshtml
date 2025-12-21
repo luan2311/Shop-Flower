@@ -4,6 +4,57 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .chart-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+        .chart-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+    .date-filter {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+        .date-filter .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .date-filter label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .date-filter input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+    #chartContainer {
+        position: relative;
+        min-height: 350px;
+        padding: 10px 0;
+    }
+</style>
 
 <div class="container-fluid">
     <!-- Summary Cards -->
@@ -62,7 +113,7 @@
         </div>
     </div>
 
-    <!-- Recent Transactions and Top Selling -->
+    <!-- Recent Transactions and Charts -->
     <div class="row">
         <div class="col-md-8">
             <div class="table-container">
@@ -103,22 +154,23 @@
         </div>
         <div class="col-md-4">
             <!-- Revenue Chart Section -->
-            <div class="table-container" style="margin-bottom: 30px;">
+            <div class="chart-card">
                 <h4>Biểu đồ doanh thu</h4>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="fromDate">Từ ngày:</label>
+                <div class="date-filter">
+                    <div class="form-group">
+                        <label for="fromDate">Từ ngày</label>
                         <input type="date" id="fromDate" class="form-control" />
                     </div>
-                    <div class="col-md-6">
-                        <label for="toDate">Đến ngày:</label>
+                    <div class="form-group">
+                        <label for="toDate">Đến ngày</label>
                         <input type="date" id="toDate" class="form-control" />
                     </div>
                 </div>
-                <div id="chartContainer" style="min-height: 400px;">
+                <div id="chartContainer">
                     <canvas id="revenueChart"></canvas>
                 </div>
             </div>
+
             <!--Sản phẩm bán chạy-->
             <div class="table-container">
                 <h4>Sản phẩm bán chạy</h4>
@@ -137,8 +189,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 @section scripts {
@@ -147,147 +197,205 @@
     var revenueChart;
 
         $(document).ready(function () {
-            console.log('jQuery loaded:', typeof $ !== 'undefined');
-            console.log('Chart.js loaded:', typeof Chart !== 'undefined');
+      console.log('jQuery loaded:', typeof $ !== 'undefined');
+   console.log('Chart.js loaded:', typeof Chart !== 'undefined');
 
-            // Set default dates (last 7 days)
-            var today = new Date();
-            var lastWeek = new Date(today);
-            lastWeek.setDate(lastWeek.getDate() - 7);
+            // Set default dates (last 30 days for better visualization)
+      var today = new Date();
+            var lastMonth = new Date(today);
+  lastMonth.setDate(lastMonth.getDate() - 30);
 
             $('#toDate').val(formatDate(today));
-            $('#fromDate').val(formatDate(lastWeek));
+       $('#fromDate').val(formatDate(lastMonth));
 
-            console.log('Dates set:', $('#fromDate').val(), '-', $('#toDate').val());
+ console.log('Dates set:', $('#fromDate').val(), '-', $('#toDate').val());
 
-            // Load initial chart
-            loadRevenueChart();
+      // Load initial chart
+    loadRevenueChart();
 
-            // Auto reload chart when date changes
-            $('#fromDate, #toDate').on('change', function () {
-                console.log('Date changed');
-                loadRevenueChart();
+    // Auto reload chart when date changes
+      $('#fromDate, #toDate').on('change', function () {
+    console.log('Date changed');
+        loadRevenueChart();
             });
-        });
+    });
 
         function formatDate(date) {
              var year = date.getFullYear();
-             var month = String(date.getMonth() + 1).padStart(2, '0');
-             var day = String(date.getDate()).padStart(2, '0');
-             return year + '-' + month + '-' + day;
+    var month = String(date.getMonth() + 1).padStart(2, '0');
+   var day = String(date.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
         }
 
         function loadRevenueChart() {
-           var fromDate = $('#fromDate').val();
-           var toDate = $('#toDate').val();
-            console.log('Loading chart with dates:', fromDate, '-', toDate);
+        var fromDate = $('#fromDate').val();
+      var toDate = $('#toDate').val();
+         console.log('Loading chart with dates:', fromDate, '-', toDate);
             if (!fromDate || !toDate) {
               console.log('Dates not set, returning');
-               return;
-            }
+       return;
+  }
 
-            var url = '@Url.Action("GetRevenueData", "Dashboard", new { area = "Admin" })';
+     var url = '@Url.Action("GetRevenueData", "Dashboard", new { area = "Admin" })';
             console.log('AJAX URL:', url);
 
-            $.ajax({
-             url: url,
-             type: 'GET',
+   $.ajax({
+ url: url,
+   type: 'GET',
             data: {
-                    fromDate: fromDate,
-                   toDate: toDate
-            },
-            success: function (response) {
-            console.log('AJAX response:', response);
-            if (response.success) {
-                      renderChart(response.data);
-            } else {
-                     console.error('Có lỗi xảy ra: ' + response.message);
+  fromDate: fromDate,
+        toDate: toDate
+   },
+       success: function (response) {
+          console.log('AJAX response:', response);
+     if (response.success) {
+      renderChart(response.data);
+     } else {
+      console.error('Có lỗi xảy ra: ' + response.message);
             }
-          },
-          error: function (xhr, status, error) {
-                    console.error('Không thể tải dữ liệu biểu đồ:', error);
-                 console.error('Status:', status);
+     },
+   error: function (xhr, status, error) {
+         console.error('Không thể tải dữ liệu biểu đồ:', error);
+   console.error('Status:', status);
                console.error('Response:', xhr.responseText);
-                 }
-          });
         }
+     });
+    }
 
         function renderChart(data) {
             console.log('Rendering chart with data:', data);
             var ctx = document.getElementById('revenueChart');
 
-            if (!ctx) {
-                console.error('Canvas element not found!');
-                return;
-            }
+         if (!ctx) {
+             console.error('Canvas element not found!');
+          return;
+       }
 
-            ctx = ctx.getContext('2d');
+    ctx = ctx.getContext('2d');
 
-            // Destroy existing chart if exists
-           if (revenueChart) {
-               revenueChart.destroy();
+      // Destroy existing chart if exists
+ if (revenueChart) {
+       revenueChart.destroy();
            }
 
-            if (!data || data.length === 0) {
-               console.log('No data to display');
+  if (!data || data.length === 0) {
+      console.log('No data to display');
+  // Show empty state message
                 return;
-            }
+        }
 
-            var labels = data.map(function (item) { return item.Date; });
-            var revenues = data.map(function (item) { return item.Revenue; });
+    var labels = data.map(function (item) { return item.Date; });
+     var revenues = data.map(function (item) { return item.Revenue; });
 
             console.log('Labels:', labels);
-            console.log('Revenues:', revenues);
+       console.log('Revenues:', revenues);
+
+            // Create gradient
+ var gradient = ctx.createLinearGradient(0, 0, 0, 350);
+     gradient.addColorStop(0, 'rgba(74, 144, 226, 0.3)');
+            gradient.addColorStop(0.5, 'rgba(74, 144, 226, 0.15)');
+            gradient.addColorStop(1, 'rgba(74, 144, 226, 0.02)');
 
             revenueChart = new Chart(ctx, {
                 type: 'line',
-                data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Doanh thu (VNĐ)',
-                    data: revenues,
-                    backgroundColor: 'rgba(52, 144, 220, 0.2)',
-                    borderColor: 'rgba(52, 144, 220, 1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
+        data: {
+     labels: labels,
+            datasets: [{
+    label: 'Doanh thu',
+              data: revenues,
+            backgroundColor: gradient,
+     borderColor: '#4A90E2',
+        borderWidth: 2.5,
+ fill: true,
+        tension: 0.4, // Smooth curve
+           pointRadius: 3,
+    pointBackgroundColor: '#4A90E2',
+    pointBorderColor: '#fff',
+    pointBorderWidth: 2,
+       pointHoverRadius: 6,
+   pointHoverBackgroundColor: '#4A90E2',
+           pointHoverBorderColor: '#fff',
+       pointHoverBorderWidth: 2
                 }]
+      },
+         options: {
+     responsive: true,
+       maintainAspectRatio: false,
+        interaction: {
+     mode: 'index',
+   intersect: false
+   },
+     plugins: {
+          legend: {
+              display: false
             },
-            options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                        display: true,
-                        position: 'top'
-                    },
-                    tooltip: {
-                        callbacks: {
-                        label: function (context) {
-                        var label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += new Intl.NumberFormat('vi-VN').format(context.parsed.y) + ' VNĐ';
-                        return label;
-                        }
-                       }
-                }
-                         },
-                 scales: {
-                          y: {
-                     beginAtZero: true,
-                     ticks: {
-                    callback: function (value) {
-             return new Intl.NumberFormat('vi-VN').format(value);
-              }
+          tooltip: {
+      enabled: true,
+         backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      padding: 12,
+   titleColor: '#fff',
+      titleFont: {
+         size: 13,
+        weight: '600'
+    },
+      bodyColor: '#fff',
+          bodyFont: {
+     size: 13
+                 },
+         borderColor: '#4A90E2',
+  borderWidth: 1,
+             displayColors: false,
+           callbacks: {
+            title: function(context) {
+                return context[0].label;
+        },
+    label: function (context) {
+          return new Intl.NumberFormat('vi-VN').format(context.parsed.y) + ' VNĐ';
+ }
+       }
+          }
+          },
+       scales: {
+   x: {
+                 grid: {
+              display: false
+             },
+      ticks: {
+     font: {
+      size: 11
+        },
+           color: '#666',
+     maxRotation: 45,
+     minRotation: 45
+        }
+  },
+    y: {
+    beginAtZero: true,
+                grid: {
+ color: 'rgba(0, 0, 0, 0.05)',
+       drawBorder: false
+    },
+         ticks: {
+            font: {
+           size: 11
+      },
+              color: '#666',
+    callback: function (value) {
+   if (value >= 1000000) {
+      return (value / 1000000).toFixed(1) + 'M';
+                   } else if (value >= 1000) {
+              return (value / 1000).toFixed(0) + 'K';
+      }
+         return value;
+      }
+       },
+          border: {
+      display: false
+                  }
+  }
                  }
-                           }
-             }
-                   }
-            });
-
-            console.log('Chart rendered successfully');
+          }
+      });
     }
     </script>
 }

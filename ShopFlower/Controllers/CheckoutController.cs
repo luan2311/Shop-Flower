@@ -1,6 +1,9 @@
 ﻿using ShopFlower.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,21 +14,105 @@ namespace ShopFlower.Controllers
     {
         private QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
 
-        private string GetCartKey()
+        #region Helper Methods
+
+        private int? GetCurrentUserId()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return "Cart_" + User.Identity.Name;
+                var username = User.Identity.Name;
+                var user = db.TAIKHOANs.FirstOrDefault(u => u.TenDangNhap == username);
+                return user?.MaTK;
             }
-            return "Cart"; // Giỏ hàng cho khách vãng lai
+            return null;
         }
+
+        private string GetCartKey()
+        {
+            var username = User.Identity.Name;
+            return !string.IsNullOrEmpty(username) ? "Cart_" + username : "Cart";
+        }
+
+        private string GetConnectionString()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["QL_SHOPFLOWEREntities"].ConnectionString;
+            var builder = new System.Data.Entity.Core.EntityClient.EntityConnectionStringBuilder(connStr);
+            return builder.ProviderConnectionString;
+        }
+
+        private List<Cart> LayGioHang()
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId.HasValue)
+            {
+                return GetCartFromDatabase(userId.Value);
+            }
+            else
+            {
+                return GetCartFromSession();
+            }
+        }
+
+        private List<Cart> GetCartFromDatabase(int maTK)
+        {
+            var cartList = new List<Cart>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetCartItems", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                cartList.Add(new Cart(
+                                    maCartItem: Convert.ToInt32(reader["MaCartItem"]),
+                                    productId: reader["MaSP"].ToString(),
+                                    productName: reader["TenSP"].ToString(),
+                                    productImage: reader["AnhSP"].ToString(),
+                                    price: Convert.ToDouble(reader["GiaBan"]),
+                                    quantity: Convert.ToInt32(reader["SoLuong"])
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting cart from database: {ex.Message}");
+            }
+
+            return cartList;
+        }
+
+        private List<Cart> GetCartFromSession()
+        {
+            var sessionKey = GetCartKey();
+            var cart = Session[sessionKey] as List<Cart>;
+
+            if (cart == null)
+            {
+                cart = new List<Cart>();
+            }
+
+            return cart;
+        }
+
+        #endregion
 
         // GET: Checkout
         [Authorize]
         public ActionResult ThanhToan()
         {
-            var cartKey = User.Identity.IsAuthenticated ? "Cart_" + User.Identity.Name : "Cart";
-            var cart = Session[cartKey] as List<Cart>;
+            var cart = LayGioHang();
 
             if (cart == null || !cart.Any())
             {
@@ -53,8 +140,7 @@ namespace ShopFlower.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PlaceOrder(ThanhToanViewModel model)
         {
-            var cartKey = GetCartKey();
-            var cart = Session[cartKey] as List<Cart>;
+            var cart = LayGioHang();
 
             if (cart == null || !cart.Any())
             {
@@ -117,11 +203,38 @@ namespace ShopFlower.Controllers
             db.SaveChanges();
 
             // 3. Xóa giỏ hàng sau khi đặt hàng thành công
-            Session.Remove(cartKey);
+            ClearCart(user.MaTK);
 
             // 4. Chuyển đến trang lịch sử đơn hàng
             TempData["OrderSuccess"] = "Bạn đã đặt hàng thành công!";
             return RedirectToAction("Orders", "Account");
+        }
+
+        private void ClearCart(int maTK)
+        {
+            try
+            {
+                // Xóa giỏ hàng từ database nếu người dùng đã đăng nhập
+                using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_ClearCart", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaTK", maTK);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error clearing cart from database: {ex.Message}");
+            }
+
+            // Xóa session (để đảm bảo)
+            var cartKey = GetCartKey();
+            Session.Remove(cartKey);
         }
 
         public ActionResult OrderConfirmation(int id)
