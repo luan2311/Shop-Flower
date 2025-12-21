@@ -19,7 +19,7 @@ namespace ShopFlower.Areas.Admin.Controllers
     public class DashboardController : BaseAdminController
     {
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
-        
+
         // --- Password Hashing Helpers (from AccountController) ---
         private const int SaltSize = 16;
         private const int HashSize = 32;
@@ -158,12 +158,12 @@ namespace ShopFlower.Areas.Admin.Controllers
         //// POST: Admin/Dashboard/CreateSanPham
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateSanPham([Bind(Include = "MaSP,TenSP,GiaBan,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanpham, HttpPostedFileBase AnhBiaFile)
+        public ActionResult CreateSanPham([Bind(Include = "TenSP,GiaBan,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanpham, HttpPostedFileBase AnhBiaFile)
         {
-            // Kiểm tra trùng mã sản phẩm
-            if (db.SANPHAMs.Any(sp => sp.MaSP == sanpham.MaSP))
+            // KIỂM TRA FILE ẢNH TRƯỚC - Validation quan trọng nhất
+            if (AnhBiaFile == null || AnhBiaFile.ContentLength == 0)
             {
-                ModelState.AddModelError("MaSP", "Mã sản phẩm đã tồn tại.");
+                ModelState.AddModelError("AnhBiaFile", "Vui lòng chọn ảnh sản phẩm.");
             }
 
             // Validate giá bán
@@ -178,30 +178,50 @@ namespace ShopFlower.Areas.Admin.Controllers
                 ModelState.AddModelError("SoLuongTon", "Số lượng tồn không được nhỏ hơn 0.");
             }
 
-            if (ModelState.IsValid)
+            // Nếu có lỗi validation, trả về form với thông báo lỗi rõ ràng
+            if (!ModelState.IsValid)
             {
-                if (AnhBiaFile != null && AnhBiaFile.ContentLength > 0)
-                {
-                    string fileName = Path.GetFileName(AnhBiaFile.FileName);
+                ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
+                return View(sanpham);
+            }
 
-                    sanpham.AnhSP = fileName;
-                }
-                else
+            // Nếu mọi thứ OK, tiến hành lưu
+            try
+            {
+                // Tự động sinh mã sản phẩm
+                string newMaSP = GenerateMaSanPham();
+                sanpham.MaSP = newMaSP;
+
+                // Lưu file ảnh
+                string fileName = Path.GetFileName(AnhBiaFile.FileName);
+                string imagePath = Server.MapPath("~/Images");
+
+                // Tạo thư mục nếu chưa tồn tại
+                if (!Directory.Exists(imagePath))
                 {
-                    ModelState.AddModelError("", "Vui lòng chọn ảnh bìa.");
-                    ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
-                    return View(sanpham);
+                    Directory.CreateDirectory(imagePath);
                 }
+
+                string fullPath = Path.Combine(imagePath, fileName);
+                AnhBiaFile.SaveAs(fullPath);
+
+                sanpham.AnhSP = fileName;
+
+                // Lưu vào database
                 db.SANPHAMs.Add(sanpham);
                 db.SaveChanges();
+
                 TempData["Success"] = "Tạo sản phẩm thành công!";
                 return RedirectToAction("QL_SanPham");
             }
-
-            ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
-            return View(sanpham);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Có lỗi xảy ra khi tạo sản phẩm: " + ex.Message);
+                ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
+                return View(sanpham);
+            }
         }
-        
+
         // GET: Admin/Dashboard/EditSanPham/5
         public ActionResult EditSanPham(string id)
         {
@@ -297,12 +317,12 @@ namespace ShopFlower.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-    
+
             // Cập nhật số lượng tồn về 0
             sanPham.SoLuongTon = 0;
             db.Entry(sanPham).State = EntityState.Modified;
             db.SaveChanges();
-        
+
             TempData["Success"] = "Đã ngưng bán sản phẩm: " + sanPham.TenSP;
             return RedirectToAction("QL_SanPham");
         }
@@ -552,10 +572,14 @@ namespace ShopFlower.Areas.Admin.Controllers
         // POST: Admin/Dashboard/CreateTinTuc
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateTinTuc([Bind(Include = "MATT,TIEUDE,MOTA")] TINTUC tinTuc, HttpPostedFileBase AnhBiaFile)
+        public ActionResult CreateTinTuc([Bind(Include = "TIEUDE,MOTA")] TINTUC tinTuc, HttpPostedFileBase AnhBiaFile)
         {
             if (ModelState.IsValid)
             {
+                // Tự động sinh mã tin tức
+                string newMaTT = GenerateMaTinTuc();
+                tinTuc.MATT = newMaTT;
+
                 if (AnhBiaFile != null && AnhBiaFile.ContentLength > 0)
                 {
                     string fileName = Path.GetFileName(AnhBiaFile.FileName);
@@ -579,12 +603,12 @@ namespace ShopFlower.Areas.Admin.Controllers
 
                 db.TINTUCs.Add(tinTuc);
                 db.SaveChanges();
+                TempData["Success"] = "Tạo tin tức mới thành công!";
                 return RedirectToAction("QL_TinTuc");
             }
 
             return View(tinTuc);
         }
-
 
 
 
@@ -748,8 +772,71 @@ namespace ShopFlower.Areas.Admin.Controllers
         }
         public ActionResult SomeAdminOnlyAction()
         {
-            // admin-only logic
             return View();
+        }
+
+        private string GenerateMaTinTuc()
+        {
+            var allTinTuc = db.TINTUCs.ToList();
+
+            if (allTinTuc == null || !allTinTuc.Any())
+            {
+                return "TT001     ";
+            }
+
+            int maxNumber = 0;
+            foreach (var tinTuc in allTinTuc)
+            {
+                string maTT = tinTuc.MATT?.Trim() ?? "";
+                if (maTT.Length >= 2 && maTT.StartsWith("TT"))
+                {
+                    string numberPart = maTT.Substring(2);
+                    if (int.TryParse(numberPart, out int number))
+                    {
+                        if (number > maxNumber)
+                        {
+                            maxNumber = number;
+                        }
+                    }
+                }
+            }
+
+            int newNumber = maxNumber + 1;
+
+            string newMaTT = $"TT{newNumber:D3}";
+            return newMaTT.PadRight(10);
+        }
+
+        private string GenerateMaSanPham()
+        {
+            var allSanPham = db.SANPHAMs.ToList();
+
+            if (allSanPham == null || !allSanPham.Any())
+            {
+                return "SP001     ";
+            }
+
+            int maxNumber = 0;
+            foreach (var sanPham in allSanPham)
+            {
+                string maSP = sanPham.MaSP?.Trim() ?? "";
+                if (maSP.Length >= 2 && maSP.StartsWith("SP"))
+                {
+                    string numberPart = maSP.Substring(2);
+                    if (int.TryParse(numberPart, out int number))
+                    {
+                        if (number > maxNumber)
+                        {
+                            maxNumber = number;
+                        }
+                    }
+                }
+            }
+
+            int newNumber = maxNumber + 1;
+
+            string newMaSP = $"SP{newNumber:D3}";
+            return newMaSP.PadRight(10);
         }
     }
 }
