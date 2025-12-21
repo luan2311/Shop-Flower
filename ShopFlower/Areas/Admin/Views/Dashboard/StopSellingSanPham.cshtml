@@ -1,0 +1,60 @@
+﻿@model ShopFlower.Models.SANPHAM
+
+@{
+    ViewBag.Title = "Ngưng bán sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center">NGƯNG BÁN SẢN PHẨM</h2>
+
+<div class="alert alert-warning">
+    <h3>Bạn có chắc chắn muốn ngưng bán sản phẩm này?</h3>
+</div>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+     Tên Sản Phẩm
+   </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenSP)
+     </dd>
+
+  <dt>
+  Giá Bán
+        </dt>
+
+   <dd>
+       @Html.DisplayFor(model => model.GiaBan)
+ </dd>
+
+        <dt>
+   Số lượng tồn kho hiện tại
+        </dt>
+
+        <dd>
+      @Html.DisplayFor(model => model.SoLuongTon)
+     </dd>
+
+        <dt>
+      Tên loại hàng
+        </dt>
+
+ <dd>
+  @Html.DisplayFor(model => model.LOAIHANG.TenLoai)
+  </dd>
+
+  </dl>
+
+    @using (Html.BeginForm())
+    {
+@Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Ngưng bán" class="btn btn-warning" />
+            @Html.ActionLink("Trở về danh sách", "QL_SanPham", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

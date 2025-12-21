@@ -44,48 +44,55 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr @(item.SoLuongTon == 0 ? Html.Raw("style='background-color: #ffebee; opacity: 0.7;'") : null)>
             <td>
                 <img src="@Url.Content("~/Images/"+item.AnhSP)" style="max-width: 100px;"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TenSP)
+                @if (item.SoLuongTon == 0)
+                 {
+                     <span class="badge badge-danger ml-2">Ngưng bán</span>
+                            }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GiaBan)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SoLuongTon)
+                <span class="@(item.SoLuongTon == 0 ? "text-danger font-weight-bold" : "")">
+                  @Html.DisplayFor(modelItem => item.SoLuongTon)
+                    </span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LOAIHANG.TenLoai)
+               @Html.DisplayFor(modelItem => item.LOAIHANG.TenLoai)
             </td>
-            <td>
+               <td>
 
-                @using (Html.BeginForm("EditSanPham", "Dashboard", FormMethod.Get))
+               @using (Html.BeginForm("EditSanPham", "Dashboard", FormMethod.Get))
                 {
-                    @Html.AntiForgeryToken()
+                       @Html.AntiForgeryToken()
                     @Html.Hidden("id", item.MaSP)
-                    <button type="submit"
-                            class="btn btn-primary btn-sm" >
+                      <button type="submit"
+                           class="btn btn-primary btn-sm" >
                         Sửa
-                    </button>
-                    
-                }
-                    @*@Html.ActionLink("Sửa", "EditSanPham", new { id = item.MaSP }, new { @class = "btn btn-primary btn-sm" }) |*@
+                  </button>
+                          
+                 }
+                 @*@Html.ActionLink("Sửa", "EditSanPham", new { id = item.MaSP }, new { @class = "btn btn-primary btn-sm" }) |*@
                     @*@Html.ActionLink("Xóa", "DeleteSanPham", new { id = item.MaSP }, new { @class = "btn btn-danger btn-sm" })*@
 
-                @using (Html.BeginForm("DeleteSanPham", "Dashboard", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.Hidden("id", item.MaSP)
+                      @using (Html.BeginForm("StopSellingSanPham", "Dashboard", FormMethod.Post, new { style = "display: inline-block;" }))
+              {
+                     @Html.AntiForgeryToken()
+                @Html.Hidden("id", item.MaSP)
 
-                    <button type="submit"
-                            class="btn btn-danger mt-2 btn-sm">
-                        Xóa
-                    </button>
-                    }
-            </td>
+               <button type="submit"
+       class="btn btn-warning mt-2 btn-sm"
+        @(item.SoLuongTon == 0 ? Html.Raw("disabled title='Sản phẩm đã ngưng bán'") : Html.Raw("onclick=\"return confirm('Bạn có chắc chắn muốn ngưng bán sản phẩm này? Số lượng tồn sẽ được đặt về 0.');\""))>
+     Ngưng bán
+  </button>
+  }
+                </td>
         </tr>
     }
 

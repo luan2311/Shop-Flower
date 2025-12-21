@@ -306,6 +306,7 @@
     <Compile Include="Models\SANPHAM.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SANPHAMMetadata.cs" />
     <Compile Include="Models\SearchProducts_Result.cs">
       <DependentUpon>QL_ShopFlower.tt</DependentUpon>
     </Compile>
@@ -374,6 +375,7 @@
     <Content Include="Areas\Admin\Views\Dashboard\DeleteLienHeConfirmed.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Create_Account.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\CreateTinTuc.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\StopSellingSanPham.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Account\Dang_ky.cshtml" />
     <Content Include="Views\Account\Dang_nhap.cshtml" />

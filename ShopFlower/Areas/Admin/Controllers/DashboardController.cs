@@ -160,6 +160,24 @@ namespace ShopFlower.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSanPham([Bind(Include = "MaSP,TenSP,GiaBan,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanpham, HttpPostedFileBase AnhBiaFile)
         {
+            // Kiểm tra trùng mã sản phẩm
+            if (db.SANPHAMs.Any(sp => sp.MaSP == sanpham.MaSP))
+            {
+                ModelState.AddModelError("MaSP", "Mã sản phẩm đã tồn tại.");
+            }
+
+            // Validate giá bán
+            if (sanpham.GiaBan.HasValue && sanpham.GiaBan.Value <= 0)
+            {
+                ModelState.AddModelError("GiaBan", "Giá bán phải lớn hơn 0.");
+            }
+
+            // Validate số lượng tồn
+            if (sanpham.SoLuongTon.HasValue && sanpham.SoLuongTon.Value < 0)
+            {
+                ModelState.AddModelError("SoLuongTon", "Số lượng tồn không được nhỏ hơn 0.");
+            }
+
             if (ModelState.IsValid)
             {
                 if (AnhBiaFile != null && AnhBiaFile.ContentLength > 0)
@@ -171,10 +189,12 @@ namespace ShopFlower.Areas.Admin.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Vui lòng chọn ảnh bìa.");
+                    ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
                     return View(sanpham);
                 }
                 db.SANPHAMs.Add(sanpham);
                 db.SaveChanges();
+                TempData["Success"] = "Tạo sản phẩm thành công!";
                 return RedirectToAction("QL_SanPham");
             }
 
@@ -203,10 +223,23 @@ namespace ShopFlower.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSanPham([Bind(Include = "MaSP,TenSP,GiaBan,AnhSP,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanPham)
         {
+            // Validate giá bán
+            if (sanPham.GiaBan.HasValue && sanPham.GiaBan.Value <= 0)
+            {
+                ModelState.AddModelError("GiaBan", "Giá bán phải lớn hơn 0.");
+            }
+
+            // Validate số lượng tồn
+            if (sanPham.SoLuongTon.HasValue && sanPham.SoLuongTon.Value < 0)
+            {
+                ModelState.AddModelError("SoLuongTon", "Số lượng tồn không được nhỏ hơn 0.");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(sanPham).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Success"] = "Cập nhật sản phẩm thành công!";
                 return RedirectToAction("QL_SanPham");
             }
             ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanPham.MaLoai);
@@ -236,6 +269,41 @@ namespace ShopFlower.Areas.Admin.Controllers
             SANPHAM sanPham = db.SANPHAMs.Find(id);
             db.SANPHAMs.Remove(sanPham);
             db.SaveChanges();
+            return RedirectToAction("QL_SanPham");
+        }
+
+        // GET: Admin/Dashboard/StopSellingSanPham/5
+        public ActionResult StopSellingSanPham(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SANPHAM sanPham = db.SANPHAMs.Find(id);
+            if (sanPham == null)
+            {
+                return HttpNotFound();
+            }
+            return View(sanPham);
+        }
+
+        // POST: Admin/Dashboard/StopSellingSanPham/5
+        [HttpPost, ActionName("StopSellingSanPham")]
+        [ValidateAntiForgeryToken]
+        public ActionResult StopSellingSanPhamConfirmed(string id)
+        {
+            SANPHAM sanPham = db.SANPHAMs.Find(id);
+            if (sanPham == null)
+            {
+                return HttpNotFound();
+            }
+    
+            // Cập nhật số lượng tồn về 0
+            sanPham.SoLuongTon = 0;
+            db.Entry(sanPham).State = EntityState.Modified;
+            db.SaveChanges();
+        
+            TempData["Success"] = "Đã ngưng bán sản phẩm: " + sanPham.TenSP;
             return RedirectToAction("QL_SanPham");
         }
 
@@ -293,16 +361,16 @@ namespace ShopFlower.Areas.Admin.Controllers
         public ActionResult QL_TaiKhoan(string searchString, int? page)
         {
             ViewBag.CurrentFilter = searchString;
-            var taiKhoans = from t in db.TAIKHOANs select t;
+            var taiKhoANS = from t in db.TAIKHOANs select t;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                taiKhoans = taiKhoans.Where(t => t.TenDangNhap.Contains(searchString) || t.Email.Contains(searchString));
+                taiKhoANS = taiKhoANS.Where(t => t.TenDangNhap.Contains(searchString) || t.Email.Contains(searchString));
             }
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(taiKhoans.OrderBy(t => t.TenDangNhap).ToPagedList(pageNumber, pageSize));
+            return View(taiKhoANS.OrderBy(t => t.TenDangNhap).ToPagedList(pageNumber, pageSize));
         }
         // GET: Admin/Dashboard/Create_Account
         public ActionResult Create_Account()

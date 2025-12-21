@@ -21,7 +21,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.TenSP, "Tên sản phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.TenSP, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.TenSP, new { htmlAttributes = new { @class = "form-control", required = "required" } })
             @Html.ValidationMessageFor(model => model.TenSP, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -29,15 +29,15 @@
     <div class="form-group">
         @Html.LabelFor(model => model.GiaBan, "Giá bán", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.GiaBan, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.GiaBan, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", required = "required" } })
             @Html.ValidationMessageFor(model => model.GiaBan, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.AnhSP, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.AnhSP, "Ảnh Sản Phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.AnhSP, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AnhSP, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", style = "background-color: #e9ecef; cursor: not-allowed;" } })
             @Html.ValidationMessageFor(model => model.AnhSP, "", new { @class = "text-danger" })
             @if (!string.IsNullOrEmpty(Model.AnhSP))
             {
@@ -57,7 +57,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.SoLuongTon, "Số lượng tồn", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.SoLuongTon, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.SoLuongTon, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", required = "required" } })
             @Html.ValidationMessageFor(model => model.SoLuongTon, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -65,7 +65,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.MaLoai, "Loại sản phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("MaLoai", null, htmlAttributes: new { @class = "form-control" })
+            @Html.DropDownList("MaLoai", null, htmlAttributes: new { @class = "form-control", required = "required" })
             @Html.ValidationMessageFor(model => model.MaLoai, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -87,6 +87,7 @@
 }
 
 @section Scripts {
+    @@Scripts.Render("~/bundles/jqueryval")
     <script>$(document).ready(function () {
             $('#deleteBtn').on('click', function (e) {
                 e.preventDefault(); // Ngăn hành vi mặc định của button
