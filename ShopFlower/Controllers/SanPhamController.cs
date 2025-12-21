@@ -54,7 +54,7 @@ namespace ShopFlower.Controllers
         public ActionResult bo_hoa_tuoi(int page = 1, string sortOrder = "")
         {
             int pageSize = 8; // Số sản phẩm trên mỗi trang
-            var products = db.SANPHAMs.Where(x=>x.MaLoai == "LH001").AsQueryable();
+            var products = db.SANPHAMs.Where(x => x.MaLoai == "LH001").AsQueryable();
 
             // Sắp xếp sản phẩm theo yêu cầu
             switch (sortOrder)
@@ -236,8 +236,8 @@ namespace ShopFlower.Controllers
             return View(paginatedProducts);
         }
 
-       public ActionResult chi_tiet_san_pham(string id)
-       {
+        public ActionResult chi_tiet_san_pham(string id)
+        {
             if (id == null)
                 return RedirectToAction("page_not_found", "Home");
 
@@ -249,11 +249,11 @@ namespace ShopFlower.Controllers
 
             // Lấy sản phẩm liên quan (ví dụ: cùng loại, trừ sản phẩm hiện tại)
             var sanPhamLienQuan = db.SANPHAMs.Where(sp => sp.MaLoai == product.MaLoai && sp.MaSP != product.MaSP).Take(4).ToList();
-            
+
             ViewBag.SanPhamLienQuan = sanPhamLienQuan;
 
             return View(product);
-       }
+        }
 
         public ActionResult Search(string query, int page = 1)
         {
@@ -282,7 +282,7 @@ namespace ShopFlower.Controllers
 
             return View(paginatedProducts);
         }
-        
+
         // API Search qua AJAX - Bổ sung mới
         [HttpGet]
         public ActionResult SearchAjax(string keyword)
@@ -296,7 +296,7 @@ namespace ShopFlower.Controllers
 
                 // Tìm kiếm sản phẩm
                 var products = db.SANPHAMs
-                    .Where(p => p.TenSP.Contains(keyword) || 
+                    .Where(p => p.TenSP.Contains(keyword) ||
                                 p.MoTaSP.Contains(keyword) ||
                                 p.LOAIHANG.TenLoai.Contains(keyword))
                     .Take(10) // Giới hạn 10 kết quả
@@ -322,7 +322,7 @@ namespace ShopFlower.Controllers
                 return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-   
+
         // API lấy thông tin sản phẩm qua AJAX
         [HttpGet]
         public ActionResult GetProductInfo(string id)

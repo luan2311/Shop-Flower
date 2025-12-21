@@ -26,7 +26,7 @@ namespace ShopFlower.Controllers
             var hoaCuoi = db.SANPHAMs.Where(sp => sp.MaLoai == "LH004").Take(8).ToList();
 
             // Truyền dữ liệu sang View
-            
+
             ViewBag.BoHoaTuoi = boHoaTuoi;
             ViewBag.KeHoa = keHoa;
             ViewBag.GioHoa = gioHoa;
@@ -55,7 +55,7 @@ namespace ShopFlower.Controllers
                 {
                     // Tạo ObjectParameter cho output parameter
                     var maLHParam = new ObjectParameter("MaLH", typeof(string));
-                    
+
                     // Gọi Stored Procedure
                     int result = db.sp_ThemLienHe(
                         model.HOTEN,
@@ -71,7 +71,7 @@ namespace ShopFlower.Controllers
                     if (result >= 0 || !string.IsNullOrEmpty(maLH))
                     {
                         ViewBag.SuccessMessage = "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.";
-                        
+
                         // Clear form sau khi gửi thành công
                         ModelState.Clear();
                         return View(new LIENHE());
@@ -111,7 +111,7 @@ namespace ShopFlower.Controllers
                 return RedirectToAction("page_not_found", "Home");
 
             // Lấy sản phẩm liên quan (ví dụ: cùng loại, trừ sản phẩm hiện tại)
-            var tintucLienQuan = db.TINTUCs.Where(sp =>sp.MATT != tinTuc.MATT).Take(3).ToList();
+            var tintucLienQuan = db.TINTUCs.Where(sp => sp.MATT != tinTuc.MATT).Take(3).ToList();
 
             ViewBag.tinTucLienQuan = tintucLienQuan;
             ViewBag.tinTucNoiBat = db.TINTUCs.OrderByDescending(t => t.NGAYTHEM).Take(5).ToList();

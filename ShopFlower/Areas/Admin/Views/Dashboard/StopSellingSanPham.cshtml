@@ -15,42 +15,42 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-     Tên Sản Phẩm
-   </dt>
+            Tên Sản Phẩm
+        </dt>
 
         <dd>
             @Html.DisplayFor(model => model.TenSP)
-     </dd>
-
-  <dt>
-  Giá Bán
-        </dt>
-
-   <dd>
-       @Html.DisplayFor(model => model.GiaBan)
- </dd>
+        </dd>
 
         <dt>
-   Số lượng tồn kho hiện tại
+            Giá Bán
         </dt>
 
         <dd>
-      @Html.DisplayFor(model => model.SoLuongTon)
-     </dd>
+            @Html.DisplayFor(model => model.GiaBan)
+        </dd>
 
         <dt>
-      Tên loại hàng
+            Số lượng tồn kho hiện tại
         </dt>
 
- <dd>
-  @Html.DisplayFor(model => model.LOAIHANG.TenLoai)
-  </dd>
+        <dd>
+            @Html.DisplayFor(model => model.SoLuongTon)
+        </dd>
 
-  </dl>
+        <dt>
+            Tên loại hàng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LOAIHANG.TenLoai)
+        </dd>
+
+    </dl>
 
     @using (Html.BeginForm())
     {
-@Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Ngưng bán" class="btn btn-warning" />

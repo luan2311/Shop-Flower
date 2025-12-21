@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.remove('open');
         });
     }
-        
+
     // Handle dropdown menu toggle
     const dropdownToggles = document.querySelectorAll('#nav li > .open_mnu');
     dropdownToggles.forEach(function (element) {

@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_LayoutChung.cshtml";
 }
 
-<section class="product layout-product" itemscope="" itemtype="https://schema.org/Product" >
+<section class="product layout-product" itemscope="" itemtype="https://schema.org/Product">
     <div class="container" bis_skin_checked="1">
         <div class="details-product" bis_skin_checked="1">
             <div class="row margin-bottom-30" bis_skin_checked="1">
@@ -100,12 +100,11 @@
                                         <span>Số lượng: </span>
                                         <div class="input_number_product" bis_skin_checked="1">
                                             @*<button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro &gt; 1 ) result.value--;return false;" type="button" fdprocessedid="2ilisv">-</button>*@
-                                            <input type="button" id="qtym" name="quantity" 
+                                            <input type="button" id="qtym" name="quantity"
                                                    value="1" maxlength="3" class="form-control prd_quantity"
-                                                   onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" 
+                                                   onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;"
                                                    onchange="if(this.value == 0)this.value=1;" fdprocessedid="evp16j"
-                                                   style="font-size:1.4rem; border: 2px solid #537453; border-radius:10px; padding: 10px 0;"
-                                                   >
+                                                   style="font-size:1.4rem; border: 2px solid #537453; border-radius:10px; padding: 10px 0;">
                                             @*<button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button" fdprocessedid="low33n"><span>+</span></button>*@
                                         </div>
                                     </div>
@@ -257,8 +256,8 @@
                                                 </a>
                                                 <div class="action-button">
                                                     @*<a title="Xem nhanh" href="@Url.Action("chi_tiet_san_pham", "SanPham", new { id = item.MaSP.Trim() })" class="xem_nhanh btn-circle btn-views btn_view btn right-to quick-view">
-                                        <img class="view_img" width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/eye.svg?1757405855081" alt="Xem nhanh">
-                                    </a>*@
+                                                            <img class="view_img" width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/eye.svg?1757405855081" alt="Xem nhanh">
+                                                        </a>*@
 
                                                     <a href="javascript:void(0)" class="setWishlist btn-views btn-circle" tabindex="0" title="Thêm vào yêu thích">
                                                         <img width="25" height="25" src="//bizweb.dktcdn.net/100/487/411/themes/957692/assets/heart.png?1757405855081" alt="Thêm vào yêu thích">
@@ -291,8 +290,8 @@
                             }
                         }
                     </div>
-                                    
-                                
+
+
                 </div>
             </div>
         </div>

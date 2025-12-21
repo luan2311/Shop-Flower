@@ -89,8 +89,9 @@
 
 .card-body {
     display: flex;
-    align-items:center;
+    align-items: center;
 }
+
     .card-body .icon {
         font-size: 30px;
         /*width: 100%;*/

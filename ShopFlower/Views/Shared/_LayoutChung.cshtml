@@ -59,32 +59,32 @@
             <p class="loading-text">Đang tải trang...</p>
         </div>
     </div>
-    
+
     <!-- Notification Container for TempData messages -->
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="ajax-notification error" style="display: block;" id="temp-notification">
-       @TempData["ErrorMessage"]
+            @TempData["ErrorMessage"]
         </div>
-   <script>
-            setTimeout(function() {
-      document.getElementById('temp-notification').style.display = 'none';
+        <script>
+            setTimeout(function () {
+                document.getElementById('temp-notification').style.display = 'none';
             }, 5000);
         </script>
     }
-    
+
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="ajax-notification success" style="display: block;" id="temp-success-notification">
-     @TempData["SuccessMessage"]
-  </div>
+            @TempData["SuccessMessage"]
+        </div>
         <script>
-          setTimeout(function() {
-       document.getElementById('temp-success-notification').style.display = 'none';
-        }, 3000);
+            setTimeout(function () {
+                document.getElementById('temp-success-notification').style.display = 'none';
+            }, 3000);
         </script>
- }
-    
+    }
+
     <!-- Header -->
     @Html.Partial("_Header")
     <!-- Body -->

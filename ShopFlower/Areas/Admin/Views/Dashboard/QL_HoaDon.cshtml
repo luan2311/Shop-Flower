@@ -38,8 +38,8 @@
                 <td>@item.TenNguoiNhan</td>
                 <td>@item.TAIKHOAN.TenDangNhap</td>
                 <td>
-                    <span data-toggle="tooltip" 
-                          data-placement="top" 
+                    <span data-toggle="tooltip"
+                          data-placement="top"
                           title="@item.DiaChiNhan"
                           style="cursor: help;">
                         @(item.DiaChiNhan.Length > 30 ? item.DiaChiNhan.Substring(0, 30) + "..." : item.DiaChiNhan)
@@ -94,7 +94,7 @@
 
 @section scripts {
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>

@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_LayoutChung.cshtml";
 }
 <section class="blogpage">
-    <div class="container layout-article" itemscope="" itemtype="https://schema.org/Article" >
-        <div class="bg_blog" >
+    <div class="container layout-article" itemscope="" itemtype="https://schema.org/Article">
+        <div class="bg_blog">
             <article class="article-main">
-                <div class="row" >
-                    <div class="right-content col-lg-9 col-12" >
+                <div class="row">
+                    <div class="right-content col-lg-9 col-12">
                         <div class="article-details clearfix">
                             <h1 class="article-title">@Model.TIEUDE</h1>
                             <div class="posts">
@@ -26,11 +26,11 @@
                         </div>
 
 
-                        <div class="blog_related" >
-                            <div class="title" >Tin tức liên quan</div>
-                            <div class="row" >
-                                @foreach(var item in ViewBag.tinTucLienQuan)
-                                { 
+                        <div class="blog_related">
+                            <div class="title">Tin tức liên quan</div>
+                            <div class="row">
+                                @foreach (var item in ViewBag.tinTucLienQuan)
+                                {
                                     <div class="col-lg-4 col-md-4 col-sm-6">
                                         <div class="item-blog">
                                             <a class="block-thumb thumb" href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })" title="@item.TIEUDE">
@@ -96,12 +96,12 @@
                                         </div>
                                     </div>
                                 }
-                                
-                                
+
+
                             </div>
                         </div>
 
-                       
+
 
 
                     </div>
@@ -116,7 +116,7 @@
                                     {
                                         <div class="item clearfix">
                                             <div class="post-thumb">
-                                                <a class="image-blog scale_hover" href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })" title="@item.TIEUDE"  style=" opacity: inherit;">
+                                                <a class="image-blog scale_hover" href="@Url.Action("Details", "Home", new { id = item.MATT.Trim() })" title="@item.TIEUDE" style=" opacity: inherit;">
                                                     <img class="img_blog lazyload loaded" src="~/Images/@item.ANHBIA" alt="@item.TIEUDE" data-was-processed="true">
                                                 </a>
                                             </div>

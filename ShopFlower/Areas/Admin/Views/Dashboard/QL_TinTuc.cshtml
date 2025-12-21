@@ -21,7 +21,7 @@
         @Html.ActionLink("Tạo tin tức mới", "CreateTinTuc", null, new { @class = "btn btn-success" })
     </p>
 </div>
-    
+
 <table class="table table-light table-striped table-hover">
     <tr>
         <th>Tiêu Đề</th>
@@ -43,7 +43,7 @@
                     @Html.AntiForgeryToken()
                     @Html.Hidden("id", item.MATT)
 
-                    
+
                     <button type="submit"
                             class="btn btn-primary btn-sm">
                         Sửa

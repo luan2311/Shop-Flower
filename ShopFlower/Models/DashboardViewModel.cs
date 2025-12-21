@@ -19,7 +19,7 @@ namespace ShopFlower.Models
     public class TopSellingProduct
     {
         public string ProductName { get; set; }
-        public int SL { get; set; } 
+        public int SL { get; set; }
         public decimal TotalSold { get; set; }
     }
 
