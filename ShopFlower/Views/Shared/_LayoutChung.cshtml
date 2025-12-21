@@ -59,6 +59,20 @@
             <p class="loading-text">Đang tải trang...</p>
         </div>
     </div>
+    
+    <!-- Notification Container for TempData messages -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="ajax-notification error" style="display: block;" id="temp-notification">
+       @TempData["ErrorMessage"]
+        </div>
+   <script>
+            setTimeout(function() {
+      document.getElementById('temp-notification').style.display = 'none';
+            }, 5000);
+        </script>
+    }
+    
     <!-- Header -->
     @Html.Partial("_Header")
     <!-- Body -->

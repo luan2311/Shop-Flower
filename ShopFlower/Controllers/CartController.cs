@@ -116,6 +116,27 @@ namespace ShopFlower.Controllers
 
         public ActionResult ThemGioHang(string ms, string strURL)
         {
+            // Kiểm tra sản phẩm có tồn tại và còn bán không
+            var sanpham = db.SANPHAMs.FirstOrDefault(s => s.MaSP == ms);
+
+            if (sanpham == null)
+            {
+                TempData["ErrorMessage"] = "Sản phẩm không tồn tại.";
+                return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
+            }
+
+            if (sanpham.SoLuongTon == 0)
+            {
+                TempData["ErrorMessage"] = "Sản phẩm đã ngừng kinh doanh.";
+
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = "Sản phẩm đã ngừng kinh doanh." });
+                }
+
+                return Redirect(string.IsNullOrEmpty(strURL) ? Url.Action("Trang_chu", "Home") : strURL);
+            }
+
             var userId = GetCurrentUserId();
 
             if (userId.HasValue)
