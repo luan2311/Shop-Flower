@@ -47,6 +47,8 @@
 
     @foreach (var item in Model)
     {
+    var isAdmin = item.TAIKHOAN_VAITRO.Any(tv => tv.VAITRO.TenVaiTro == "Admin");
+
         <tr>
             <td>@Html.DisplayFor(modelItem => item.TenHienThi)</td>
             <td>@Html.DisplayFor(modelItem => item.TenDangNhap)</td>
@@ -54,28 +56,34 @@
             <td>@Html.CheckBoxFor(modelItem => item.IsActive, new { @disabled = "disabled" })</td>
             <td>@Html.DisplayFor(modelItem => item.NgayTao)</td>
             <td>
-
-                @if (item.IsActive)
+                @if (!isAdmin)
                 {
-                    using (Html.BeginForm("Delete_Account", "Dashboard", new { id = item.MaTK }))
+                    if (item.IsActive)
                     {
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không?');">
-                            Vô hiệu hóa
-                        </button>
+                        using (Html.BeginForm("Delete_Account", "Dashboard", new { id = item.MaTK }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không?');">
+                                Vô hiệu hóa
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("Activate_Account", "Dashboard", new { id = item.MaTK }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success btn-sm"
+                                    onclick="return confirm('Bạn có chắc chắn muốn kích hoạt lại tài khoản này không?');">
+                                Kích hoạt
+                            </button>
+                        }
                     }
                 }
                 else
                 {
-                    using (Html.BeginForm("Activate_Account", "Dashboard", new { id = item.MaTK }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-success btn-sm"
-                                onclick="return confirm('Bạn có chắc chắn muốn kích hoạt lại tài khoản này không?');">
-                            Kích hoạt
-                        </button>
-                    }
+                    <span class="badge badge-primary">Admin</span>
                 }
             </td>
         </tr>
