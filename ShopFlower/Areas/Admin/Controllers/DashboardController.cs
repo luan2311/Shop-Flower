@@ -152,6 +152,14 @@ namespace ShopFlower.Areas.Admin.Controllers
         public ActionResult CreateSanPham()
         {
             ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai");
+
+            // Thêm dropdown cho Tình trạng
+            ViewBag.TinhTrang = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Còn hàng", Value = "Còn hàng" },
+                new SelectListItem { Text = "Hết hàng", Value = "Hết hàng" }
+            }, "Value", "Text");
+
             return View();
         }
 
@@ -182,6 +190,11 @@ namespace ShopFlower.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
+                ViewBag.TinhTrang = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Còn hàng", Value = "Còn hàng" },
+                    new SelectListItem { Text = "Hết hàng", Value = "Hết hàng" }
+                }, "Value", "Text", sanpham.TinhTrang);
                 return View(sanpham);
             }
 
@@ -218,6 +231,11 @@ namespace ShopFlower.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", "Có lỗi xảy ra khi tạo sản phẩm: " + ex.Message);
                 ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanpham.MaLoai);
+                ViewBag.TinhTrang = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Còn hàng", Value = "Còn hàng" },
+                    new SelectListItem { Text = "Hết hàng", Value = "Hết hàng" }
+                }, "Value", "Text", sanpham.TinhTrang);
                 return View(sanpham);
             }
         }
@@ -235,12 +253,21 @@ namespace ShopFlower.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanPham.MaLoai);
+
+            // Thêm dropdown cho Tình trạng
+            ViewBag.TinhTrang = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Còn hàng", Value = "Còn hàng" },
+                new SelectListItem { Text = "Hết hàng", Value = "Hết hàng" }
+            }, "Value", "Text", sanPham.TinhTrang);
+
             return View(sanPham);
         }
 
         // POST: Admin/Dashboard/EditSanPham/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult EditSanPham([Bind(Include = "MaSP,TenSP,GiaBan,AnhSP,MoTaSP,TinhTrang,ThuongHieu,SoLuongTon,MaLoai")] SANPHAM sanPham)
         {
             // Validate giá bán
@@ -257,12 +284,39 @@ namespace ShopFlower.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(sanPham).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["Success"] = "Cập nhật sản phẩm thành công!";
-                return RedirectToAction("QL_SanPham");
+                try
+                {
+                    // Chỉ cập nhật các trường cần thiết
+                    var existingProduct = db.SANPHAMs.Find(sanPham.MaSP);
+                    if (existingProduct == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    existingProduct.TenSP = sanPham.TenSP;
+                    existingProduct.GiaBan = sanPham.GiaBan;
+                    existingProduct.MoTaSP = sanPham.MoTaSP;
+                    existingProduct.TinhTrang = sanPham.TinhTrang;
+                    existingProduct.ThuongHieu = sanPham.ThuongHieu;
+                    existingProduct.SoLuongTon = sanPham.SoLuongTon;
+                    existingProduct.MaLoai = sanPham.MaLoai;
+                    // Không cập nhật AnhSP nếu không có ảnh mới
+
+                    db.SaveChanges();
+                    TempData["Success"] = "Cập nhật sản phẩm thành công!";
+                    return RedirectToAction("QL_SanPham");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Có lỗi xảy ra khi cập nhật sản phẩm: " + ex.Message);
+                }
             }
             ViewBag.MaLoai = new SelectList(db.LOAIHANGs, "MaLoai", "TenLoai", sanPham.MaLoai);
+            ViewBag.TinhTrang = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Còn hàng", Value = "Còn hàng" },
+                new SelectListItem { Text = "Hết hàng", Value = "Hết hàng" }
+            }, "Value", "Text", sanPham.TinhTrang);
             return View(sanPham);
         }
 
@@ -318,13 +372,24 @@ namespace ShopFlower.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            // Cập nhật số lượng tồn về 0
-            sanPham.SoLuongTon = 0;
-            db.Entry(sanPham).State = EntityState.Modified;
-            db.SaveChanges();
+            try
+            {
+                sanPham.SoLuongTon = 0;
+                sanPham.TinhTrang = "Hết hàng";
 
-            TempData["Success"] = "Đã ngưng bán sản phẩm: " + sanPham.TenSP;
-            return RedirectToAction("QL_SanPham");
+                db.Entry(sanPham).Property(x => x.SoLuongTon).IsModified = true;
+                db.Entry(sanPham).Property(x => x.TinhTrang).IsModified = true;
+
+                db.SaveChanges();
+
+                TempData["Success"] = "Đã ngưng bán sản phẩm: " + sanPham.TenSP + ". Tình trạng đã được cập nhật thành 'Hết hàng'.";
+                return RedirectToAction("QL_SanPham");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Có lỗi xảy ra khi ngưng bán sản phẩm: " + ex.Message;
+                return RedirectToAction("QL_SanPham");
+            }
         }
 
         // QL_HoaDon Actions

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShopFlower.Models
@@ -10,42 +10,40 @@ namespace ShopFlower.Models
 
     public class SANPHAMMetadata
     {
-        // MaSP ???c t?o t? ??ng, kh�ng c?n Required
-        [Display(Name = "M� s?n ph?m")]
-        [StringLength(10, ErrorMessage = "M� s?n ph?m kh�ng ???c v??t qu� 10 k� t?.")]
+        [Display(Name = "Mã sản phẩm")]
+        [StringLength(10, ErrorMessage = "Mã sản phẩm không được vượt quá 10 ký tự.")]
         public string MaSP { get; set; }
 
-        [Required(ErrorMessage = "T�n s?n ph?m l� b?t bu?c.")]
-        [Display(Name = "T�n s?n ph?m")]
-        [StringLength(100, ErrorMessage = "T�n s?n ph?m kh�ng ???c v??t qu� 100 k� t?.")]
+        [Required(ErrorMessage = "Tên sản phẩm là bắt buộc.")]
+        [Display(Name = "Tên sản phẩm")]
+        [StringLength(100, ErrorMessage = "Tên sản phẩm không được vượt quá 100 ký tự.")]
         public string TenSP { get; set; }
 
-        [Required(ErrorMessage = "Gi� b�n l� b?t bu?c.")]
-        [Display(Name = "Gi� b�n")]
-        [Range(1, int.MaxValue, ErrorMessage = "Gi� b�n ph?i l?n h?n 0.")]
+        [Required(ErrorMessage = "Giá bán là bắt buộc.")]
+        [Display(Name = "Giá bán")]
+        [Range(1, int.MaxValue, ErrorMessage = "Giá bán phải lớn hơn 0.")]
         public Nullable<int> GiaBan { get; set; }
 
-        [Display(Name = "?nh s?n ph?m")]
+        [Display(Name = "Ảnh sản phẩm")]
         public string AnhSP { get; set; }
 
-        [Display(Name = "M� t? s?n ph?m")]
-        [StringLength(500, ErrorMessage = "M� t? kh�ng ???c v??t qu� 500 k� t?.")]
+        [Display(Name = "Mô tả sản phẩm")]
         public string MoTaSP { get; set; }
 
-        [Display(Name = "T�nh tr?ng")]
+        [Display(Name = "Tình trạng")]
         public string TinhTrang { get; set; }
 
-        [Display(Name = "Th??ng hi?u")]
-        [StringLength(50, ErrorMessage = "Th??ng hi?u kh�ng ???c v??t qu� 50 k� t?.")]
+        [Display(Name = "Thương hiệu")]
+        [StringLength(50, ErrorMessage = "Thương hiệu không được vượt quá 50 ký tự.")]
         public string ThuongHieu { get; set; }
 
-        [Required(ErrorMessage = "S? l??ng t?n l� b?t bu?c.")]
-        [Display(Name = "S? l??ng t?n")]
-        [Range(0, int.MaxValue, ErrorMessage = "S? l??ng t?n kh�ng ???c nh? h?n 0.")]
+        [Required(ErrorMessage = "Số lượng tồn là bắt buộc.")]
+        [Display(Name = "Số lượng tồn")]
+        [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn không được nhỏ hơn 0.")]
         public Nullable<int> SoLuongTon { get; set; }
 
-        [Required(ErrorMessage = "Lo?i s?n ph?m l� b?t bu?c.")]
-        [Display(Name = "Lo?i s?n ph?m")]
+        [Required(ErrorMessage = "Loại sản phẩm là bắt buộc.")]
+        [Display(Name = "Loại sản phẩm")]
         public string MaLoai { get; set; }
     }
 }

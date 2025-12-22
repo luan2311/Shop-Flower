@@ -7,7 +7,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1 class="text-center">QUẢN LÝ SẢN PHẢM</h1>
+<h1 class="text-center">QUẢN LÝ SẢN PHẨM</h1>
 
 <div class="d-flex justify-content-between mb-3">
     @using (Html.BeginForm("QL_SanPham", "Dashboard", FormMethod.Get, new { @class = "form-inline" }))
@@ -36,6 +36,9 @@
         <th>
             Số lượng tồn kho
         </th>
+        @*<th>
+                Tình trạng
+            </th>*@
         <th>
             Tên loại hàng
         </th>
@@ -63,6 +66,20 @@
                     @Html.DisplayFor(modelItem => item.SoLuongTon)
                 </span>
             </td>
+            @*<td>
+                    @if (item.TinhTrang == "Hết hàng")
+                    {
+                        <span class="badge badge-danger">@item.TinhTrang</span>
+                    }
+                    else if (item.TinhTrang == "Còn hàng")
+                    {
+                        <span class="badge badge-success">@item.TinhTrang</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-secondary">@item.TinhTrang</span>
+                    }
+                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.LOAIHANG.TenLoai)
             </td>
@@ -88,7 +105,7 @@
 
                     <button type="submit"
                             class="btn btn-warning mt-2 btn-sm"
-                            @(item.SoLuongTon == 0 ? Html.Raw("disabled title='Sản phẩm đã ngưng bán'") : Html.Raw("onclick=\"return confirm('Bạn có chắc chắn muốn ngưng bán sản phẩm này? Số lượng tồn sẽ được đặt về 0.');\""))>
+                            @(item.SoLuongTon == 0 ? Html.Raw("disabled title='Sản phẩm đã ngưng bán'") : Html.Raw("onclick=\"return confirm('Bạn có chắc chắn muốn ngưng bán sản phẩm này? Số lượng tồn sẽ được đặt về 0 và tình trạng sẽ chuyển thành Hết hàng.');\""))>
                         Ngưng bán
                     </button>
                 }
