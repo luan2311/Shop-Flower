@@ -140,7 +140,7 @@
     <Content Include="Contents\CSS\wishlist_style.css" />
     <Content Include="Contents\JS\ajax-handler.js" />
     <Content Include="Contents\JS\main.js" />
-    <Content Include="Content\PagedList.css" />
+    <Content Include="Contents\CSS\PagedList.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\0545951168fa4ff79b779abbc65e74-jpeg-1722654059820.jpg" />
     <Content Include="Images\075264983fc24d8a83908f79bda4a8-jpeg-1722654096584.jpg" />
