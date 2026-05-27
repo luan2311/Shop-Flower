@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="9e5d4872-9c12-4f36-9b5d-161c5df6cb28" activeEnvironment="Default" name="ShopFlower REST API Test Project" resourceRoot="" soapui-version="5.7.0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" id="e0a12e2c-35eb-4a0b-8531-ec9ee6c8d76e" wadlVersion="http://wadl.dev.java.net/2009/02" name="ShopFlower API" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
+      <con:endpoint>https://localhost:44357</con:endpoint>
+    </con:endpoints>
+    
+    <!-- Account APIs -->
+    <con:resource name="Register" path="/api/Account/Register" id="a29e2fca-9ef6-4f4d-8cf7-64cc1529ab8f">
+      <con:settings/>
+      <con:method name="POST" id="d8bde635-4cb2-4eb4-b903-5136ffc841bb" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+        </con:representation>
+      </con:method>
+    </con:resource>
+
+    <con:resource name="Login" path="/api/Account/Login" id="b29e2fca-9ef6-4f4d-8cf7-64cc1529ab8f">
+      <con:settings/>
+      <con:method name="POST" id="e8bde635-4cb2-4eb4-b903-5136ffc841bb" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+        </con:representation>
+      </con:method>
+    </con:resource>
+
+    <!-- SanPham APIs -->
+    <con:resource name="SanPham" path="/api/SanPham" id="c29e2fca-9ef6-4f4d-8cf7-64cc1529ab8f">
+      <con:settings/>
+      <con:method name="GET" id="f8bde635-4cb2-4eb4-b903-5136ffc841bb" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+        </con:representation>
+      </con:method>
+    </con:resource>
+
+    <!-- HoaDon APIs -->
+    <con:resource name="HoaDon" path="/api/HoaDon" id="d29e2fca-9ef6-4f4d-8cf7-64cc1529ab8f">
+      <con:settings/>
+      <con:method name="POST" id="a8bde635-4cb2-4eb4-b903-5136ffc841bb" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+        </con:representation>
+      </con:method>
+    </con:resource>
+
+    <con:resource name="MyOrders" path="/api/HoaDon/MyOrders" id="e29e2fca-9ef6-4f4d-8cf7-64cc1529ab8f">
+      <con:settings/>
+      <con:method name="GET" id="b8bde635-4cb2-4eb4-b903-5136ffc841bb" method="GET">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>userId</con:name>
+            <con:value/>
+            <con:style>QUERY</con:style>
+            <con:default/>
+          </con:parameter>
+        </con:parameters>
+      </con:method>
+    </con:resource>
+
+    <con:resource name="DuyetHoaDon" path="/api/HoaDon/{id}/status" id="f29e2fca-9ef6-4f4d-8cf7-64cc1529ab8f">
+      <con:settings/>
+      <con:param style="TEMPLATE">
+        <con:name>id</con:name>
+        <con:value/>
+        <con:style>TEMPLATE</con:style>
+        <con:default/>
+      </con:param>
+      <con:method name="PUT" id="c8bde635-4cb2-4eb4-b903-5136ffc841bb" method="PUT">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+      </con:method>
+    </con:resource>
+  </con:interface>
+
+  <!-- Automated TestSuite -->
+  <con:testSuite id="3fa54e5b-dc13-41bb-be52-4015f33f6a22" name="E2E Checkout Workflow TestSuite">
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="bf8b43bd-a56f-45b7-873b-5134b22c7a72" failOnError="true" failTestCaseOnTemplatesFail="true" keepSession="false" name="Buy Flower E2E Scenario" searchProperties="true">
+      <con:settings/>
+      
+      <!-- Step 1: Account Registration -->
+      <con:testStep type="restrequest" name="Step 1: POST Register New Client" id="fbc90453-61a7-47b2-a4f6-8bb03b9095bb">
+        <con:settings/>
+        <con:config service="ShopFlower API" resourcePath="/api/Account/Register" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="RegisterRequest" id="6d6d4a8e-df43-42be-bca2-8dbfe652431d" mediaType="application/json">
+            <con:settings/>
+            <con:endpoint>https://localhost:44357</con:endpoint>
+            <con:request>{
+  "TenDangNhap": "soapui_client_555",
+  "MatKhau": "SecurePassword@123",
+  "Email": "soapui_client555@example.com",
+  "TenHienThi": "Khách hàng SoapUI"
+}</con:request>
+            <con:assertion type="Valid HTTP Status Codes" name="Assert_Status_200" id="1cb340e4-b778-43d9-a292-0bca0b1c0bf1">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="Simple Contains" name="Assert_Success_True" id="1cc340e4-b778-43d9-a292-0bca0b1c0bf1">
+              <con:configuration>
+                <token>"success":true</token>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+
+      <!-- Step 2: Login to get Account Details -->
+      <con:testStep type="restrequest" name="Step 2: POST Login Client" id="gbc90453-61a7-47b2-a4f6-8bb03b9095bb">
+        <con:settings/>
+        <con:config service="ShopFlower API" resourcePath="/api/Account/Login" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="LoginRequest" id="7d6d4a8e-df43-42be-bca2-8dbfe652431d" mediaType="application/json">
+            <con:settings/>
+            <con:endpoint>https://localhost:44357</con:endpoint>
+            <con:request>{
+  "TenDangNhap": "soapui_client_555",
+  "MatKhau": "SecurePassword@123"
+}</con:request>
+            <con:assertion type="Valid HTTP Status Codes" name="Assert_Status_200" id="2cb340e4-b778-43d9-a292-0bca0b1c0bf1">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+
+      <!-- Step 3: Browse Flowers -->
+      <con:testStep type="restrequest" name="Step 3: GET Browse Flowers" id="hbc90453-61a7-47b2-a4f6-8bb03b9095bb">
+        <con:settings/>
+        <con:config service="ShopFlower API" resourcePath="/api/SanPham" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="BrowseRequest" id="8d6d4a8e-df43-42be-bca2-8dbfe652431d" mediaType="application/json">
+            <con:settings/>
+            <con:endpoint>https://localhost:44357</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Assert_Status_200" id="3cb340e4-b778-43d9-a292-0bca0b1c0bf1">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+
+      <!-- Step 4: Submit Purchase Order via API -->
+      <con:testStep type="restrequest" name="Step 4: POST Place Order" id="ibc90453-61a7-47b2-a4f6-8bb03b9095bb">
+        <con:settings/>
+        <con:config service="ShopFlower API" resourcePath="/api/HoaDon" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="OrderRequest" id="9d6d4a8e-df43-42be-bca2-8dbfe652431d" mediaType="application/json">
+            <con:settings/>
+            <con:endpoint>https://localhost:44357</con:endpoint>
+            <con:request>{
+  "MaTK": 1,
+  "TenNguoiNhan": "Khách hàng SoapUI",
+  "Email": "soapui_client555@example.com",
+  "SoDienThoai": "0987654321",
+  "DiaChiGiaoHang": "999 Đường Cách Mạng Tháng 8",
+  "PhuongXa": "Phường 15",
+  "QuanHuyen": "Quận 10",
+  "TinhThanh": "TP Hồ Chí Minh",
+  "GhiChu": "Giao hàng giờ hành chính, gọi trước khi giao.",
+  "PhuongThucThanhToan": "COD",
+  "Items": [
+    {
+      "MaSP": "SP001",
+      "SoLuong": 2,
+      "DonGia": 180000
+    }
+  ]
+}</con:request>
+            <con:assertion type="Valid HTTP Status Codes" name="Assert_Status_200" id="4cb340e4-b778-43d9-a292-0bca0b1c0bf1">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+
+      <!-- Step 5: Get History of Orders -->
+      <con:testStep type="restrequest" name="Step 5: GET Order History" id="jbc90453-61a7-47b2-a4f6-8bb03b9095bb">
+        <con:settings/>
+        <con:config service="ShopFlower API" resourcePath="/api/HoaDon/MyOrders" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="HistoryRequest" id="ad6d4a8e-df43-42be-bca2-8dbfe652431d" mediaType="application/json">
+            <con:settings/>
+            <con:endpoint>https://localhost:44357</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Assert_Status_200" id="5cb340e4-b778-43d9-a292-0bca0b1c0bf1">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+    </con:testCase>
+  </con:testSuite>
+  <con:properties/>
+  <con:wssContainer/>
+  <con:databaseConnectionContainer/>
+  <con:oAuth2ProfileContainer/>
+  <con:oAuth1ProfileContainer/>
+</con:soapui-project>
