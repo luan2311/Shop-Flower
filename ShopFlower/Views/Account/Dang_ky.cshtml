@@ -62,3 +62,114 @@
         </div>
     </section>
 </div>
+
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+            var usernameInput = document.getElementById('TenDangNhap');
+            var emailInput = document.getElementById('Email');
+            var passwordInput = document.getElementById('MatKhau');
+            var confirmPasswordInput = document.getElementById('XacNhanMatKhau');
+
+            // Trim spaces for username automatically
+            if (usernameInput) {
+                usernameInput.addEventListener('blur', function () {
+                    this.value = this.value.trim();
+                });
+            }
+
+            function showError(inputElement, fieldName, message) {
+                if (inputElement) {
+                    inputElement.classList.add('is-invalid');
+                    inputElement.classList.remove('is-valid');
+                }
+                var span = document.querySelector("[data-valmsg-for='" + fieldName + "']");
+                if (span) {
+                    span.textContent = message;
+                    span.style.display = 'block';
+                }
+                return false;
+            }
+
+            function clearError(inputElement, fieldName) {
+                if (inputElement) {
+                    inputElement.classList.remove('is-invalid');
+                    inputElement.classList.add('is-valid');
+                }
+                var span = document.querySelector("[data-valmsg-for='" + fieldName + "']");
+                if (span) {
+                    span.textContent = '';
+                    span.style.display = 'none';
+                }
+                return true;
+            }
+
+            function validateEmail() {
+                if (!emailInput) return true;
+                var val = emailInput.value.trim();
+                if (!val) {
+                    return showError(emailInput, 'Email', 'Vui lòng nhập Email.');
+                }
+                var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                if (!emailRegex.test(val)) {
+                    return showError(emailInput, 'Email', 'Email không hợp lệ (ví dụ: client@example.com)');
+                }
+                return clearError(emailInput, 'Email');
+            }
+
+            // Client side validation on blur & input
+            if (emailInput) {
+                emailInput.addEventListener('blur', validateEmail);
+                emailInput.addEventListener('input', validateEmail);
+            }
+
+            function validatePassword() {
+                if (!passwordInput) return true;
+                var val = passwordInput.value;
+                if (!val) {
+                    return showError(passwordInput, 'MatKhau', 'Vui lòng nhập mật khẩu.');
+                }
+                if (val.length < 5) {
+                    return showError(passwordInput, 'MatKhau', 'Mật khẩu phải từ 5 ký tự trở lên.');
+                }
+                return clearError(passwordInput, 'MatKhau');
+            }
+
+            if (passwordInput) {
+                passwordInput.addEventListener('blur', validatePassword);
+                passwordInput.addEventListener('input', validatePassword);
+            }
+
+            function validateConfirmPassword() {
+                if (!confirmPasswordInput || !passwordInput) return true;
+                var val = confirmPasswordInput.value;
+                var pwd = passwordInput.value;
+                if (val !== pwd) {
+                    return showError(confirmPasswordInput, 'XacNhanMatKhau', 'Mật khẩu xác nhận không khớp.');
+                }
+                return clearError(confirmPasswordInput, 'XacNhanMatKhau');
+            }
+
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+                confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+            }
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    if (usernameInput) {
+                        usernameInput.value = usernameInput.value.trim();
+                    }
+                    var isEmailValid = validateEmail();
+                    var isPasswordValid = validatePassword();
+                    var isConfirmValid = validateConfirmPassword();
+
+                    if (!isEmailValid || !isPasswordValid || !isConfirmValid) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
+}

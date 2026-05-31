@@ -1,4 +1,4 @@
-﻿@model ShopFlower.Models.HOADON
+@model ShopFlower.Models.HOADON
 
 @{
     ViewBag.Title = "Chi tiết Hóa Đơn";
@@ -58,11 +58,11 @@
                 <dd class="col-sm-8">
                     @if (Model.TrangThai == "Pending")
                     {
-                        <span class="status-pending">@Model.TrangThai</span>
+                        <span class="status-pending order-status" id="TrangThai">@Model.TrangThai</span>
                     }
                     else
                     {
-                        <span class="status-completed">@Model.TrangThai</span>
+                        <span class="status-completed order-status" id="TrangThai">@Model.TrangThai</span>
                     }
                 </dd>
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -44,10 +44,12 @@ namespace ShopFlower.Filters
                         { "area", "" }
                     });
             }
-            else
-            {
-                filterContext.Result = new ViewResult { ViewName = "~/Views/Shared/Unauthorized.cshtml" };
-            }
+                filterContext.Result = new RedirectToRouteResult(
+                    new System.Web.Routing.RouteValueDictionary {
+                        { "controller", "Account" },
+                        { "action", "Unauthorized" },
+                        { "area", "" }
+                    });
         }
     }
 }
