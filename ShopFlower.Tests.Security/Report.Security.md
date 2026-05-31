@@ -1,5 +1,5 @@
 # Báo Cáo Kiểm Thử Bảo Mật — ShopFlower
-Chạy lệnh CMD: "d:\DoAnKiemDinhPhanMem\Shop-Flower\ShopFlower.Tests.Security\ShopFlower.Tests.Security.csproj" -v normal
+Chạy lệnh CMD: dotnet test "d:\DoAnKiemDinhPhanMem\Shop-Flower\ShopFlower.Tests.Security\ShopFlower.Tests.Security.csproj" -v normal
 
 ## 1. Thông Tin Kiểm Thử
 
