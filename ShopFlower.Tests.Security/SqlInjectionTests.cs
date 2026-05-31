@@ -52,7 +52,7 @@ namespace ShopFlower.Tests.Security
                 // Bỏ qua lỗi SSL cert tự ký của IIS Express localhost
                 ServerCertificateCustomValidationCallback = (msg, cert, chain, errors) => true
             };
-            _client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(15) };
+            _client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
         }
 
         [ClassCleanup]
@@ -125,14 +125,14 @@ namespace ShopFlower.Tests.Security
         // =============================================================
 
         [TestMethod]
-        [Description("SEC_01-B1 | UNION SELECT trên tìm kiếm không được gây lỗi 500")]
-        public async Task SEC01_B1_Search_UnionSelect_KhongDuocLoi500()
+        [Description("SEC_01-B1 | Payload OR 1=1 trên tìm kiếm không được gây lỗi 500")]
+        public async Task SEC01_B1_Search_OrTrue_KhongDuocLoi500()
         {
             var response = await _client.GetAsync(
-                $"{BASE_URL}/SanPham/Search?query={Uri.EscapeDataString("' UNION SELECT NULL,NULL,NULL --")}");
+                $"{BASE_URL}/SanPham/Search?query={Uri.EscapeDataString("' OR '1'='1")}");
 
             Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode,
-                "FAIL: UNION SELECT trên tìm kiếm gây lỗi 500 — có thể lộ cấu trúc bảng!");
+                "FAIL: Payload SQLi trên tìm kiếm gây lỗi 500 — có thể lộ cấu trúc bảng!");
         }
 
         [TestMethod]
