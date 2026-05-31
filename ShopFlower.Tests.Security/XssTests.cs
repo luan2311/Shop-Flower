@@ -266,6 +266,135 @@ namespace ShopFlower.Tests.Security
         }
 
         // =============================================================
+        // NHÓM C: Stored XSS — Mô tả sản phẩm (RỦI RO CAO)
+        // =============================================================
+
+        [TestMethod]
+        [Description("XSS-C1 | HIGH: api/SanPham không có [Authorize] — bất kỳ ai cũng tạo được sản phẩm")]
+        public async Task XSS_C1_ApiSanPham_KhongCanXacThuc_TaoSanPhamDuoc()
+        {
+            // Gửi request KHÔNG có cookie/token xác thực
+            var json = new StringContent(
+                $"{{\"TenSP\":\"Test No-Auth {XSS_MARKER}\"," +
+                $"\"GiaBan\":1000," +
+                $"\"MaLoai\":\"LH001\"," +
+                $"\"SoLuongTon\":1," +
+                $"\"MoTaSP\":\"Kiem tra xac thuc\"," +
+                $"\"TinhTrang\":\"Con hang\"}}",
+                System.Text.Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await _client.PostAsync($"{BASE_URL}/api/SanPham", json);
+
+            // Kết quả mong đợi đúng bảo mật: 401 Unauthorized hoặc 403 Forbidden
+            // Nếu trả 200 → API không yêu cầu đăng nhập → LỖ HỔNG NGHIÊM TRỌNG
+            bool khongYeuCauDangNhap = response.StatusCode == HttpStatusCode.OK;
+
+            Console.WriteLine($"[XSS-C1] Status: {response.StatusCode}");
+            if (khongYeuCauDangNhap)
+                Console.WriteLine("[XSS-C1] LỖ HỔNG NGHIÊM TRỌNG: api/SanPham chấp nhận request không xác thực!");
+
+            Assert.AreNotEqual(HttpStatusCode.OK, response.StatusCode,
+                "FAIL HIGH: POST api/SanPham không yêu cầu xác thực — " +
+                "bất kỳ ai cũng tạo được sản phẩm mà không cần đăng nhập!");
+        }
+
+        [TestMethod]
+        [Description("XSS-C2 | HIGH: Stored XSS — MoTaSP lưu payload rồi hiển thị bằng @Html.Raw() trên trang sản phẩm")]
+        public async Task XSS_C2_SanPham_MoTaSP_StoredXss_HtmlRaw()
+        {
+            // Bước 1: Tạo sản phẩm với payload XSS trong MoTaSP (không cần auth)
+            string xssPayload = $"<script>alert('{XSS_MARKER}')</script>";
+            var json = new StringContent(
+                $"{{\"TenSP\":\"XSS Test Product {XSS_MARKER}\"," +
+                $"\"GiaBan\":100000," +
+                $"\"MaLoai\":\"LH001\"," +
+                $"\"SoLuongTon\":10," +
+                $"\"MoTaSP\":\"{xssPayload}\"," +
+                $"\"TinhTrang\":\"Con hang\"}}",
+                System.Text.Encoding.UTF8,
+                "application/json"
+            );
+
+            var createResponse = await _client.PostAsync($"{BASE_URL}/api/SanPham", json);
+            string createBody = await createResponse.Content.ReadAsStringAsync();
+
+            Console.WriteLine($"[XSS-C2] Tạo sản phẩm status: {createResponse.StatusCode}");
+
+            if (createResponse.StatusCode != HttpStatusCode.OK)
+            {
+                Console.WriteLine("[XSS-C2] API yêu cầu xác thực hoặc từ chối → không test được Stored XSS qua luồng này");
+                Assert.Inconclusive("API trả " + createResponse.StatusCode + " — cần đăng nhập để test tiếp");
+                return;
+            }
+
+            // Bước 2: Lấy MaSP từ response
+            var maSPMatch = Regex.Match(createBody, @"""MaSP""\s*:\s*""([^""]+)""");
+            string maSP = maSPMatch.Success ? maSPMatch.Groups[1].Value.Trim() : string.Empty;
+
+            Console.WriteLine($"[XSS-C2] MaSP vừa tạo: [{maSP}]");
+            Assert.IsFalse(string.IsNullOrEmpty(maSP), "Không lấy được MaSP từ response");
+
+            // Bước 3: Truy cập trang chi tiết sản phẩm
+            var detailResponse = await _client.GetAsync(
+                $"{BASE_URL}/SanPham/chi_tiet_san_pham/{Uri.EscapeDataString(maSP)}");
+            string html = await detailResponse.Content.ReadAsStringAsync();
+
+            // Bước 4: Kiểm tra HTML có chứa <script> nguyên xi không
+            // chi_tiet_san_pham.cshtml dòng 225 dùng @Html.Raw(Model.MoTaSP) → KHÔNG encode
+            bool coScriptThô = html.Contains($"<script>alert('{XSS_MARKER}')");
+
+            Console.WriteLine($"[XSS-C2] Trang chi tiết chứa <script> nguyên xi: {coScriptThô}");
+
+            Assert.IsFalse(coScriptThô,
+                "FAIL STORED XSS HIGH: Trang chi tiết sản phẩm hiển thị <script> nguyên xi!\n" +
+                "Nguyên nhân: chi_tiet_san_pham.cshtml dòng 225 dùng @Html.Raw(Model.MoTaSP)\n" +
+                "Bất kỳ ai cũng khai thác được vì api/SanPham không có [Authorize]");
+        }
+
+        [TestMethod]
+        [Description("XSS-C3 | HIGH: Stored XSS với payload <img onerror> trong MoTaSP")]
+        public async Task XSS_C3_SanPham_MoTaSP_ImgOnerror_StoredXss()
+        {
+            string xssPayload = $"<img src=x onerror=\"alert(document.cookie)\">";
+            var json = new StringContent(
+                $"{{\"TenSP\":\"XSS IMG Product {XSS_MARKER}\"," +
+                $"\"GiaBan\":100000," +
+                $"\"MaLoai\":\"LH001\"," +
+                $"\"SoLuongTon\":10," +
+                $"\"MoTaSP\":\"{xssPayload}\"," +
+                $"\"TinhTrang\":\"Con hang\"}}",
+                System.Text.Encoding.UTF8,
+                "application/json"
+            );
+
+            var createResponse = await _client.PostAsync($"{BASE_URL}/api/SanPham", json);
+            string createBody = await createResponse.Content.ReadAsStringAsync();
+
+            if (createResponse.StatusCode != HttpStatusCode.OK)
+            {
+                Assert.Inconclusive("API trả " + createResponse.StatusCode + " — cần đăng nhập để test tiếp");
+                return;
+            }
+
+            var maSPMatch = Regex.Match(createBody, @"""MaSP""\s*:\s*""([^""]+)""");
+            string maSP = maSPMatch.Success ? maSPMatch.Groups[1].Value.Trim() : string.Empty;
+
+            var detailResponse = await _client.GetAsync(
+                $"{BASE_URL}/SanPham/chi_tiet_san_pham/{Uri.EscapeDataString(maSP)}");
+            string html = await detailResponse.Content.ReadAsStringAsync();
+
+            bool coImgOnerror = html.Contains("onerror=") && html.Contains("document.cookie");
+
+            Console.WriteLine($"[XSS-C3] Trang chi tiết chứa onerror nguyên xi: {coImgOnerror}");
+
+            Assert.IsFalse(coImgOnerror,
+                "FAIL STORED XSS HIGH: <img onerror=alert(document.cookie)> thực thi được!\n" +
+                "Kẻ tấn công có thể đánh cắp cookie của người dùng/admin!");
+        }
+
+        // =============================================================
         // PHƯƠNG THỨC HỖ TRỢ
         // =============================================================
 
