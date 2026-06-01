@@ -39,8 +39,12 @@
      * Cập nhật số lượng sản phẩm trong giỏ hàng
      */
     window.updateCartQuantityAjax = function (productId, quantity) {
-        if (!productId || quantity < 1) {
+        if (!productId) {
             return;
+        }
+        if (isNaN(quantity) || quantity < 1) {
+            quantity = 1;
+            $('.cart-quantity-input[data-product-id="' + productId + '"]').val(quantity);
         }
 
         $.ajax({
@@ -334,9 +338,11 @@
             var quantity = parseInt($input.val());
 
             quantityUpdateTimeout = setTimeout(function () {
-                if (quantity > 0) {
-                    updateCartQuantityAjax(productId, quantity);
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                    $input.val(quantity);
                 }
+                updateCartQuantityAjax(productId, quantity);
             }, 500); // Đợi 500ms sau khi user ngừng nhập
         });
 

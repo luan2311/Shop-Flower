@@ -570,6 +570,7 @@ namespace ShopFlower.Controllers
             }
 
             ViewBag.TenDangNhap = tenDangNhap;
+            TempData["ForgotResult"] = "Xác thực email thành công. Vui lòng thiết lập mật khẩu mới.";
             return View();
         }
 

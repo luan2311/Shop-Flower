@@ -1,0 +1,851 @@
+{
+  "config": {
+    "configFile": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\playwright.config.js",
+    "rootDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "safari-desktop",
+        "name": "safari-desktop",
+        "testDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-safari",
+        "name": "iphone-safari",
+        "testDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android-chrome",
+        "name": "android-chrome",
+        "testDir": "C:/code/CNPM/Nhom6_ST5-Ca2/Shop-Flower/ShopFlower.Tests.UI/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "admin.spec.js",
+      "file": "admin.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Phân hệ Quản Trị Hệ Thống (Admin & Authorization Test Suite)",
+          "file": "admin.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "ADM_01: Chặn truy cập trang Admin đối với tài khoản vai trò User",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14152,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:29:56.155Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "73482573f1568b679d78-640e188edb62594911ec",
+              "file": "admin.spec.js",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "ADM_02: CRUD Sản phẩm - Chặn tạo sản phẩm giá bán âm hoặc bằng 0",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6541,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:10.475Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "73482573f1568b679d78-b1875d3d0ce0c8cdae72",
+              "file": "admin.spec.js",
+              "line": 38,
+              "column": 3
+            },
+            {
+              "title": "ADM_03: Duyệt hóa đơn và đồng bộ dữ liệu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11263,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:17.030Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "73482573f1568b679d78-6c0b22a204f10999676e",
+              "file": "admin.spec.js",
+              "line": 65,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "auth.spec.js",
+      "file": "auth.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Phân hệ Đăng Ký & Đăng Nhập (Authentication Test Suite)",
+          "file": "auth.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "REG_01: Đăng ký thành công và tự động trim khoảng trắng",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3105,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:28.318Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-6b6458e2c314a26bcb8e",
+              "file": "auth.spec.js",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "REG_02: Chặn đăng ký trùng Tên đăng nhập",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1528,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:31.446Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-d6eb3d76ef4925a4fc9b",
+              "file": "auth.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "REG_03: Chặn đăng ký với Email sai định dạng",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 993,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:32.990Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-29bb7a29d0fe0c76b05f",
+              "file": "auth.spec.js",
+              "line": 52,
+              "column": 3
+            },
+            {
+              "title": "LOG_01: Đăng nhập thất bại với mật khẩu sai",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 20705,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:34.003Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-17aac41b08c375af4514",
+              "file": "auth.spec.js",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "LOG_02: Kiểm tra chức năng Ẩn/Hiện mật khẩu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 973,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:54.728Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-29932610cc8af6b11098",
+              "file": "auth.spec.js",
+              "line": 78,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "checkout.spec.js",
+      "file": "checkout.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Phân hệ Giỏ Hàng & Thanh Toán (Checkout Test Suite)",
+          "file": "checkout.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "PAY_01: Xác thực trường Số điện thoại tự động lọc chữ cái",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7805,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:30:55.726Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24e4b3ac21f7f473b7e5-378fafecf7ecd7b8e2a0",
+              "file": "checkout.spec.js",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "PAY_02: Trình kích hoạt lỗi Validation động (Real-time Feedback)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7999,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:03.552Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24e4b3ac21f7f473b7e5-42d15bf055f1c009ee35",
+              "file": "checkout.spec.js",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "PAY_03: Gửi form trống -> Tự động cuộn mượt và Focus vào ô lỗi đầu tiên",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6945,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:11.567Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24e4b3ac21f7f473b7e5-d64c84d7a3dc36cc90c9",
+              "file": "checkout.spec.js",
+              "line": 83,
+              "column": 3
+            },
+            {
+              "title": "PAY_04: Kiểm tra định dạng tiền tệ và tính đúng đắn giỏ hàng",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7804,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:18.527Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24e4b3ac21f7f473b7e5-1dd7448687d434293d86",
+              "file": "checkout.spec.js",
+              "line": 104,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "extended-flows.spec.js",
+      "file": "extended-flows.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Bo sung UI flows cho Gio hang, Tim kiem, Wishlist, Auth va Admin",
+          "file": "extended-flows.spec.js",
+          "line": 54,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC_CART_01: Cap nhat so luong gio hang va tinh lai tong tien real-time",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8387,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:26.362Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a08d43e9ff31ae868562-5d7ac46291a1f19a0a40",
+              "file": "extended-flows.spec.js",
+              "line": 55,
+              "column": 3
+            },
+            {
+              "title": "TC_SEARCH_01: Tim kiem tu khoa vo nghia hien thi thong bao khong co ket qua",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4028,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:34.764Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a08d43e9ff31ae868562-faf73d50722561e94d52",
+              "file": "extended-flows.spec.js",
+              "line": 81,
+              "column": 3
+            },
+            {
+              "title": "TC_WISHLIST_01: Them san pham vao Wishlist va cap nhat so dem tren header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8168,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:38.804Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a08d43e9ff31ae868562-4f38a0567292762e32b6",
+              "file": "extended-flows.spec.js",
+              "line": 91,
+              "column": 3
+            },
+            {
+              "title": "TC_AUTH_FORGOT_PWD: Quen mat khau voi email ton tai hien thi thong bao thanh cong mau xanh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2968,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:46.986Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a08d43e9ff31ae868562-2040dd1b96d9e4d0e2cf",
+              "file": "extended-flows.spec.js",
+              "line": 110,
+              "column": 3
+            },
+            {
+              "title": "TC_ADM_PRODUCT_INVENTORY: Admin dat ton kho ve 0 thi nut them gio hang bi disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3256,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:49.966Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a08d43e9ff31ae868562-e47799aa4e4d1dc946b7",
+              "file": "extended-flows.spec.js",
+              "line": 125,
+              "column": 3
+            },
+            {
+              "title": "TC_ADM_USER_BAN: Admin vo hieu hoa user va user khong the dang nhap lai",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 26986,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.alert-danger, .validation-summary-errors, body')\nExpected pattern: \u001b[32m/Tài khoản.*(khóa|vô hiệu hóa)|Tai khoan.*(khoa|vo hieu hoa)/i\u001b[39m\nError: strict mode violation: locator('.alert-danger, .validation-summary-errors, body') resolved to 2 elements:\n    1) <body>…</body> aka getByText('Đang tải... Đang tải trang... Gọi mua hàng 0898449950 Thông tin Tài khoản Đăng')\n    2) <div class=\"alert alert-danger\">…</div> aka locator('.alert')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.alert-danger, .validation-summary-errors, body')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.alert-danger, .validation-summary-errors, body')\nExpected pattern: \u001b[32m/Tài khoản.*(khóa|vô hiệu hóa)|Tai khoan.*(khoa|vo hieu hoa)/i\u001b[39m\nError: strict mode violation: locator('.alert-danger, .validation-summary-errors, body') resolved to 2 elements:\n    1) <body>…</body> aka getByText('Đang tải... Đang tải trang... Gọi mua hàng 0898449950 Thông tin Tài khoản Đăng')\n    2) <div class=\"alert alert-danger\">…</div> aka locator('.alert')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.alert-danger, .validation-summary-errors, body')\u001b[22m\n\n    at C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\tests\\extended-flows.spec.js:193:89",
+                        "location": {
+                          "file": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\tests\\extended-flows.spec.js",
+                          "column": 89,
+                          "line": 193
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 191 |\u001b[39m\n \u001b[90m 192 |\u001b[39m       \u001b[36mawait\u001b[39m expect(userPage)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/Account\\/Dang_nhap/\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 193 |\u001b[39m       \u001b[36mawait\u001b[39m expect(userPage\u001b[33m.\u001b[39mlocator(\u001b[32m'.alert-danger, .validation-summary-errors, body'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\n \u001b[90m     |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 194 |\u001b[39m         \u001b[35m/Tài khoản.*(khóa|vô hiệu hóa)|Tai khoan.*(khoa|vo hieu hoa)/i\u001b[39m\n \u001b[90m 195 |\u001b[39m       )\u001b[33m;\u001b[39m\n \u001b[90m 196 |\u001b[39m     } \u001b[36mfinally\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\tests\\extended-flows.spec.js",
+                            "column": 89,
+                            "line": 193
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.alert-danger, .validation-summary-errors, body')\nExpected pattern: \u001b[32m/Tài khoản.*(khóa|vô hiệu hóa)|Tai khoan.*(khoa|vo hieu hoa)/i\u001b[39m\nError: strict mode violation: locator('.alert-danger, .validation-summary-errors, body') resolved to 2 elements:\n    1) <body>…</body> aka getByText('Đang tải... Đang tải trang... Gọi mua hàng 0898449950 Thông tin Tài khoản Đăng')\n    2) <div class=\"alert alert-danger\">…</div> aka locator('.alert')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.alert-danger, .validation-summary-errors, body')\u001b[22m\n\n\n  191 |\n  192 |       await expect(userPage).toHaveURL(/\\/Account\\/Dang_nhap/);\n> 193 |       await expect(userPage.locator('.alert-danger, .validation-summary-errors, body')).toContainText(\n      |                                                                                         ^\n  194 |         /Tài khoản.*(khóa|vô hiệu hóa)|Tai khoan.*(khoa|vo hieu hoa)/i\n  195 |       );\n  196 |     } finally {\n    at C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\tests\\extended-flows.spec.js:193:89"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-31T18:31:53.239Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\test-results\\extended-flows-Bo-sung-UI--e6d68-ser-khong-the-dang-nhap-lai-chromium-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\test-results\\extended-flows-Bo-sung-UI--e6d68-ser-khong-the-dang-nhap-lai-chromium-desktop\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\test-results\\extended-flows-Bo-sung-UI--e6d68-ser-khong-the-dang-nhap-lai-chromium-desktop\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\code\\CNPM\\Nhom6_ST5-Ca2\\Shop-Flower\\ShopFlower.Tests.UI\\tests\\extended-flows.spec.js",
+                        "column": 89,
+                        "line": 193
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a08d43e9ff31ae868562-cca86c6bc1b8fcbf6410",
+              "file": "extended-flows.spec.js",
+              "line": 167,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-05-31T18:29:55.349Z",
+    "duration": 145040.35499999998,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
