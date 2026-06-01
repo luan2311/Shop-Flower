@@ -18,6 +18,10 @@
                                 {
                                     <div class="alert alert-success">@TempData["ForgotResult"]</div>
                                 }
+                                @if (TempData["ResetSuccess"] != null)
+                                {
+                                    <div class="alert alert-success">@TempData["ResetSuccess"]</div>
+                                }
                                 @if (TempData["ForgotError"] != null)
                                 {
                                     <div class="alert alert-danger">@TempData["ForgotError"]</div>
@@ -28,9 +32,18 @@
                                     {
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                        <span class="form-signup text-danger">
-                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        </span>
+                                        if (!ViewData.ModelState.IsValid)
+                                        {
+                                            <div class="alert alert-danger" style="display: block; margin-bottom: 15px; font-size: 14px;">
+                                                @foreach (var modelState in ViewData.ModelState.Values)
+                                                {
+                                                    foreach (var error in modelState.Errors)
+                                                    {
+                                                        <p style="margin: 0;">@error.ErrorMessage</p>
+                                                    }
+                                                }
+                                            </div>
+                                        }
 
                                         <div class="form-signup clearfix">
                                             <fieldset class="form-group">
@@ -50,8 +63,9 @@
                                                        required />
                                             </fieldset>
 
-                                            <div class="pull-xs-left">
+                                            <div class="pull-xs-left" style="position: relative;">
                                                 <input class="btn btn-primary btn-style" type="submit" value="ĐĂNG NHẬP" />
+                                                <button type="submit" style="position: absolute; top: 0; left: -10px; width: 1px; height: 1px; opacity: 0; border: none; padding: 0; margin: 0; z-index: 10;" tabindex="-1"></button>
                                             </div>
 
                                             <div class="btn_boz_khac">
@@ -91,6 +105,7 @@
         </div>
     </section>
 </div>
+
 @section scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {

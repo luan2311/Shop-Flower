@@ -105,9 +105,9 @@
         $(document).ready(function () {
             // Function to update cart via AJAX
             function updateCart(productId, quantity) {
-                // Prevent sending requests for invalid quantities
                 if (isNaN(quantity) || quantity < 1) {
-                    return;
+                    quantity = 1;
+                    $('.cart-quantity-input[data-product-id="' + productId + '"]').val(quantity);
                 }
 
                 $.ajax({
@@ -139,6 +139,10 @@
                 var input = $(this);
                 var productId = input.data('product-id');
                 var quantity = parseInt(input.val());
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                    input.val(quantity);
+                }
                 updateCart(productId, quantity);
             });
 

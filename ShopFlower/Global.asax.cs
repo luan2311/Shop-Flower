@@ -1,6 +1,8 @@
 ﻿using ShopFlower.App_Start;
+using ShopFlower.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -60,6 +62,21 @@ namespace ShopFlower
                     {
                         var roles = authTicket.UserData.Split(',');
                         var user = new GenericPrincipal(new FormsIdentity(authTicket), roles);
+
+                        using (var db = new QL_SHOPFLOWEREntities())
+                        {
+                            var account = db.TAIKHOANs
+                                .AsNoTracking()
+                                .FirstOrDefault(t => t.TenDangNhap == authTicket.Name);
+
+                            if (account == null || !account.IsActive)
+                            {
+                                FormsAuthentication.SignOut();
+                                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(string.Empty), Array.Empty<string>());
+                                return;
+                            }
+                        }
+
                         HttpContext.Current.User = user;
                     }
                 }

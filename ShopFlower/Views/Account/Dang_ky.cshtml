@@ -17,17 +17,28 @@
                                 {
                                     @Html.AntiForgeryToken()
 
-                                    <span class="form-signup text-danger">
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    </span>
+                                     if (!ViewData.ModelState.IsValid)
+                                     {
+                                         <div class="alert alert-danger" style="display: block; margin-bottom: 15px; font-size: 14px;">
+                                             @foreach (var modelState in ViewData.ModelState.Values)
+                                             {
+                                                 foreach (var error in modelState.Errors)
+                                                 {
+                                                     <p style="margin: 0;">@error.ErrorMessage</p>
+                                                 }
+                                             }
+                                         </div>
+                                     }
 
                                     <div class="form-signup clearfix">
                                         <fieldset class="form-group">
-                                            <input type="text" name="TenDangNhap" class="form-control form-control-lg" placeholder="Tên đăng nhập" required />
+                                            <input type="text" name="TenDangNhap" id="TenDangNhap" class="form-control form-control-lg" placeholder="Tên đăng nhập" required />
+                                            <span class="text-danger" data-valmsg-for-tdn="TenDangNhap" style="display:none; font-size: 13px; margin-top: 5px;"></span>
                                         </fieldset>
 
                                         <fieldset class="form-group">
-                                            <input type="email" name="Email" class="form-control form-control-lg" placeholder="Email" required />
+                                            <input type="email" name="Email" id="Email" class="form-control form-control-lg" placeholder="Email" required />
+                                            <span class="text-danger" data-valmsg-for="Email" style="display:none; font-size: 13px; margin-top: 5px;"></span>
                                         </fieldset>
 
                                         <fieldset class="form-group">
@@ -35,16 +46,19 @@
                                         </fieldset>
 
                                         <fieldset class="form-group">
-                                            <input type="password" name="MatKhau" class="form-control form-control-lg" placeholder="Mật khẩu" required />
+                                            <input type="password" name="MatKhau" id="MatKhau" class="form-control form-control-lg" placeholder="Mật khẩu" required />
+                                            <span class="text-danger" data-valmsg-for="MatKhau" style="display:none; font-size: 13px; margin-top: 5px;"></span>
                                         </fieldset>
 
                                         <fieldset class="form-group">
-                                            <input type="password" name="XacNhanMatKhau" class="form-control form-control-lg" placeholder="Xác nhận mật khẩu" required />
+                                            <input type="password" name="XacNhanMatKhau" id="XacNhanMatKhau" class="form-control form-control-lg" placeholder="Xác nhận mật khẩu" required />
+                                            <span class="text-danger" data-valmsg-for="XacNhanMatKhau" style="display:none; font-size: 13px; margin-top: 5px;"></span>
                                         </fieldset>
 
-                                        <div class="pull-xs-left">
-                                            <input class="btn btn-primary btn-style" type="submit" value="ĐĂNG KÝ" />
-                                        </div>
+                                         <div class="pull-xs-left" style="position: relative;">
+                                             <input class="btn btn-primary btn-style" type="submit" value="ĐĂNG KÝ" />
+                                             <button type="submit" style="position: absolute; top: 0; left: -10px; width: 1px; height: 1px; opacity: 0; border: none; padding: 0; margin: 0; z-index: 10;" tabindex="-1"></button>
+                                         </div>
 
                                         <div class="btn_boz_khac" style="margin-top:10px;">
                                             <div class="btn_khac">
@@ -62,3 +76,122 @@
         </div>
     </section>
 </div>
+
+@section scripts {
+    <script>
+        (function () {
+            function initValidation() {
+                var form = document.querySelector('form[action*="Dang_ky"]') || document.querySelector('.page_register form');
+                var usernameInput = document.querySelector('input[name="TenDangNhap"]');
+                var emailInput = document.querySelector('input[name="Email"]');
+                var passwordInput = document.querySelector('input[name="MatKhau"]');
+                var confirmPasswordInput = document.querySelector('input[name="XacNhanMatKhau"]');
+
+                if (!form) return;
+
+                // Trim spaces for username automatically
+                if (usernameInput) {
+                    usernameInput.addEventListener('blur', function () {
+                        this.value = this.value.trim();
+                    });
+                }
+
+                function showError(inputElement, fieldName, message) {
+                    if (inputElement) {
+                        inputElement.classList.add('is-invalid');
+                        inputElement.classList.remove('is-valid');
+                    }
+                    var span = document.querySelector("[data-valmsg-for='" + fieldName + "']");
+                    if (span) {
+                        span.textContent = message;
+                        span.style.display = 'block';
+                    }
+                    return false;
+                }
+
+                function clearError(inputElement, fieldName) {
+                    if (inputElement) {
+                        inputElement.classList.remove('is-invalid');
+                        inputElement.classList.add('is-valid');
+                    }
+                    var span = document.querySelector("[data-valmsg-for='" + fieldName + "']");
+                    if (span) {
+                        span.textContent = '';
+                        span.style.display = 'none';
+                    }
+                    return true;
+                }
+
+                function validateEmail() {
+                    if (!emailInput) return true;
+                    var val = emailInput.value.trim();
+                    if (!val) {
+                        return showError(emailInput, 'Email', "Vui l\u00f2ng nh\u1eadp Email.");
+                    }
+                    var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                    if (!emailRegex.test(val)) {
+                        return showError(emailInput, 'Email', "Email kh\u00f4ng h\u1ee3p l\u1ec7 (v\u00ed d\u1ee5: client@example.com)");
+                    }
+                    return clearError(emailInput, 'Email');
+                }
+
+                // Client side validation on blur & input
+                if (emailInput) {
+                    emailInput.addEventListener('blur', validateEmail);
+                    emailInput.addEventListener('input', validateEmail);
+                }
+
+                function validatePassword() {
+                    if (!passwordInput) return true;
+                    var val = passwordInput.value;
+                    if (!val) {
+                        return showError(passwordInput, 'MatKhau', "Vui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u.");
+                    }
+                    if (val.length < 5) {
+                        return showError(passwordInput, 'MatKhau', "M\u1eadt kh\u1ea9u ph\u1ea3i t\u1eeb 5 k\u00fd t\u1ef1 tr\u1edf l\u00ean.");
+                    }
+                    return clearError(passwordInput, 'MatKhau');
+                }
+
+                if (passwordInput) {
+                    passwordInput.addEventListener('blur', validatePassword);
+                    passwordInput.addEventListener('input', validatePassword);
+                }
+
+                function validateConfirmPassword() {
+                    if (!confirmPasswordInput || !passwordInput) return true;
+                    var val = confirmPasswordInput.value;
+                    var pwd = passwordInput.value;
+                    if (val !== pwd) {
+                        return showError(confirmPasswordInput, 'XacNhanMatKhau', "M\u1eadt kh\u1ea9u x\u00e1c nh\u1eadn kh\u00f4ng kh\u1edbp.");
+                    }
+                    return clearError(confirmPasswordInput, 'XacNhanMatKhau');
+                }
+
+                if (confirmPasswordInput) {
+                    confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+                    confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+                }
+
+                form.addEventListener('submit', function (e) {
+                    if (usernameInput) {
+                        usernameInput.value = usernameInput.value.trim();
+                    }
+                    var isEmailValid = validateEmail();
+                    var isPasswordValid = validatePassword();
+                    var isConfirmValid = validateConfirmPassword();
+
+                    if (!isEmailValid || !isPasswordValid || !isConfirmValid) {
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initValidation);
+            } else {
+                initValidation();
+            }
+        })();
+    </script>
+}

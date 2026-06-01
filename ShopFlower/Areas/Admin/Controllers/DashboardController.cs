@@ -1,4 +1,4 @@
-﻿using PagedList;
+using PagedList;
 using ShopFlower.Models;
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace ShopFlower.Areas.Admin.Controllers
         }
         // GET: Admin/Dashboard/Dashboard (Trang mới)
         [OverrideAuthorization]
-        [Authorize(Roles = "Admin")]
+        [ShopFlower.Filters.AdminAuthorize]
         public ActionResult Dashboard()
         {
             var today = DateTime.Today;

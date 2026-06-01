@@ -1,4 +1,4 @@
-﻿using ShopFlower.Models;
+using ShopFlower.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -73,6 +73,8 @@ namespace ShopFlower.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Dang_nhap(string TenDangNhap, string MatKhau, string returnUrl)
         {
+            if (TenDangNhap != null) TenDangNhap = TenDangNhap.Trim();
+
             if (string.IsNullOrWhiteSpace(TenDangNhap) || string.IsNullOrWhiteSpace(MatKhau))
             {
                 ModelState.AddModelError("", "Vui lòng nhập tên đăng nhập và mật khẩu.");
@@ -419,6 +421,10 @@ namespace ShopFlower.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Dang_ky(string TenDangNhap, string MatKhau, string XacNhanMatKhau, string Email, string TenHienThi, string AdminCode = null)
         {
+            if (TenDangNhap != null) TenDangNhap = TenDangNhap.Trim();
+            if (Email != null) Email = Email.Trim();
+            if (TenHienThi != null) TenHienThi = TenHienThi.Trim();
+
             if (string.IsNullOrWhiteSpace(TenDangNhap) || string.IsNullOrWhiteSpace(MatKhau) || string.IsNullOrWhiteSpace(Email))
             {
                 ModelState.AddModelError("", "Vui lòng nhập đầy đủ thông tin bắt buộc.");
@@ -510,6 +516,13 @@ namespace ShopFlower.Controllers
             return RedirectToAction("Dang_nhap", "Account");
         }
 
+        // GET: Account/Unauthorized
+        [AllowAnonymous]
+        public ActionResult Unauthorized()
+        {
+            return View();
+        }
+
         // GET: Quen_mat_khau
         public ActionResult Quen_mat_khau()
         {
@@ -557,6 +570,7 @@ namespace ShopFlower.Controllers
             }
 
             ViewBag.TenDangNhap = tenDangNhap;
+            TempData["ForgotResult"] = "Xác thực email thành công. Vui lòng thiết lập mật khẩu mới.";
             return View();
         }
 

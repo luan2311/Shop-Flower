@@ -17,13 +17,11 @@ namespace ShopFlower.Controllers
         QL_SHOPFLOWEREntities db = new QL_SHOPFLOWEREntities();
         public ActionResult Trang_chu()
         {
-            var lstAllSP = db.SANPHAMs.ToList();
-
-            var boHoaTuoi = db.SANPHAMs.Where(sp => sp.MaLoai == "LH001").Take(8).ToList();
-            var keHoa = db.SANPHAMs.Where(sp => sp.MaLoai == "LH002").Take(8).ToList();
-            var gioHoa = db.SANPHAMs.Where(sp => sp.MaLoai == "LH003").Take(8).ToList();
-            var hoaSap = db.SANPHAMs.Where(sp => sp.MaLoai == "LH005").Take(8).ToList();
-            var hoaCuoi = db.SANPHAMs.Where(sp => sp.MaLoai == "LH004").Take(8).ToList();
+            var boHoaTuoi = GetFeaturedProductsByCategory("LH001");
+            var keHoa = GetFeaturedProductsByCategory("LH002");
+            var gioHoa = GetFeaturedProductsByCategory("LH003");
+            var hoaSap = GetFeaturedProductsByCategory("LH005");
+            var hoaCuoi = GetFeaturedProductsByCategory("LH004");
 
             // Truyền dữ liệu sang View
 
@@ -33,6 +31,16 @@ namespace ShopFlower.Controllers
             ViewBag.HoaSap = hoaSap;
             ViewBag.HoaCuoi = hoaCuoi;
             return View();
+        }
+
+        private List<SANPHAM> GetFeaturedProductsByCategory(string maLoai)
+        {
+            return db.SANPHAMs
+                .Where(sp => sp.MaLoai == maLoai)
+                .OrderBy(sp => sp.SoLuongTon == 0 ? 1 : 0)
+                .ThenBy(sp => sp.MaSP)
+                .Take(8)
+                .ToList();
         }
 
         public ActionResult page_not_found()
