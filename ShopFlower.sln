@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36616.10 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopFlower", "ShopFlower\ShopFlower.csproj", "{31099BA6-9C9E-4664-AFCE-934552FB5CBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopFlower.Tests", "ShopFlower.Tests\ShopFlower.Tests.csproj", "{5EA1540A-0F29-45BA-B4EF-F08422A633AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopFlower.Tests", "ShopFlower.Tests\ShopFlower.Tests.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopFlower.Tests.Security", "ShopFlower.Tests.Security\ShopFlower.Tests.Security.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
@@ -19,10 +19,6 @@ Global
 		{31099BA6-9C9E-4664-AFCE-934552FB5CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31099BA6-9C9E-4664-AFCE-934552FB5CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31099BA6-9C9E-4664-AFCE-934552FB5CBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EA1540A-0F29-45BA-B4EF-F08422A633AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EA1540A-0F29-45BA-B4EF-F08422A633AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EA1540A-0F29-45BA-B4EF-F08422A633AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EA1540A-0F29-45BA-B4EF-F08422A633AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU

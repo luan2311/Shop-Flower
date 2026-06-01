@@ -1,0 +1,260 @@
+﻿VSTest version 17.14.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed Register_PasswordTooShort_ShouldBeRejected_REG_B01 [126 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG REG-B01] Password '1' has only 1 char(s). AccountController.Dang_ky() does NOT check minimum length (6 chars). Need to add: if (MatKhau.Length < 6) -> return error
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Register_PasswordTooShort_ShouldBeRejected_REG_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 35
+
+  Failed Register_PasswordNoComplexity_ShouldBeRejected_REG_B02 [1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG REG-B02] Password '123456' is not complex enough. AccountController.Dang_ky() does NOT check password complexity. Need to require: at least 1 uppercase + 1 special character
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Register_PasswordNoComplexity_ShouldBeRejected_REG_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 55
+
+  Failed Register_Username_ShouldBeTrimmed_REG_B03 [2 ms]
+  Error Message:
+   Assert.AreEqual failed. Expected:<user_03>. Actual:<  user_03  >. [BUG REG-B03] TenDangNhap saved as '  user_03  ', expected 'user_03'. Fix line 461 AccountController.cs: TenDangNhap = TenDangNhap.Trim()
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Register_Username_ShouldBeTrimmed_REG_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 74
+
+  Failed Register_UsernameCheck_ShouldBeCaseInsensitive_REG_B04 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG REG-B04] System allows registering 'Admin' when 'admin' exists. Line 435 uses == (case-sensitive). Need StringComparison.OrdinalIgnoreCase. Correct result (case-insensitive): True
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Register_UsernameCheck_ShouldBeCaseInsensitive_REG_B04() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 94
+
+  Failed Register_InvalidEmailFormat_ShouldBeRejectedServerSide_REG_B05 [2 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG REG-B05] Email 'notanemail' is invalid but Dang_ky() only checks IsNullOrWhiteSpace. No Regex or MailAddress validation present. Need to add: if (!IsValidEmail(Email)) -> return error
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Register_InvalidEmailFormat_ShouldBeRejectedServerSide_REG_B05() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 121
+
+  Passed Register_EmptyPassword_ShouldBeRejectedFirst_REG_B06 [< 1 ms]
+  Failed Login_NoBruteForceProtection_LOG_B01 [1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG LOG-B01] AccountController has no method handling brute force. Need to add: int failedAttempts, lockout after 5 failures, show Captcha after 3.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Login_NoBruteForceProtection_LOG_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 160
+
+  Failed Login_CaseSensitiveUsername_ShouldBeFlexible_LOG_B02 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG LOG-B02] Login with 'Admin' (upper) fails when DB stores 'admin' (lower). Line 82 Dang_nhap() uses == (case-sensitive). Need: u.TenDangNhap.ToLower() == TenDangNhap.ToLower()
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Login_CaseSensitiveUsername_ShouldBeFlexible_LOG_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 180
+
+  Failed Login_Username_ShouldBeTrimmed_BeforeSearch_LOG_B03 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG LOG-B03] Input 'admin ' does not find user 'admin'. Dang_nhap() does not call TenDangNhap.Trim(). Fix: var user = db.TAIKHOANs.SingleOrDefault(u => u.TenDangNhap == TenDangNhap.Trim())
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.Login_Username_ShouldBeTrimmed_BeforeSearch_LOG_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 200
+
+  Failed PasswordReset_ShouldRequireEmailToken_PWD_B01 [1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG PWD-B01] Reset_mat_khau() has no 'token' or 'otp' parameter. Anyone who knows a username can reset the password. OWASP A07:2021 - Identification and Authentication Failures. Need: GUID token sent via email + expire time + PasswordResets table
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PasswordReset_ShouldRequireEmailToken_PWD_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 227
+
+  Failed ChangePassword_NewPassword_NoMinLengthCheck_PWD_B02 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG PWD-B02] New password '1' has only 1 char(s). Doi_mat_khau() does not check minimum length. Need to add: if (NewPassword.Length < 6) -> ModelState.AddModelError(...)
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.ChangePassword_NewPassword_NoMinLengthCheck_PWD_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 247
+
+  Failed ChangePassword_NewPasswordSameAsOld_ShouldBeRejected_PWD_B03 [< 1 ms]
+  Error Message:
+   Assert.IsFalse failed. [BUG PWD-B03] New password is same as old password (both = 'abc@123'). Doi_mat_khau() does not check OldPassword != NewPassword. Need to add: if (NewPassword == OldPassword) -> ModelState.AddModelError(...)
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.ChangePassword_NewPasswordSameAsOld_ShouldBeRejected_PWD_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 267
+
+  Failed PlaceOrder_ItemSoLuongZero_ShouldBeRejected_HD_B01 [371 ms]
+  Error Message:
+   Assert.IsInstanceOfType failed. [BUG HD-B01] PlaceOrder accepts SoLuong = 0. Need to add: if (item.SoLuong <= 0) -> return BadRequest("SoLuong phai lon hon 0") Expected type:<System.Web.Http.Results.BadRequestErrorMessageResult>. Actual type:<System.Web.Http.Results.ExceptionResult>.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_ItemSoLuongZero_ShouldBeRejected_HD_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 297
+
+  Failed PlaceOrder_ItemNegativeSoLuong_ShouldBeRejected_HD_B02 [< 1 ms]
+  Error Message:
+   Assert.IsInstanceOfType failed. [BUG HD-B02] PlaceOrder accepts SoLuong = -5. System can create CTHD with negative SoLuong, causing wrong total. Need to add validation: item.SoLuong > 0 Expected type:<System.Web.Http.Results.BadRequestErrorMessageResult>. Actual type:<System.Web.Http.Results.ExceptionResult>.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_ItemNegativeSoLuong_ShouldBeRejected_HD_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 324
+
+  Failed PlaceOrder_ItemDonGiaZero_ShouldBeRejected_HD_B03 [< 1 ms]
+  Error Message:
+   Assert.IsInstanceOfType failed. [BUG HD-B03] PlaceOrder accepts DonGia = 0. Customer can self-declare price as 0 and order for free. Fix: fetch price from DB instead of trusting client, or validate DonGia > 0 Expected type:<System.Web.Http.Results.BadRequestErrorMessageResult>. Actual type:<System.Web.Http.Results.ExceptionResult>.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_ItemDonGiaZero_ShouldBeRejected_HD_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 352
+
+  Failed PlaceOrder_ItemNegativeDonGia_ShouldBeRejected_HD_B04 [< 1 ms]
+  Error Message:
+   Assert.IsInstanceOfType failed. [BUG HD-B04] PlaceOrder accepts DonGia = -50000. TongTien = 1 * (-50000) = -50000 -> places order that reduces customer debt. Need to validate: item.DonGia > 0 Expected type:<System.Web.Http.Results.BadRequestErrorMessageResult>. Actual type:<System.Web.Http.Results.ExceptionResult>.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_ItemNegativeDonGia_ShouldBeRejected_HD_B04() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 380
+
+  Failed PlaceOrder_MaTKIsZero_ShouldBeRejectedEarly_HD_B05 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG HD-B05] PlaceOrder does not validate MaTK > 0 before DB query. MaTK = 0 causes 'db.TAIKHOANs.Any(t => t.MaTK == 0)' unnecessary query. Need to add: if (model.MaTK <= 0) return BadRequest("MaTK khong hop le")
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_MaTKIsZero_ShouldBeRejectedEarly_HD_B05() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 400
+
+  Failed PlaceOrder_ClientSidePrice_NotVerifiedWithDB_HD_B06 [1 ms]
+  Error Message:
+   Assert.AreEqual failed. Expected:<300000>. Actual:<2>. [BUG HD-B06] TongTien from client price = 2d, real DB price = 300,000d. PlaceOrder() trusts item.DonGia from client, does not query SANPHAM.GiaBan from DB. This is a CRITICAL Price Manipulation vulnerability.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_ClientSidePrice_NotVerifiedWithDB_HD_B06() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 421
+
+  Failed PlaceOrder_ShouldDecrease_SoLuongTon_BIZ_B01 [1 ms]
+  Error Message:
+   Assert.AreEqual failed. Expected:<2>. Actual:<5>. [BUG BIZ-B01] SoLuongTon after order = 5 (expected 2). CheckoutController.PlaceOrder() does not subtract SoLuongTon after creating CTHD.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_ShouldDecrease_SoLuongTon_BIZ_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 445
+
+  Failed PlaceOrder_QuantityExceedsStock_ShouldBeRejected_BIZ_B02 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG BIZ-B02] System allows ordering 10 units when only 2 available. Need to add: if (item.SoLuong > product.SoLuongTon) -> return error
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_QuantityExceedsStock_ShouldBeRejected_BIZ_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 463
+
+  Failed PlaceOrder_TongTienZero_WhenDonGiaZero_BIZ_B03 [3 ms]
+  Error Message:
+   Assert.AreNotEqual failed. Expected any value except:<0>. Actual:<0>. [BUG BIZ-B03] TongTien = 0 when DonGia = 0. PlaceOrder does not validate TongTien > 0. Need to add: if (tongTien <= 0) return BadRequest("Tong tien khong hop le")
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_TongTienZero_WhenDonGiaZero_BIZ_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 483
+
+  Failed PlaceOrder_TongTienNegative_WhenDonGiaNegative_BIZ_B04 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG BIZ-B04] TongTien = -300,000d (negative). PlaceOrder does not validate DonGia > 0 and TongTien > 0. This is a critical vulnerability.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_TongTienNegative_WhenDonGiaNegative_BIZ_B04() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 504
+
+  Failed SanPham_NegativePageNumber_ShouldDefaultToPage1_SP_B01 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG SP-B01] Skip(-24) with page=-1. SanPhamController does not normalize negative page to 1. Need to add: if (page < 1) page = 1;
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.SanPham_NegativePageNumber_ShouldDefaultToPage1_SP_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 525
+
+  Passed SanPham_EmptySearchKeyword_ShouldReturnEarlyWithEmptyResult_SP_B02 [< 1 ms]
+  Failed SanPham_NullGiaBan_ShouldBeRejected_SP_B03 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG SP-B03] GiaBan = null can be saved to DB. When displayed: @item.GiaBan?.ToString("N0") -> shows blank or null. Need: [Required] annotation or validation in Admin controller
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.SanPham_NullGiaBan_ShouldBeRejected_SP_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 572
+
+  Failed LienHe_PhoneAllZeros_PassesRegexButIsFake_LH_B01 [5 ms]
+  Error Message:
+   Assert.IsFalse failed. [BUG LH-B01] Phone '0000000000' passes regex ^0\d{9}$ = True. Regex only checks format, not real-world validity of the phone number. Can improve: blacklist fake numbers or integrate SMS OTP
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.LienHe_PhoneAllZeros_PassesRegexButIsFake_LH_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 596
+
+  Failed LienHe_ScriptInNoidung_ShouldBeSanitized_LH_B02 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG LH-B02] NOIDUNG = '<script>alert('XSS Attack!')</script>' is not sanitized. LienHeController does not filter HTML tags before saving to DB. When admin views it: <script> tag can execute. Fix: HttpUtility.HtmlEncode(model.NOIDUNG) or AntiXSS library
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.LienHe_ScriptInNoidung_ShouldBeSanitized_LH_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 618
+
+  Failed LienHe_DeleteNegativeId_ShouldReturnBadRequestEarly_LH_B03 [3 ms]
+  Error Message:
+   Assert.IsInstanceOfType failed. [BUG LH-B03] DeleteLienHe(-1) does not return BadRequest immediately. Controller calls db.LIENHEs.Find(-1) then returns NotFound. Need to add: if (id <= 0) return BadRequest("ID khong hop le") Expected type:<System.Web.Http.Results.BadRequestErrorMessageResult>. Actual type:<System.Web.Http.Results.ExceptionResult>.
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.LienHe_DeleteNegativeId_ShouldReturnBadRequestEarly_LH_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 638
+
+  Failed PlaceOrder_NullTinhThanh_ProducesInvalidAddress_CALC_B01 [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG CALC-B01] Assembled address = '123 Duong ABC, Phuong 1, Quan 1, ' has empty part at end. TinhThanh = null -> incomplete address. Fix: Validate TinhThanh as required in PlaceOrderModel
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_NullTinhThanh_ProducesInvalidAddress_CALC_B01() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 669
+
+  Failed PlaceOrder_DuplicateMaSP_ShouldBeMergedOrRejected_CALC_B02 [1 ms]
+  Error Message:
+   Assert.IsTrue failed. [BUG CALC-B02] 2 items with duplicate MaSP='SP001'. PlaceOrder() does not detect duplicate MaSP -> creates 2 duplicate CTHDs in same order. Fix: validate no duplicate MaSP, or auto-merge quantities
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_DuplicateMaSP_ShouldBeMergedOrRejected_CALC_B02() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 694
+
+  Failed PlaceOrder_NoMaxQuantityLimit_CALC_B03 [< 1 ms]
+  Error Message:
+   Assert.IsFalse failed. [BUG CALC-B03] SoLuong = 999,999 is accepted. TongTien = 9,999,990,000,000d (~10.0 thousand billion VND). HoaDonController has no maximum quantity limit. Fix: if (item.SoLuong > 1000) return BadRequest("SoLuong vuot gioi han")
+  Stack Trace:
+     at ShopFlower.Tests.BugRevealingTests.PlaceOrder_NoMaxQuantityLimit_CALC_B03() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\BugRevealingTests.cs:line 715
+
+  Passed Register_PasswordMismatch_IsDetectedCorrectly_CTRL_01 [< 1 ms]
+  Passed PasswordHashing_PBKDF2_WorksCorrectly_CTRL_02 [129 ms]
+  Passed PlaceOrder_ValidItems_TongTienIsCorrect_CTRL_03 [< 1 ms]
+  Passed LienHe_ValidPhone_PassesRegexCorrectly_CTRL_04 [55 ms]
+  Passed HashPasswordPBKDF2_ShouldReturn_CorrectSizes [61 ms]
+  Passed VerifyPasswordPBKDF2_WithCorrectPassword_ShouldReturnTrue [119 ms]
+  Passed VerifyPasswordPBKDF2_WithWrongPassword_ShouldReturnFalse [123 ms]
+  Passed HashPasswordPBKDF2_SamePlaintext_ShouldProduceDifferentSalts [121 ms]
+  Passed PBKDF2_IterationCount_ShouldBe10000 [< 1 ms]
+  Passed HashPasswordPBKDF2_ShouldNotProduceAllZeroHash [60 ms]
+  Passed HashPasswordSHA256Legacy_ShouldReturn_CorrectSizes [6 ms]
+  Passed VerifyPasswordSHA256Legacy_WithCorrectPassword_ShouldReturnTrue [< 1 ms]
+  Passed VerifyPasswordSHA256Legacy_WithWrongPassword_ShouldReturnFalse [< 1 ms]
+  Passed PasswordUpgrade_SHA256ToPBKDF2_ShouldVerifySuccessfully [120 ms]
+  Passed PasswordUpgrade_OldSHA256_ShouldNotMatchNewPBKDF2Hash [59 ms]
+  Passed HashPasswordPBKDF2_WithEmptyPassword_ShouldNotThrow [60 ms]
+  Passed HashPasswordPBKDF2_WithVeryLongPassword_ShouldSucceed [119 ms]
+  Passed HashPasswordPBKDF2_WithUnicodePassword_ShouldSucceed [120 ms]
+  Failed CreateLienHe_WithNullModel_ShouldReturnBadRequest [2 ms]
+  Error Message:
+   Assert.IsTrue failed. Message must contain appropriate error, actual: 'Dữ liệu liên hệ không được để trống'
+  Stack Trace:
+     at ShopFlower.Tests.LienHeControllerTests.CreateLienHe_WithNullModel_ShouldReturnBadRequest() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\LienHeControllerTests.cs:line 38
+
+  Failed CreateLienHe_WithEmptyHoTen_ShouldReturnBadRequest [< 1 ms]
+  Error Message:
+   Assert.IsTrue failed. Message must mention HOTEN, actual: 'Họ tên không được để trống'
+  Stack Trace:
+     at ShopFlower.Tests.LienHeControllerTests.CreateLienHe_WithEmptyHoTen_ShouldReturnBadRequest() in D:\HK2_Nam3\Kiểm định phần mềm\FlowerShop\ShopFlower.Tests\LienHeControllerTests.cs:line 66
+
+  Passed CreateLienHe_WithWhitespaceHoTen_ShouldReturnBadRequest [< 1 ms]
+  Passed LienHeModel_WithValidEmail_ShouldPassValidation [< 1 ms]
+  Passed LienHeModel_WithInvalidPhone_NotStartingWith0_ShouldFailValidation [2 ms]
+  Passed LienHeModel_WithShortPhone_ShouldFailValidation [< 1 ms]
+  Passed LienHeModel_WithNoidungTooLong_ShouldFailValidation [< 1 ms]
+  Passed LienHeModel_WithHotenTooLong_ShouldFailValidation [< 1 ms]
+  Passed DbContext_SpThemLienHe_ShouldHaveCorrectSignature [< 1 ms]
+  Passed LienHeModel_ShouldHaveRequiredProperties [< 1 ms]
+  Passed PlaceOrder_WithNullModel_ShouldReturnBadRequest [< 1 ms]
+  Passed PlaceOrder_WithNullItems_ShouldReturnBadRequest [< 1 ms]
+  Passed PlaceOrder_WithEmptyItemsList_ShouldReturnBadRequest [< 1 ms]
+  Passed PlaceOrder_WithEmptyTenNguoiNhan_ShouldReturnBadRequest [< 1 ms]
+  Passed PlaceOrder_WithEmptySoDienThoai_ShouldReturnBadRequest [< 1 ms]
+  Passed PlaceOrder_WithEmptyDiaChiGiaoHang_ShouldReturnBadRequest [< 1 ms]
+  Passed PlaceOrder_TongTienCalculation_ShouldBeCorrect [< 1 ms]
+  Passed PlaceOrder_DiaChiFormat_ShouldMatchExpectedPattern [< 1 ms]
+  Passed PlaceOrderModel_ShouldHaveAllRequiredProperties [< 1 ms]
+  Passed OrderItemModel_ShouldHaveCorrectPropertiesAndTypes [< 1 ms]
+  Passed HoaDonModel_ShouldHaveAllDatabaseProperties [< 1 ms]
+  Passed CTHDModel_ShouldHaveAllDatabaseProperties [< 1 ms]
+  Passed OrderItem_WithNullMaSP_ShouldBeIdentifiable [< 1 ms]
+  Passed PlaceOrder_TongTienWithDecimalPrecision_ShouldBeAccurate [< 1 ms]
+  Passed StopSelling_ShouldSet_SoLuongTonToZero [< 1 ms]
+  Passed StopSelling_ShouldSet_TinhTrangToHetHang [< 1 ms]
+  Passed ProductWithZeroStock_ShouldNotBeAddableToCart [< 1 ms]
+  Passed ValidateGiaBan_WhenZero_ShouldBeInvalid [< 1 ms]
+  Passed ValidateGiaBan_WhenNegative_ShouldBeInvalid [< 1 ms]
+  Passed ValidateGiaBan_WhenPositive_ShouldBeValid [< 1 ms]
+  Passed ValidateGiaBan_WhenNull_ShouldBeInvalid [< 1 ms]
+  Passed SANPHAMModel_ShouldHaveAllRequiredProperties [< 1 ms]
+  Passed SANPHAMModel_GiaBanAndSoLuongTon_ShouldBeNullableInt [< 1 ms]
+  Passed SANPHAMModel_MaSP_ShouldBeString [< 1 ms]
+  Passed Pagination_With25Products_PageSize12_ShouldReturn3Pages [< 1 ms]
+  Passed Pagination_With24Products_PageSize12_ShouldReturn2Pages [< 1 ms]
+  Passed Pagination_WithZeroProducts_ShouldReturn0Pages [< 1 ms]
+  Passed SoLuongTon_BoundaryZero_ShouldBeConsideredOutOfStock [< 1 ms]
+  Passed SoLuongTon_BoundaryOne_ShouldBeConsideredInStock [< 1 ms]
+  Passed SoLuongTon_BoundaryMax9999_ShouldBeHandledCorrectly [< 1 ms]
+
+vstest.console.exe : Test Run Failed.
+At line:1 char:65
++ ... 62"; $out = & "C:\Program Files\Microsoft Visual Studio\2022\Communit ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Test Run Failed.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Total tests: 89
+     Passed: 58
+     Failed: 31
+ Total time: 2.5853 Seconds
